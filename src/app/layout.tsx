@@ -7,7 +7,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
     <html lang="en">
       <head>
       </head>
-      <body>
+      <body className="blue-background">
         {children}
       </body>
     </html>
