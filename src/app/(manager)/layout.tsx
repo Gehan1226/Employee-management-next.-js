@@ -19,7 +19,7 @@ export default function layout({ children }: Readonly<{ children: React.ReactNod
   return (
     <>
       {isLoad && (
-        <SideBar menuItems={menuItems} defaultActiveButton='Dashboard'>
+        <SideBar menuItems={menuItems}>
           {children}
         </SideBar>
       )}

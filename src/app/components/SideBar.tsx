@@ -1,22 +1,18 @@
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react'
-import AddEmployeeIcon from './icons/AddEmployeeIcon';
 
 type SideBarProps = {
     menuItems: MenuItem[];
-    defaultActiveButton: string
     children: React.ReactNode;
 };
 
-export default function SideBar({ menuItems, defaultActiveButton, children }: Readonly<SideBarProps>) {
+export default function SideBar({ menuItems, children }: Readonly<SideBarProps>) {
     const router = useRouter();
-    const [activeButton, setActiveButton] = useState<string>(defaultActiveButton);
+    const pathname = usePathname();
 
     const onClickMenuItem = (item: MenuItem): void => {
-        setActiveButton(item.name);
         router.push(item.link);
     };
-
 
     return (
         <>
@@ -36,7 +32,7 @@ export default function SideBar({ menuItems, defaultActiveButton, children }: Re
                                 <div className="flex flex-col w-full">
                                     <button
                                         onClick={() => onClickMenuItem(item)}
-                                        className={`flex p-2 text-gray-900 rounded-lg dark:text-white group flex-grow ${activeButton === item.name ? 'bg-blue-200' : 'hover:bg-gray-200'}`}
+                                        className={`flex p-2 text-gray-900 rounded-lg dark:text-white group flex-grow ${pathname === item.link ? 'bg-blue-200' : 'hover:bg-gray-200'}`}
                                     >
                                         {item.icon}
                                         <span className="ms-3 whitespace-nowrap">{item.name}</span>
