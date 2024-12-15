@@ -17,6 +17,7 @@ const employeeObjectSchema = z.object({
 
 export const registerEmployee = (formData: FormData) => {
     const employeeData = Object.fromEntries(formData.entries());
+    console.log(employeeData)
     const validatedFields = employeeObjectSchema.safeParse(employeeData);
 
     if (!validatedFields.success) {

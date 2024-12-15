@@ -15,6 +15,10 @@
     "next": "15.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-phone-input-2": "^2.15.1",
+    "react-phone-number-input": "^3.4.10",
+    "react-select": "^5.9.0",
+    "react-select-country-list": "^2.2.3",
     "zod": "^3.24.1"
   },
   "devDependencies": {
