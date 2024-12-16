@@ -2,6 +2,7 @@
 import { registerEmployee } from '@/app/api/employee';
 import CountrySelector from '@/app/components/CountrySelector';
 import Input from '@/app/components/Input';
+import PhoneInputField from '@/app/components/PhoneInput';
 import { Datepicker } from 'flowbite-react';
 import React, { useActionState } from 'react'
 
@@ -28,7 +29,12 @@ export default function page() {
 
         <Input label="Email address" id="floating_email" name="email" />
 
-        <Input label="Contact number" id="floating_contact" name="phoneNumber" />
+        {/* <Input label="Contact number" id="floating_contact" name="phoneNumber" /> */}
+
+        <div className='mb-6'>
+          <p className='text-sm text-slate-600 mb-2'>Contact number</p>
+          <PhoneInputField />
+        </div>
 
         <div className='mb-6'>
           <p className='text-sm text-slate-600 mb-2'>Date of birth </p>
@@ -58,9 +64,12 @@ export default function page() {
 
         <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
-        <div className="grid md:grid-cols-2 gap-6 mt-6">
-
+        <div>
+          <p className='text-sm text-slate-600 mb-2'>Country</p>
           <CountrySelector />
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-6 mt-6">
 
           <Input label="State" id="floating_state" name="state" />
 
