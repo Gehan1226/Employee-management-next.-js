@@ -29,8 +29,6 @@ export default function page() {
 
         <Input label="Email address" id="floating_email" name="email" />
 
-        {/* <Input label="Contact number" id="floating_contact" name="phoneNumber" /> */}
-
         <div className='mb-6'>
           <p className='text-sm text-slate-600 mb-2'>Contact number</p>
           <PhoneInputField />
@@ -69,7 +67,7 @@ export default function page() {
           <CountrySelector />
         </div>
         
-        <div className="grid md:grid-cols-2 gap-6 mt-6">
+        <div className="grid md:grid-cols-2 gap-3 mt-6">
 
           <Input label="State" id="floating_state" name="state" />
 

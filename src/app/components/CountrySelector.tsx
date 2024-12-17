@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from 'react'
 import Select from 'react-select'
 
@@ -6,7 +5,6 @@ export default function CountrySelector() {
     const [countries, setCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState<any>({});
 
-  
     useEffect(() => {
       fetch(
         "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
@@ -17,6 +15,7 @@ export default function CountrySelector() {
           setSelectedCountry(data.userSelectValue);
         });
     }, []);
+    
     return (
       <Select
         options={countries}

@@ -29,7 +29,7 @@ export default function SideBar({ menuItems, children }: Readonly<SideBarProps>)
             <div className="flex">
                 <aside
                     id="default-sidebar"
-                    className={`fixed top-0 left-0 z-40 w-64 h-screen bg-gray-50 dark:bg-gray-800 transition-transform duration-300 sm:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+                    className={`fixed top-0 left-0 z-40 w-64 h-screen bg-gray-50 transition-transform duration-300 sm:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
                     aria-label="Sidebar"
                 >
                     <div className="h-full px-3 py-4 overflow-y-auto">
