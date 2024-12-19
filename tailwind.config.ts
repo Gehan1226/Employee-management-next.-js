@@ -8,7 +8,7 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     flowbite.content(),
-     "./node_modules/flowbite/**/*.js"
+    "./node_modules/flowbite/**/*.js"
   ],
   theme: {
     extend: {
@@ -17,6 +17,10 @@ export default {
         foreground: "var(--foreground)",
       },
     },
+    screens: {
+      'sm': '660px',
+      'md': '1050px'
+    }
   },
   plugins: [
     flowbite.plugin(),
