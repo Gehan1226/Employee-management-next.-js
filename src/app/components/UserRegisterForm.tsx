@@ -4,8 +4,9 @@ import AuthInput from './AuthInput';
 import { registerUser } from '../api/auth';
 
 const initialState: AuthResponse = {
-  state: '',
-  message: ''
+    isSuccess: false,
+    message: '',
+    errors: null
 }
 
 export default function UserRegisterForm() {
@@ -15,69 +16,53 @@ export default function UserRegisterForm() {
         <form action={formAction} className="w-full mx-auto p-7">
 
             <div className="flex flex-row w-full space-x-5">
-
                 <div className="w-1/2 mb-5">
-
                     <AuthInput
                         label="First name"
                         id="first-name"
                         type="text"
-                        name="ggg"
+                        name="firstName"
+                        placeholder="John"
                     />
-
                 </div>
-
                 <div className="w-1/2 mb-5">
-                    <label htmlFor="email" className="block mb-2 ms-3 text-sm font-medium text-gray-900">
-                        User name
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        className="shadow-sm bg-sky-100 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
-                        placeholder="John Doe"
-                        required
+                    <AuthInput
+                        label="Last name"
+                        id="last-name"
+                        type="text"
+                        name="lastName"
+                        placeholder="Doe"
                     />
                 </div>
-
             </div>
 
             <div className="mb-5">
-                <label htmlFor="email" className="block mb-2 ms-3 text-sm font-medium text-gray-900">
-                    Email addrress
-                </label>
-                <input
-                    type="email"
+                <AuthInput
+                    label="Email address"
                     id="email"
-                    className="shadow-sm bg-sky-100 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
-                    placeholder="name@flowbite.com"
-                    required
+                    type="email"
+                    name="email"
+                    placeholder="example@gmail.com"
                 />
             </div>
 
             <div className="mb-5">
-                <label htmlFor="password" className="block mb-2 ms-3 text-sm font-medium text-gray-900">
-                    Password
-                </label>
-                <input
-                    type="password"
+                <AuthInput
+                    label="Password"
                     id="password"
-                    className="shadow-sm bg-sky-100 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
-                    placeholder="name@flowbite.com"
-                    required
+                    type="password"
+                    name="password"
+                    placeholder="●●●●●●●●●●"
                 />
             </div>
 
             <div className="mb-5">
-                <label htmlFor="password" className="block mb-2 ms-3 text-sm font-medium text-gray-900">
-                    Repeat password
-                </label>
-                <input
+                <AuthInput
+                    label="Repeat password"
+                    id="repeat-password"
                     type="password"
-                    id="password"
-                    className="shadow-sm bg-sky-100 border border-gray-300 text-gray-900 text-sm rounded-3xl focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
-                    placeholder="name@flowbite.com"
-                    required
+                    name="repeatPassword"
+                    placeholder="●●●●●●●●●●"
                 />
             </div>
 
