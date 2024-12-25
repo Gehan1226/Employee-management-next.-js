@@ -23,6 +23,8 @@ export default function UserRegisterForm() {
                         type="text"
                         name="firstName"
                         placeholder="John"
+                        required
+                        error={state.errors?.firstName?.[0] ?? null}
                     />
                 </div>
                 <div className="w-1/2 mb-5">
@@ -32,6 +34,8 @@ export default function UserRegisterForm() {
                         type="text"
                         name="lastName"
                         placeholder="Doe"
+                        required
+                        error={state.errors?.lastName?.[0] ?? null}
                     />
                 </div>
             </div>
@@ -43,6 +47,8 @@ export default function UserRegisterForm() {
                     type="email"
                     name="email"
                     placeholder="example@gmail.com"
+                    required
+                    error={state.errors?.email?.[0] ?? null}
                 />
             </div>
 
@@ -53,6 +59,9 @@ export default function UserRegisterForm() {
                     type="password"
                     name="password"
                     placeholder="●●●●●●●●●●"
+                    required
+                    minLength={8}
+                    error={state.errors?.password?.[0] ?? null}
                 />
             </div>
 
@@ -63,6 +72,9 @@ export default function UserRegisterForm() {
                     type="password"
                     name="repeatPassword"
                     placeholder="●●●●●●●●●●"
+                    required
+                    minLength={8}
+                    error={state.errors?.repeatPassword?.[0] ?? null}
                 />
             </div>
 
