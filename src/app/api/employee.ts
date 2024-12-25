@@ -1,4 +1,4 @@
-// "use server";
+"use server";
 import { z } from "zod";
 
 const employeeObjectSchema = z.object({
@@ -14,7 +14,7 @@ const employeeObjectSchema = z.object({
     postalCode: z.string().min(1, "Postal Code is required"),
 });
 
-export const registerEmployee = (formData: FormData) => {
+export const registerEmployee = async (formData: FormData) => {
     const employeeData = Object.fromEntries(formData.entries());
     console.log(employeeData)
     const validatedFields = employeeObjectSchema.safeParse(employeeData);
