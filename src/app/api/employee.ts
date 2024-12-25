@@ -1,5 +1,4 @@
 // "use server";
-
 import { z } from "zod";
 
 const employeeObjectSchema = z.object({
@@ -25,8 +24,5 @@ export const registerEmployee = (formData: FormData) => {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Missing Fields. Failed to Create Invoice.',
         };
-    }
-    return {
-        message: "Success"
     }
 };
