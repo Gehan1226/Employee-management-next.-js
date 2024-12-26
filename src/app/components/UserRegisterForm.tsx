@@ -4,8 +4,8 @@ import AuthInput from './AuthInput';
 import { registerUser } from '../api/auth';
 
 const initialState: AuthResponse = {
-    isSuccess: false,
-    message: '',
+    success: false,
+    data: null,
     errors: null
 }
 
