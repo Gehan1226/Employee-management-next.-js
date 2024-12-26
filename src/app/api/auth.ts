@@ -16,12 +16,12 @@ const handleZodError = (error: z.ZodError): Record<string, string[] | undefined>
 const validateUserData = (data: Record<string, string>): AuthResponse => {
     try {
         const validatedData = userFormSchema.parse(data);
-        return { success: true, data: validatedData, errors: null };
+        return { success: true, data: validatedData, validationErrors: null };
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return { success: false, data: null, errors: handleZodError(error) };
+            return { success: false, data: null, validationErrors: handleZodError(error) };
         }
-        return { success: false, data: null, errors: { general: ["An unexpected error occurred"] } };
+        return { success: false, data: null, validationErrors: { general: ["An unexpected error occurred"] } };
     }
 };
 
@@ -30,13 +30,13 @@ export const registerUser = async (prevState: any, formData: FormData): Promise<
         const data = Object.fromEntries(formData.entries()) as Record<string, string>;
         const validatedData = validateUserData(data);
 
-        if (validatedData.errors) {
+        if (validatedData.validationErrors) {
             return validatedData;
         }
         const { repeatPassword, ...filteredData } = data;
         const response = await instance.post("/user/register", filteredData);
         return response.data;
     } catch (error: any) {
-        return { success: false, data: null, errors: error.response.data.errorMessage };
+        return { success: false, data: null, backendErrors: error.response.data.errorMessage };
     }
 };

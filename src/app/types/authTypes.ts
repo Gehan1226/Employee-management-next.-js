@@ -8,5 +8,6 @@ type UserValidatedData = {
 type AuthResponse = {
     success: boolean;
     data: UserValidatedData | null;
-    errors: Record<string, string[] | undefined> | null;
+    validationErrors?: Record<string, string[] | undefined> | null;
+    backendErrors?: string | null;
 }
