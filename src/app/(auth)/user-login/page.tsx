@@ -9,61 +9,85 @@ export default function page() {
 
         <p className="font-semibold text-sky-600 text-3xl text-center mt-3">Sign in to Emplytic</p>
 
+        <div>
 
-        <form className="w-full mx-auto p-7">
 
-          <div className="mb-5">
-            <AuthInput
-              label="Email address"
-              id="email"
-              type="email"
-              name="email"
-              placeholder="example@gmail.com"
-              required
-              error={null}
-            />
-          </div>
+          <form className="w-full p-7">
 
-          <div className="mb-5">
-            <AuthInput
-              label="Password"
-              id="password"
-              type="password"
-              name="password"
-              placeholder="●●●●●●●●●●"
-              required
-              minLength={8}
-              error={null}
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-start">
-              <div className="flex items-center h-5">
-                <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required />
-              </div>
-              <div className="ml-3 text-sm">
-                <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
-              </div>
+            <div className="mb-5">
+              <AuthInput
+                label="Email address"
+                id="email"
+                type="email"
+                name="email"
+                placeholder="example@gmail.com"
+                required
+                error={null}
+              />
             </div>
-            <a href="#" className="text-sm font-semibold text-sky-600 hover:underline dark:text-primary-500">Forgot password?</a>
+
+            <div className="mb-5">
+              <AuthInput
+                label="Password"
+                id="password"
+                type="password"
+                name="password"
+                placeholder="●●●●●●●●●●"
+                required
+                minLength={8}
+                error={null}
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-start">
+                <div className="flex items-center h-5">
+                  <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
+                </div>
+              </div>
+              <a href="#" className="text-sm font-semibold text-sky-600 hover:underline dark:text-primary-500">Forgot password?</a>
+            </div>
+
+            <div className="flex justify-center mt-5">
+              <button
+                type="submit"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-3xl text-sm font-semibold px-5 py-3 text-center w-2/4"
+              >
+                Sign in
+              </button>
+            </div>
+
+          </form>
+
+          <div className="my-4 flex items-center gap-4">
+            <hr className="w-full border-gray-300" />
+            <p className="text-sm text-gray-800 text-center">or</p>
+            <hr className="w-full border-gray-300" />
           </div>
 
-        </form>
+          <div className="w-full flex justify-center">
+            <button
+              className="group w-1/2 h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100">
+              <div className="relative flex items-center space-x-4 justify-center">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg"
+                  className="absolute left-0 w-5" alt="google logo" />
+                <span
+                  className="block w-max font-semibold tracking-wide text-gray-700 dark:text-white text-sm transition duration-300 group-hover:text-blue-600 sm:text-base">Continue
+                  with Google
+                </span>
+              </div>
+            </button>
+          </div>
 
-        <div className="w-full">
-          <button
-            className="group w-1/2 h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300 hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100">
-            <div className="relative flex items-center space-x-4 justify-center">
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg"
-                className="absolute left-0 w-5" alt="google logo" />
-              <span
-                className="block w-max font-semibold tracking-wide text-gray-700 dark:text-white text-sm transition duration-300 group-hover:text-blue-600 sm:text-base">Continue
-                with Google
-              </span>
-            </div>
-          </button>
+
+
+
         </div>
+
+
         <div></div>
         <div></div>
 

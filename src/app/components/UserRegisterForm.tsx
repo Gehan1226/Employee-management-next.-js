@@ -15,29 +15,16 @@ export default function UserRegisterForm() {
     return (
         <form action={formAction} className="w-full mx-auto p-7">
 
-            <div className="flex flex-row w-full space-x-5">
-                <div className="w-1/2 mb-5">
-                    <AuthInput
-                        label="First name"
-                        id="first-name"
-                        type="text"
-                        name="firstName"
-                        placeholder="John"
-                        required
-                        error={state.errors?.firstName?.[0] ?? null}
-                    />
-                </div>
-                <div className="w-1/2 mb-5">
-                    <AuthInput
-                        label="Last name"
-                        id="last-name"
-                        type="text"
-                        name="lastName"
-                        placeholder="Doe"
-                        required
-                        error={state.errors?.lastName?.[0] ?? null}
-                    />
-                </div>
+            <div className="mb-5">
+                <AuthInput
+                    label="User name"
+                    id="user-name"
+                    type="text"
+                    name="userName"
+                    placeholder="Doe"
+                    required
+                    error={state.errors?.lastName?.[0] ?? null}
+                />
             </div>
 
             <div className="mb-5">
