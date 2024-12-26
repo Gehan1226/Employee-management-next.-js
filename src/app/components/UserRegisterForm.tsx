@@ -8,13 +8,13 @@ const initialState: AuthResponse = {
     success: false,
     data: null,
     validationErrors: null,
+    backendErrors: null,
 }
 
 export default function UserRegisterForm() {
     const [state, formAction, isPending] = useActionState(registerUser, initialState);
 
-    console.log(state.backendErrors);
-
+    
     return (
         <>
             {state.backendErrors && <ResponseStateAlert /> }

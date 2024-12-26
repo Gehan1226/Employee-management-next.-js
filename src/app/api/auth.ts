@@ -1,5 +1,6 @@
 import { z } from "zod";
 import instance from "../lib/axios";
+import axios from "axios";
 
 const userFormSchema = z.object({
     userName: z.string().min(1, "User name is required").max(50, "User name must be less than 50 characters"),
@@ -13,19 +14,19 @@ const userFormSchema = z.object({
 
 const handleZodError = (error: z.ZodError): Record<string, string[] | undefined> => error.flatten().fieldErrors;
 
-const validateUserData = (data: Record<string, string>): AuthResponse => {
+const validateUserData = (data: Record<string, string>): Partial<AuthResponse> => {
     try {
         const validatedData = userFormSchema.parse(data);
         return { success: true, data: validatedData, validationErrors: null };
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return { success: false, data: null, validationErrors: handleZodError(error) };
+            return { validationErrors: handleZodError(error) };
         }
-        return { success: false, data: null, validationErrors: { general: ["An unexpected error occurred"] } };
+        return { validationErrors: { general: ["An unexpected error occurred"] } };
     }
 };
 
-export const registerUser = async (prevState: any, formData: FormData): Promise<AuthResponse> => {
+export const registerUser = async (prevState: any, formData: FormData): Promise<Partial<AuthResponse>> => {
     try {
         const data = Object.fromEntries(formData.entries()) as Record<string, string>;
         const validatedData = validateUserData(data);
@@ -37,6 +38,16 @@ export const registerUser = async (prevState: any, formData: FormData): Promise<
         const response = await instance.post("/user/register", filteredData);
         return response.data;
     } catch (error: any) {
-        return { success: false, data: null, backendErrors: error.response.data.errorMessage };
+        if (axios.isAxiosError(error)) {
+            if (error.response) {
+                return { backendErrors: error.response.data?.errorMessage || "An error occurred during registration" };
+            } else if (error.request) {
+                return { backendErrors: "No response received from the server. Please check your network connection." };
+            } else {
+                return { backendErrors: error.message || "An unexpected error occurred." };
+            }
+        } else {
+            return { backendErrors: error.message || "An unexpected error occurred." };
+        }
     }
 };
