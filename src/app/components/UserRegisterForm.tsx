@@ -1,5 +1,5 @@
 "use client";
-import React, { useActionState } from 'react'
+import React, { useActionState, useState } from 'react'
 import AuthInput from './AuthInput';
 import { registerUser } from '../api/auth';
 import ResponseStateAlert from './ResponseStateAlert';
@@ -9,15 +9,27 @@ const initialState: AuthResponse = {
     data: null,
     validationErrors: null,
     backendErrors: null,
+    prevData: null,
 }
 
 export default function UserRegisterForm() {
+    const [showAlert, setShowAlert] = useState(true);
     const [state, formAction, isPending] = useActionState(registerUser, initialState);
 
-    
+    const closeAlert = () => {
+        setShowAlert(false);
+    }
+
     return (
         <>
-            {state.backendErrors && <ResponseStateAlert /> }
+            {state.backendErrors && showAlert &&
+                <ResponseStateAlert
+                    state="ERROR"
+                    message="User register failed!"
+                    description={state.backendErrors}
+                    onClose={closeAlert}
+                />
+            }
 
             <form action={formAction} className="w-full mx-auto p-7">
 
@@ -28,6 +40,7 @@ export default function UserRegisterForm() {
                         type="text"
                         name="userName"
                         placeholder="Doe"
+                        defaultValue={state.prevData?.userName ?? ''}
                         required
                         error={state.validationErrors?.lastName?.[0] ?? null}
                     />
@@ -40,6 +53,7 @@ export default function UserRegisterForm() {
                         type="email"
                         name="email"
                         placeholder="example@gmail.com"
+                        defaultValue={state.prevData?.email ?? ''}
                         required
                         error={state.validationErrors?.email?.[0] ?? null}
                     />
@@ -52,6 +66,7 @@ export default function UserRegisterForm() {
                         type="password"
                         name="password"
                         placeholder="●●●●●●●●●●"
+                        defaultValue={state.prevData?.password ?? ''}
                         required
                         minLength={8}
                         error={state.validationErrors?.password?.[0] ?? null}
@@ -64,6 +79,7 @@ export default function UserRegisterForm() {
                         id="repeat-password"
                         type="password"
                         name="repeatPassword"
+                        defaultValue={state.prevData?.repeatPassword ?? ''}
                         placeholder="●●●●●●●●●●"
                         required
                         minLength={8}

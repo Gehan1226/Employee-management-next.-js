@@ -10,4 +10,5 @@ type AuthResponse = {
     data: UserValidatedData | null;
     validationErrors: Record<string, string[] | undefined> | null;
     backendErrors: string | null;
+    prevData: null | Record<string, string>;
 }

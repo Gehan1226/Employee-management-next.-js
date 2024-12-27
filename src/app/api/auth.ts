@@ -27,12 +27,13 @@ const validateUserData = (data: Record<string, string>): Partial<AuthResponse> =
 };
 
 export const registerUser = async (prevState: any, formData: FormData): Promise<Partial<AuthResponse>> => {
+    const data = Object.fromEntries(formData.entries()) as Record<string, string>;
+
     try {
-        const data = Object.fromEntries(formData.entries()) as Record<string, string>;
         const validatedData = validateUserData(data);
 
         if (validatedData.validationErrors) {
-            return validatedData;
+            return { prevData: data, ...validatedData };
         }
         const { repeatPassword, ...filteredData } = data;
         const response = await instance.post("/user/register", filteredData);
@@ -40,14 +41,18 @@ export const registerUser = async (prevState: any, formData: FormData): Promise<
     } catch (error: any) {
         if (axios.isAxiosError(error)) {
             if (error.response) {
-                return { backendErrors: error.response.data?.errorMessage || "An error occurred during registration" };
+                return {
+                    backendErrors: error.response.data?.errorMessage || "An error occurred during registration", prevData: data
+                };
             } else if (error.request) {
-                return { backendErrors: "No response received from the server. Please check your network connection." };
+                return {
+                    backendErrors: "No response received from the server. Please check your network connection.", prevData: data
+                };
             } else {
-                return { backendErrors: error.message || "An unexpected error occurred." };
+                return { backendErrors: error.message || "An unexpected error occurred.", prevData: data };
             }
         } else {
-            return { backendErrors: error.message || "An unexpected error occurred." };
+            return { backendErrors: error.message || "An unexpected error occurred.", prevData: data };
         }
     }
 };
