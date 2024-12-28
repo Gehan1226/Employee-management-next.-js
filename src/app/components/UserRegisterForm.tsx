@@ -7,11 +7,12 @@ import { UserFormSchemaType, validateSingleField } from '../lib/util/schemas';
 import { createInitialAuthResponse, createInitialUserData } from '../lib/util/initial-user-state';
 
 
-
 export default function UserRegisterForm() {
     const [fieldErrors, setFieldErrors] = useState<UserData>(createInitialUserData());
     const [showAlert, setShowAlert] = useState(true);
     const [state, formAction, isPending] = useActionState(registerUser, createInitialAuthResponse());
+
+    let password = '';
 
     const closeAlert = () => {
         setShowAlert(false);
@@ -24,6 +25,16 @@ export default function UserRegisterForm() {
             [key]: result.error,
         }));
     };
+
+    const validatePassword = (value: string) => {
+        if (!fieldErrors.repeatPassword && password !== value) {
+            setFieldErrors((prev) => ({
+                ...prev,
+                repeatPassword: "The repeated password does not match the original password."
+            }));
+        }
+    };
+
 
     const isActiveSignUpButton = !Object.values(fieldErrors).every((value) => value === '');
 
@@ -49,7 +60,10 @@ export default function UserRegisterForm() {
                         placeholder="Doe"
                         defaultValue={state.prevData?.userName ?? ''}
                         required
-                        onBlur={(e) => handleValidation('userName', e.target.value)}
+                        onBlur={(e) => {
+                            handleValidation('userName', e.target.value);
+                            password = e.target.value;
+                        }}
                         onChange={(e) => handleValidation('userName', e.target.value)}
                         error={fieldErrors.userName}
                     />
@@ -96,8 +110,14 @@ export default function UserRegisterForm() {
                         placeholder="●●●●●●●●●●"
                         required
                         minLength={8}
-                        onBlur={(e) => handleValidation('repeatPassword', e.target.value)}
-                        onChange={(e) => handleValidation('repeatPassword', e.target.value)}
+                        onBlur={(e) => {
+                            handleValidation('repeatPassword', e.target.value);
+                            validatePassword(e.target.value);
+                        }}
+                        onChange={(e) => {
+                            handleValidation('repeatPassword', e.target.value);
+                            validatePassword(e.target.value);
+                        }}
                         error={fieldErrors.repeatPassword}
                     />
                 </div>
