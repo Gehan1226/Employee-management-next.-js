@@ -4,7 +4,7 @@ import React from 'react'
 interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label: string;
     id: string;
-    error: string | null;
+    error: string | null | undefined;
 }
 
 export default function AuthInput({ label, id, error, ...props }: Readonly<AuthInputProps>) {

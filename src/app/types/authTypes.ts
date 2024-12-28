@@ -8,7 +8,7 @@ type UserData = {
 type AuthResponse = {
     success: boolean;
     data: UserData | null;
-    validationErrors: Record<string, string[] | undefined> | null;
+    passwordError: string;
     backendErrors: string | null;
     prevData: null | Record<string, string>;
 }

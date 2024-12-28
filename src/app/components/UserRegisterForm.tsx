@@ -9,14 +9,14 @@ import { createInitialAuthResponse, createInitialUserData } from '../lib/util/in
 
 export default function UserRegisterForm() {
     const [fieldErrors, setFieldErrors] = useState<UserData>(createInitialUserData());
+    const [fieldValues, setFieldValues] = useState<UserData>(createInitialUserData());
     const [showAlert, setShowAlert] = useState(true);
+    const [isDisableButton, setIsDisableButton] = useState<boolean>(true);
     const [state, formAction, isPending] = useActionState(registerUser, createInitialAuthResponse());
-
-    let password = '';
 
     const closeAlert = () => {
         setShowAlert(false);
-    }
+    };
 
     const handleValidation = (key: keyof UserFormSchemaType, value: string) => {
         const result = validateSingleField(key, value);
@@ -24,19 +24,20 @@ export default function UserRegisterForm() {
             ...prev,
             [key]: result.error,
         }));
+
+        setFieldValues((prev) => ({
+            ...prev,
+            [key]: value,
+        }));
+
+        validateForm();
     };
 
-    const validatePassword = (value: string) => {
-        if (!fieldErrors.repeatPassword && password !== value) {
-            setFieldErrors((prev) => ({
-                ...prev,
-                repeatPassword: "The repeated password does not match the original password."
-            }));
-        }
+    const validateForm = () => {
+        const hasErrors = Object.values(fieldErrors).some((error) => error);
+        const hasEmptyFields = Object.values(fieldValues).some((value) => !value.trim());
+        setIsDisableButton(hasErrors || hasEmptyFields);
     };
-
-
-    const isActiveSignUpButton = !Object.values(fieldErrors).every((value) => value === '');
 
     return (
         <>
@@ -60,10 +61,7 @@ export default function UserRegisterForm() {
                         placeholder="Doe"
                         defaultValue={state.prevData?.userName ?? ''}
                         required
-                        onBlur={(e) => {
-                            handleValidation('userName', e.target.value);
-                            password = e.target.value;
-                        }}
+                        onBlur={(e) => handleValidation('userName', e.target.value)}
                         onChange={(e) => handleValidation('userName', e.target.value)}
                         error={fieldErrors.userName}
                     />
@@ -110,15 +108,9 @@ export default function UserRegisterForm() {
                         placeholder="●●●●●●●●●●"
                         required
                         minLength={8}
-                        onBlur={(e) => {
-                            handleValidation('repeatPassword', e.target.value);
-                            validatePassword(e.target.value);
-                        }}
-                        onChange={(e) => {
-                            handleValidation('repeatPassword', e.target.value);
-                            validatePassword(e.target.value);
-                        }}
-                        error={fieldErrors.repeatPassword}
+                        onBlur={(e) => handleValidation('repeatPassword', e.target.value)}
+                        onChange={(e) => handleValidation('repeatPassword', e.target.value)}
+                        error={fieldErrors.repeatPassword || state.passwordError}
                     />
                 </div>
 
@@ -143,7 +135,7 @@ export default function UserRegisterForm() {
                 <div className="flex flex-row-reverse">
                     <button
                         type="submit"
-                        disabled={isActiveSignUpButton}
+                        disabled={isDisableButton}
                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-3xl text-sm font-semibold px-5 py-3 text-center"
                     >
                         Sign up
