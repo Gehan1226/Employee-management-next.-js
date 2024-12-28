@@ -3,22 +3,29 @@ import React, { useActionState, useState } from 'react'
 import AuthInput from './AuthInput';
 import { registerUser } from '../api/auth';
 import ResponseStateAlert from './ResponseStateAlert';
+import { UserFormSchemaType, validateSingleField } from '../lib/util/schemas';
+import { createInitialAuthResponse, createInitialUserData } from '../lib/util/initial-user-state';
 
-const initialState: AuthResponse = {
-    success: false,
-    data: null,
-    validationErrors: null,
-    backendErrors: null,
-    prevData: null,
-}
+
 
 export default function UserRegisterForm() {
+    const [fieldErrors, setFieldErrors] = useState<UserData>(createInitialUserData());
     const [showAlert, setShowAlert] = useState(true);
-    const [state, formAction, isPending] = useActionState(registerUser, initialState);
+    const [state, formAction, isPending] = useActionState(registerUser, createInitialAuthResponse());
 
     const closeAlert = () => {
         setShowAlert(false);
     }
+
+    const handleValidation = (key: keyof UserFormSchemaType, value: string) => {
+        const result = validateSingleField(key, value);
+        setFieldErrors((prev) => ({
+            ...prev,
+            [key]: result.error,
+        }));
+    };
+
+    const isActiveSignUpButton = !Object.values(fieldErrors).every((value) => value === '');
 
     return (
         <>
@@ -42,7 +49,9 @@ export default function UserRegisterForm() {
                         placeholder="Doe"
                         defaultValue={state.prevData?.userName ?? ''}
                         required
-                        error={state.validationErrors?.lastName?.[0] ?? null}
+                        onBlur={(e) => handleValidation('userName', e.target.value)}
+                        onChange={(e) => handleValidation('userName', e.target.value)}
+                        error={fieldErrors.userName}
                     />
                 </div>
 
@@ -55,7 +64,9 @@ export default function UserRegisterForm() {
                         placeholder="example@gmail.com"
                         defaultValue={state.prevData?.email ?? ''}
                         required
-                        error={state.validationErrors?.email?.[0] ?? null}
+                        onBlur={(e) => handleValidation('email', e.target.value)}
+                        onChange={(e) => handleValidation('email', e.target.value)}
+                        error={fieldErrors.email}
                     />
                 </div>
 
@@ -69,7 +80,9 @@ export default function UserRegisterForm() {
                         defaultValue={state.prevData?.password ?? ''}
                         required
                         minLength={8}
-                        error={state.validationErrors?.password?.[0] ?? null}
+                        onBlur={(e) => handleValidation('password', e.target.value)}
+                        onChange={(e) => handleValidation('password', e.target.value)}
+                        error={fieldErrors.password}
                     />
                 </div>
 
@@ -83,7 +96,9 @@ export default function UserRegisterForm() {
                         placeholder="●●●●●●●●●●"
                         required
                         minLength={8}
-                        error={state.validationErrors?.repeatPassword?.[0] ?? null}
+                        onBlur={(e) => handleValidation('repeatPassword', e.target.value)}
+                        onChange={(e) => handleValidation('repeatPassword', e.target.value)}
+                        error={fieldErrors.repeatPassword}
                     />
                 </div>
 
@@ -108,6 +123,7 @@ export default function UserRegisterForm() {
                 <div className="flex flex-row-reverse">
                     <button
                         type="submit"
+                        disabled={isActiveSignUpButton}
                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-3xl text-sm font-semibold px-5 py-3 text-center"
                     >
                         Sign up

@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import UserRegisterForm from '@/app/components/UserRegisterForm';
+import { registerUser } from '@/app/api/auth';
 
 
 export default function page() {

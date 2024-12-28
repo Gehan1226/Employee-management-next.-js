@@ -1,4 +1,4 @@
-type UserValidatedData = {
+type UserData = {
     userName: string;
     email: string;
     password: string;
@@ -7,8 +7,9 @@ type UserValidatedData = {
 
 type AuthResponse = {
     success: boolean;
-    data: UserValidatedData | null;
+    data: UserData | null;
     validationErrors: Record<string, string[] | undefined> | null;
     backendErrors: string | null;
     prevData: null | Record<string, string>;
 }
+
