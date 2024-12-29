@@ -7,9 +7,8 @@ type UserData = {
 
 type AuthResponse = {
     success: boolean;
-    data: UserData | null;
-    passwordError: string;
-    backendErrors: string | null;
-    prevData: null | Record<string, string>;
-}
-
+    data?: null;
+    validationErrors?: UserData | null;  // validationErrors can be a string or a key-value pair for specific fields
+    prevData?: Record<string, string>;
+    backendErrors?: string;
+  };
