@@ -1,14 +1,16 @@
 import GoogleLogin from '@/app/components/GoogleLogin'
 import UserLoginForm from '@/app/components/UserLoginForm'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 export default function page() {
   return (
-    <>
-      <div className="flex flex-col basis-3/5 h-screen p-6 bg-white border border-white rounded-e-[50px] shadow-2xl shadow-black justify-between">
+    <div className='flex flex-col-reverse md:flex-row sm:flex-col-reverse h-fit w-full'>
 
-        <p className="font-semibold text-sky-600 text-3xl text-center mt-3">Sign in to Emplytic</p>
+      <div className="basis-3/5 h-screen bg-white border border-white rounded-t-[20px] md:rounded-r-[50px] md:rounded-tl-none shadow-[0px_0px_37px_-1px_rgba(0,_0,_0,_0.7)] justify-between">
+
+        <p className="font-semibold text-sky-600 text-3xl text-center mt-5 mb-10">Sign in to Emplytic</p>
 
         <div>
           <GoogleLogin />
@@ -21,12 +23,12 @@ export default function page() {
 
           <UserLoginForm />
         </div>
-        
+
         <div></div>
         <div></div>
       </div>
 
-      <div className="basis-2/5 flex flex-col items-center gap-10 ">
+      <div className="flex flex-col items-center gap-10 mx-auto">
 
         <div className="text-center mt-5">
           <p className="font-sans text-white text-3xl">Welcome to the <span className="font-semibold">&nbsp;Emplytic</span></p>
@@ -35,14 +37,16 @@ export default function page() {
 
         <Image className="shadow-2xl" src="/logo.png" width={300} height={300} alt="Company logo" />
 
-        <button
-          type="button"
-          className="text-white bg-sky-700 hover:bg-sky-800 border-2 border-white rounded-3xl text-md font-semibold px-20 py-3 text-center"
-        >
-          SIGN UP
-        </button>
+        <Link href="/user-reg">
+          <button
+            type="button"
+            className="text-white bg-sky-700 hover:bg-sky-800 border-2 border-white rounded-3xl text-md font-semibold px-20 py-3 text-center mb-10"
+          >
+            SIGN UP
+          </button>
+        </Link>
 
       </div>
-    </>
+    </div>
   )
 }
