@@ -11,4 +11,5 @@ type AuthResponse = {
     validationErrors?: UserData | null;  // validationErrors can be a string or a key-value pair for specific fields
     prevData?: Record<string, string>;
     backendErrors?: string;
+    message?: string;
   };

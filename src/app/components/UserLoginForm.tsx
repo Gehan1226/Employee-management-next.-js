@@ -1,9 +1,16 @@
-import React from 'react'
+"use client";
+import React, { useActionState } from 'react'
 import AuthInput from './AuthInput'
+import { userLogin } from '../api/auth';
+import { createInitialAuthResponse } from '../lib/util/initial-user-state';
 
 export default function UserLoginForm() {
+    const [state, formAction, isPending] = useActionState(userLogin, createInitialAuthResponse());
+
+    console.log(state);
+
     return (
-        <form className="w-full p-7">
+        <form action={formAction} className="w-full p-7">
 
             <div className="mb-5">
                 <AuthInput
@@ -13,7 +20,8 @@ export default function UserLoginForm() {
                     name="email"
                     placeholder="example@gmail.com"
                     required
-                    error={null}
+                    defaultValue={state.prevData?.['email']}
+                    error={state.validationErrors?.email}
                 />
             </div>
 
@@ -25,8 +33,8 @@ export default function UserLoginForm() {
                     name="password"
                     placeholder="●●●●●●●●●●"
                     required
-                    minLength={8}
-                    error={null}
+                    defaultValue={state.prevData?.['password']}
+                    error={state.validationErrors?.password}
                 />
             </div>
 

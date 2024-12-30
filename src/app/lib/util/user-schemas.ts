@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createInitialUserData } from "./initial-user-state";
 
-export const userFormSchema = z.object({
+const userRegisterFormSchema = z.object({
   userName: z.string().min(1, "First name is required").max(50, "First name must be less than 50 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -9,6 +9,11 @@ export const userFormSchema = z.object({
 }).refine((data) => data.password === data.repeatPassword, {
   message: "Passwords must match",
   path: ["repeatPassword"],
+});
+
+const userLoginFormSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters")
 });
 
 const handleZodError = (error: z.ZodError): UserData => {
@@ -22,9 +27,9 @@ const handleZodError = (error: z.ZodError): UserData => {
   return errorObject;
 }
 
-export const validateUserData = (data: Record<string, string>): AuthResponse => {
+export const validateUserData = (data: Record<string, string>, request: "Login"| "Register"): AuthResponse => {
   try {
-    userFormSchema.parse(data);
+    request === "Login" ? userLoginFormSchema.parse(data) : userRegisterFormSchema.parse(data);
     return { success: true };
   } catch (error: any) {
     if (error instanceof z.ZodError) {
