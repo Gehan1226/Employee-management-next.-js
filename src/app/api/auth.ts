@@ -44,8 +44,8 @@ export const userLogin = async (prevState: any, formData: FormData): Promise<Par
 
     try {
         const { repeatPassword, ...filteredData } = data;
-        const response = await instance.post("/user/register", filteredData);
-        return response.data;
+        const response = await instance.post("/user/login", filteredData);
+        return { success: true, message: response.data.message };
     } catch (error: any) {
         if (axios.isAxiosError(error)) {
             if (error.response) {

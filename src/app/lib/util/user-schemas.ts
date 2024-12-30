@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createInitialUserData } from "./initial-user-state";
 
 const userRegisterFormSchema = z.object({
-  userName: z.string().min(1, "First name is required").max(50, "First name must be less than 50 characters"),
+  userName: z.string().min(1, "User name is required").max(50, "User name must be less than 50 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   repeatPassword: z.string().min(8, "Repeat password must be at least 8 characters"),
@@ -12,7 +12,7 @@ const userRegisterFormSchema = z.object({
 });
 
 const userLoginFormSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  userName: z.string().min(1, "User name is required").max(50, "User name must be less than 50 characters"),
   password: z.string().min(8, "Password must be at least 8 characters")
 });
 
