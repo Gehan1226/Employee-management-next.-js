@@ -1,4 +1,3 @@
-"use server";
 import { CountryDetails, CountryDetailsResponse } from "../types/responseTypes";
 
 export const getCountriesAndFlags = async (): Promise<CountryDetailsResponse> => {
@@ -15,6 +14,7 @@ export const getCountriesAndFlags = async (): Promise<CountryDetailsResponse> =>
         }));
         return { success: true, data: countries };
     } catch (error) {
+        console.error('Error fetching countries:', error);
         return { success: false, message: (error as Error).message };
     }
 };

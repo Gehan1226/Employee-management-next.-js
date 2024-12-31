@@ -1,56 +1,79 @@
-import * as React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Avatar } from '@mui/material';
+import { getCountriesAndFlags } from '../api/country-names';
+import { CountryDetails } from '../types/responseTypes';
 
-export default function CountrySelector() {
+const CountrySelector: React.FC = () => {
+  const [countryData, setCountryData] = useState<CountryDetails[]>([]);
+  const [selectedOption, setSelectedOption] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const [selectedOption, setSelectedOption] = React.useState('');
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await getCountriesAndFlags();
+      setCountryData(response.data ?? []);
+      setError(null);
+    } catch (err) {
+      setError('Failed to fetch country data.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setSelectedOption(event.target.value as string);
+    setSelectedOption(event.target.value);
   };
 
-  const options = [
-    { value: 'dog', label: 'Dog', img: 'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg' },
-    { value: 'cat', label: 'Cat', img: 'https://via.placeholder.com/30?text=Cat' },
-    { value: 'bird', label: 'Bird', img: 'https://via.placeholder.com/30?text=Bird' },
-  ];
+  // Render Country Option
+  const menuItems = React.useMemo(() => {
+    if (!countryData) return [];
+    return countryData.map((option) => (
+      <MenuItem key={option.name} value={option.name}>
+        <Box display="flex" alignItems="center">
+          <Avatar
+            src={option.flag}
+            alt={option.name}
+            sx={{ width: 24, height: 24, marginRight: 1 }}
+          />
+          <Box component="span" sx={{ marginLeft: 1 }}>
+            {option.name}
+          </Box>
+        </Box>
+      </MenuItem>
+    ));
+  }, [countryData]);
 
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="image-select-label">Animal</InputLabel>
+        <InputLabel id="country-select-label">Country</InputLabel>
         <Select
-          labelId="image-select-label"
-          id="image-select"
+          labelId="country-select-label"
+          id="country-select"
           value={selectedOption}
-          label="Animal"
+          label="Country"
           onChange={handleChange}
           sx={{ height: 50 }}
+          disabled={loading || error !== null}
         >
-          {options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-          <Box display="flex" alignItems="center">
-            <Avatar
-              src={option.img}
-              alt={option.label}
-              sx={{ width: 24, height: 24, marginRight: 1 }}
-            />
-            <Box component="span" sx={{ marginLeft: 1 }}>
-              {option.label}
-            </Box>
-          </Box>
-        </MenuItem>
-          ))}
+          {loading && <MenuItem disabled>Loading...</MenuItem>}
+          {error && <MenuItem disabled>{error}</MenuItem>}
+          {!loading && !error && menuItems}
         </Select>
       </FormControl>
     </Box>
-
-
   );
-}
+};
 
+export default CountrySelector;
