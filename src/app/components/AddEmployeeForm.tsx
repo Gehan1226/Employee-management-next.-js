@@ -39,9 +39,13 @@ export default function AddEmployeeForm() {
             <div className="grid md:grid-cols-2 gap-6">
 
                 <div className='flex gap-4 md:items-center flex-col md:flex-row'>
-                <DropDownMenu
+                    <DropDownMenu
                         label="Gender"
-                        menuItems={[]}
+                        menuItems={[
+                            { label: "Male", value: "male" },
+                            { label: "Female", value: "female" },
+                            { label: "Other", value: "other" }
+                        ]}
                         name='gender'
                     />
                 </div>

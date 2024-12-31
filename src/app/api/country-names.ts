@@ -1,4 +1,4 @@
-import { CountryDetails, CountryDetailsResponse } from "../types/responseTypes";
+import { CountryDetails, CountryDetailsResponse } from "../types/response-types";
 
 export const getCountriesAndFlags = async (): Promise<CountryDetailsResponse> => {
     try {

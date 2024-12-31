@@ -20,14 +20,10 @@ export default function DropDownMenu({
 
     return (
         <FormControl fullWidth>
-            <InputLabel
+             <InputLabel
                 id={`${name}-label`}
                 sx={{
-                    fontSize: '14px',
-                    transform: 'translate(14px, 14px) scale(1)',
-                    '&.Mui-focused': {
-                        transform: 'translate(14px, -8px) scale(0.75)',
-                    },
+                    fontSize: "14px",
                 }}
             >
                 {label}

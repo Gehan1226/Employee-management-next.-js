@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -6,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Avatar } from '@mui/material';
 import { getCountriesAndFlags } from '../api/country-names';
-import { CountryDetails } from '../types/responseTypes';
+import { CountryDetails } from '../types/response-types';
 
 type CountrySelectorProps = {
   name: string
@@ -60,14 +61,19 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ name }) => {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="country-select-label">Country</InputLabel>
+        <InputLabel
+          id="country-select-label"
+          sx={{ fontSize: "14px", }}
+        >
+          Country
+        </InputLabel>
         <Select
           labelId="country-select-label"
           id="country-select"
           value={selectedOption}
           label="Country"
           onChange={handleChange}
-          sx={{ height: 50 }}
+          sx={{ height: 45 }}
           disabled={loading || error !== null}
           name={name}
         >

@@ -8,3 +8,4 @@ export type CountryDetailsResponse = {
     data?: CountryDetails[];
     message?: string;
 };
+
