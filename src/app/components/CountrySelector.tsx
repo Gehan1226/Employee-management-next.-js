@@ -8,7 +8,11 @@ import { Avatar } from '@mui/material';
 import { getCountriesAndFlags } from '../api/country-names';
 import { CountryDetails } from '../types/responseTypes';
 
-const CountrySelector: React.FC = () => {
+type CountrySelectorProps = {
+  name: string
+}
+
+const CountrySelector: React.FC<CountrySelectorProps> = ({ name }) => {
   const [countryData, setCountryData] = useState<CountryDetails[]>([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [loading, setLoading] = useState(true);
@@ -65,6 +69,7 @@ const CountrySelector: React.FC = () => {
           onChange={handleChange}
           sx={{ height: 50 }}
           disabled={loading || error !== null}
+          name={name}
         >
           {loading && <MenuItem disabled>Loading...</MenuItem>}
           {error && <MenuItem disabled>{error}</MenuItem>}

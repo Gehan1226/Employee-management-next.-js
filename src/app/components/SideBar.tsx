@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import React, { useState } from 'react'
 
 type SideBarProps = {
@@ -9,16 +9,11 @@ type SideBarProps = {
 };
 
 export default function SideBar({ menuItems, children }: Readonly<SideBarProps>) {
-    const router = useRouter();
     const pathname = usePathname();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const toggleSidebar = () => {
         setIsSidebarOpen((prev) => !prev);
-    };
-
-    const onClickMenuItem = (item: MenuItem): void => {
-        router.push(item.link);
     };
 
     const closeSidebar = () => {

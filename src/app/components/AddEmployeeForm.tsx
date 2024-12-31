@@ -2,12 +2,13 @@
 import Input from '@/app/components/Input';
 import PhoneInputField from '@/app/components/PhoneInput';
 import { Datepicker } from 'flowbite-react';
-import React, { useActionState, useEffect, useState } from 'react'
+import React, { useActionState, useState } from 'react'
 import { registerEmployee } from '../api/employee';
-import { getCountriesAndFlags } from '../api/country-names';
 import CountrySelector from './CountrySelector';
+import DropDownMenu from './DropDownMenu';
 
 function onSubmitForm(prevState: any, formData: FormData) {
+    console.log(formData);
     return registerEmployee(formData);
 }
 
@@ -38,29 +39,35 @@ export default function AddEmployeeForm() {
             <div className="grid md:grid-cols-2 gap-6">
 
                 <div className='flex gap-4 md:items-center flex-col md:flex-row'>
-                    <select name="role" required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="select">Select Gender</option>
-                    </select>
+                <DropDownMenu
+                        label="Gender"
+                        menuItems={[]}
+                        name='gender'
+                    />
                 </div>
 
                 <div className='flex gap-4 md:items-center flex-col md:flex-row'>
-                    <select name="role" required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="select">Select Department</option>
-                    </select>
+                    <DropDownMenu
+                        label="Department"
+                        menuItems={[]}
+                        name='department'
+                    />
                 </div>
 
                 <div className='flex gap-4 md:items-center flex-col md:flex-row'>
-                    <select name="role" required className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="select">Select Role</option>
-                    </select>
+                    <DropDownMenu
+                        label="Role"
+                        menuItems={[]}
+                        name='department'
+                    />
                 </div>
             </div>
 
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
             <div>
-                <CountrySelector />
-                
+                <CountrySelector name='country' />
+
             </div>
 
             <div className="grid md:grid-cols-2 gap-3 mt-6">
