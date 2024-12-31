@@ -2,19 +2,35 @@
 import Input from '@/app/components/Input';
 import PhoneInputField from '@/app/components/PhoneInput';
 import { Datepicker } from 'flowbite-react';
-import React, { useActionState, useState } from 'react'
+import React, { useActionState, useEffect, useState } from 'react'
 import { registerEmployee } from '../api/employee';
 import CountrySelector from './CountrySelector';
 import DropDownMenu from './DropDownMenu';
+import { getAllDepartments } from '../api/department';
+import { Department } from '../types/response-types';
+import { mapDepartmentToDropdownItem } from '../lib/util/map-object';
 
 function onSubmitForm(prevState: any, formData: FormData) {
-    console.log(formData);
-    return registerEmployee(formData);
+    const data = Object.fromEntries(formData.entries()) as Record<string, string>;
+    console.log(data);
 }
 
 export default function AddEmployeeForm() {
     const [message, formAction, isPending] = useActionState(onSubmitForm, null);
-    const [data, setData] = useState<[]>();
+    const [departments, setDepartments] = useState<Department[]>([]);
+
+    useEffect(() => {
+        const fetchDepartments = async () => {
+            try {
+                const response = await getAllDepartments();
+                console.log(response)
+                setDepartments(response.data ?? []);
+            } catch (error) {
+                console.error('Error fetching departments:', error);
+            }            
+        };
+        fetchDepartments();
+    }, []);
 
     return (
         <form className="p-5 mt-4" action={formAction}>
@@ -42,9 +58,9 @@ export default function AddEmployeeForm() {
                     <DropDownMenu
                         label="Gender"
                         menuItems={[
-                            { label: "Male", value: "male" },
-                            { label: "Female", value: "female" },
-                            { label: "Other", value: "other" }
+                            { label: "Male", id: 'Male' },
+                            { label: "Female", id: "Female" },
+                            { label: "Other", id: "Other" }
                         ]}
                         name='gender'
                     />
@@ -53,7 +69,7 @@ export default function AddEmployeeForm() {
                 <div className='flex gap-4 md:items-center flex-col md:flex-row'>
                     <DropDownMenu
                         label="Department"
-                        menuItems={[]}
+                        menuItems={mapDepartmentToDropdownItem(departments)}
                         name='department'
                     />
                 </div>
@@ -62,7 +78,7 @@ export default function AddEmployeeForm() {
                     <DropDownMenu
                         label="Role"
                         menuItems={[]}
-                        name='department'
+                        name='role'
                     />
                 </div>
             </div>

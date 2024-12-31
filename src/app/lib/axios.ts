@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const instance = axios.create({
+const axioInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     withCredentials: true,
 });
 
-instance.interceptors.request.use((config) => {
+axioInstance.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -13,9 +13,9 @@ instance.interceptors.request.use((config) => {
     return config;
 });
 
-instance.interceptors.response.use((response) => {
+axioInstance.interceptors.response.use((response) => {
     // do something
     return response;
 }); 
 
-export default instance;
+export default axioInstance;

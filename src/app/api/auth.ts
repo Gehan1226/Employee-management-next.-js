@@ -1,6 +1,6 @@
-import instance from "../lib/axios";
 import axios from "axios";
 import { validateUserData } from "../lib/util/user-schemas";
+import axioInstance from "../lib/axios";
 
 
 export const registerUser = async (prevState: any, formData: FormData): Promise<Partial<AuthResponse>> => {
@@ -13,7 +13,7 @@ export const registerUser = async (prevState: any, formData: FormData): Promise<
 
     try {
         const { repeatPassword, ...filteredData } = data;
-        const response = await instance.post("/user/register", filteredData);
+        const response = await axioInstance.post("/user/register", filteredData);
         return { success: true, message: response.data.message };
     } catch (error: any) {
         if (axios.isAxiosError(error)) {
@@ -44,7 +44,7 @@ export const userLogin = async (prevState: any, formData: FormData): Promise<Par
 
     try {
         const { repeatPassword, ...filteredData } = data;
-        const response = await instance.post("/user/login", filteredData);
+        const response = await axioInstance.post("/user/login", filteredData);
         return { success: true, message: response.data.message };
     } catch (error: any) {
         if (axios.isAxiosError(error)) {

@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
+export type DropDownMenuItem = {
+    label: string
+    id: string ; 
+}
+
 type DropDownProps = {
     label: string;
-    menuItems: Array<{ label: string; value: string }>;
-    name: string; // Accept name as a prop
+    menuItems: DropDownMenuItem[];
+    name: string; 
 };
 
 export default function DropDownMenu({
@@ -12,8 +17,9 @@ export default function DropDownMenu({
     menuItems,
     name,
 }: Readonly<DropDownProps>) {
-    const [selectedOption, setSelectedOption] = useState('');
-
+    const [selectedOption, setSelectedOption] = useState(
+         ''
+    );
     const handleChange = (event: SelectChangeEvent) => {
         setSelectedOption(event.target.value);
     };
@@ -38,7 +44,7 @@ export default function DropDownMenu({
                 sx={{ height: 45 }}
             >
                 {menuItems.map((item) => (
-                    <MenuItem key={item.value} value={item.value}>
+                    <MenuItem key={item.id} value={item.id}>
                         {item.label}
                     </MenuItem>
                 ))}
