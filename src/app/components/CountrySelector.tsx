@@ -35,7 +35,6 @@ const CountrySelector: React.FC = () => {
     setSelectedOption(event.target.value);
   };
 
-  // Render Country Option
   const menuItems = React.useMemo(() => {
     if (!countryData) return [];
     return countryData.map((option) => (

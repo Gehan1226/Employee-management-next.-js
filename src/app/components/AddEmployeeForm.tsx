@@ -2,9 +2,8 @@
 import Input from '@/app/components/Input';
 import PhoneInputField from '@/app/components/PhoneInput';
 import { Datepicker } from 'flowbite-react';
-import React, { use, useActionState, useEffect, useState } from 'react'
+import React, { useActionState, useEffect, useState } from 'react'
 import { registerEmployee } from '../api/employee';
-import { getCountries } from 'react-phone-number-input';
 import { getCountriesAndFlags } from '../api/country-names';
 import CountrySelector from './CountrySelector';
 
@@ -15,14 +14,6 @@ function onSubmitForm(prevState: any, formData: FormData) {
 export default function AddEmployeeForm() {
     const [message, formAction, isPending] = useActionState(onSubmitForm, null);
     const [data, setData] = useState<[]>();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const db: any = await getCountriesAndFlags();
-            setData(db.countries);
-        };
-        fetchData();
-    }, []);
 
     return (
         <form className="p-5 mt-4" action={formAction}>
@@ -70,9 +61,6 @@ export default function AddEmployeeForm() {
             <div>
                 <CountrySelector />
                 
-
-
-
             </div>
 
             <div className="grid md:grid-cols-2 gap-3 mt-6">

@@ -1,4 +1,5 @@
 "use client";
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
@@ -36,15 +37,14 @@ export default function SideBar({ menuItems, children }: Readonly<SideBarProps>)
                         <ul className="space-y-2 font-medium">
                             {menuItems.map((item) => (
                                 <li key={item.name}>
-                                    <div className="flex flex-col w-full">
+                                    <Link href={item.link} passHref className='flex flex-col w-full'>
                                         <button
-                                            onClick={() => onClickMenuItem(item)}
                                             className={`flex p-2 text-gray-900 rounded-lg dark:text-white group flex-grow ${pathname === item.link ? 'bg-blue-200' : 'hover:bg-gray-200'}`}
                                         >
                                             {item.icon}
                                             <span className="ms-3 whitespace-nowrap">{item.name}</span>
                                         </button>
-                                    </div>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
