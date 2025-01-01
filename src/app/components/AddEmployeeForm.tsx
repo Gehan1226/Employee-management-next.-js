@@ -7,8 +7,11 @@ import { registerEmployee } from '../api/employee';
 import CountrySelector from './CountrySelector';
 import DropDownMenu from './DropDownMenu';
 import { getAllDepartments } from '../api/department';
-import { Department } from '../types/response-types';
-import { mapDepartmentToDropdownItem } from '../lib/util/map-object';
+import { Department, Role } from '../types/response-types';
+import { mapDepartmentToDropdownItem, mapRoleToDropdownItem } from '../lib/util/map-object';
+import { SelectChangeEvent } from '@mui/material';
+import { getRolesByDepartment } from '../api/role';
+import { set } from 'zod';
 
 function onSubmitForm(prevState: any, formData: FormData) {
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
@@ -18,6 +21,7 @@ function onSubmitForm(prevState: any, formData: FormData) {
 export default function AddEmployeeForm() {
     const [message, formAction, isPending] = useActionState(onSubmitForm, null);
     const [departments, setDepartments] = useState<Department[]>([]);
+    const [roles, setRoles] = useState<Role[]>([]);
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -32,6 +36,12 @@ export default function AddEmployeeForm() {
         fetchDepartments();
     }, []);
 
+    const onSelectDepartment = async (event: SelectChangeEvent): Promise<void> => {
+        const selectedValue = event.target.value;
+        const roles = await getRolesByDepartment(selectedValue);
+        setRoles(roles.data ?? []);
+    };
+    
     return (
         <form className="p-5 mt-4" action={formAction}>
 
@@ -71,13 +81,14 @@ export default function AddEmployeeForm() {
                         label="Department"
                         menuItems={mapDepartmentToDropdownItem(departments)}
                         name='department'
+                        handleChange={onSelectDepartment}
                     />
                 </div>
 
                 <div className='flex gap-4 md:items-center flex-col md:flex-row'>
                     <DropDownMenu
                         label="Role"
-                        menuItems={[]}
+                        menuItems={mapRoleToDropdownItem(roles)}
                         name='role'
                     />
                 </div>

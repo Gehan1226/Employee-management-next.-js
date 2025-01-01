@@ -9,19 +9,22 @@ export type DropDownMenuItem = {
 type DropDownProps = {
     label: string;
     menuItems: DropDownMenuItem[];
-    name: string; 
+    name: string;
+    handleChange?: (event: SelectChangeEvent) => void 
 };
 
 export default function DropDownMenu({
     label,
     menuItems,
     name,
+    handleChange
 }: Readonly<DropDownProps>) {
     const [selectedOption, setSelectedOption] = useState(
          ''
     );
-    const handleChange = (event: SelectChangeEvent) => {
+    const onChangeSelect = (event: SelectChangeEvent) => {
         setSelectedOption(event.target.value);
+        handleChange?.(event);
     };
 
     return (
@@ -39,7 +42,7 @@ export default function DropDownMenu({
                 id={name}
                 value={selectedOption}
                 label={label}
-                onChange={handleChange}
+                onChange={onChangeSelect}
                 name={name}
                 sx={{ height: 45 }}
             >
