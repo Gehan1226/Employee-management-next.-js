@@ -1,7 +1,6 @@
 "use client";
 import Input from '@/app/components/Input';
 import PhoneInputField from '@/app/components/PhoneInput';
-import { Datepicker } from 'flowbite-react';
 import React, { useActionState, useEffect, useState } from 'react'
 import { registerEmployee } from '../api/employee';
 import CountrySelector from './CountrySelector';
@@ -11,7 +10,7 @@ import { Department, Role } from '../types/response-types';
 import { mapDepartmentToDropdownItem, mapRoleToDropdownItem } from '../lib/util/map-object';
 import { SelectChangeEvent } from '@mui/material';
 import { getRolesByDepartment } from '../api/role';
-import { set } from 'zod';
+import DateInput from './DateInput';
 
 function onSubmitForm(prevState: any, formData: FormData) {
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
@@ -31,7 +30,7 @@ export default function AddEmployeeForm() {
                 setDepartments(response.data ?? []);
             } catch (error) {
                 console.error('Error fetching departments:', error);
-            }            
+            }
         };
         fetchDepartments();
     }, []);
@@ -41,7 +40,7 @@ export default function AddEmployeeForm() {
         const roles = await getRolesByDepartment(selectedValue);
         setRoles(roles.data ?? []);
     };
-    
+
     return (
         <form className="p-5 mt-4" action={formAction}>
 
@@ -58,8 +57,10 @@ export default function AddEmployeeForm() {
             </div>
 
             <div className='mb-6'>
-                <p className='text-sm text-slate-600 mb-2'>Date of birth </p>
-                <Datepicker />
+                <DateInput
+                    label='Date of birth'
+                    name='dob'
+                />
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">

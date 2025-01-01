@@ -13,8 +13,8 @@ export default function PhoneInputField() {
         onChange={(phone: string) => {
           setPhone(phone);
         }}
-        containerStyle={{ width: '100%' }}
-        inputStyle={{ width: '100%' }}
+        containerStyle={{ width: '100%',  height: '45px' }}
+        inputStyle={{ width: '100%',  height: '45px' }}
       />
     </div>
   );
