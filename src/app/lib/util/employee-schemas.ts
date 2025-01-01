@@ -1,5 +1,6 @@
-import { createInitialEmployee, Employee, RegisterEmployeeResponse } from "@/app/types/employee-types";
+import {  Employee, RegisterEmployeeResponse } from "@/app/types/employee-types";
 import { z } from "zod";
+import { createInitialEmployee } from "./initial-employee-state";
 
 const employeeObjectSchema = z.object({
     firstName: z.string().min(1, "First name is required"),

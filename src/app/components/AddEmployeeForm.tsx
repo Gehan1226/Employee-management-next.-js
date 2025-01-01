@@ -11,14 +11,10 @@ import { mapDepartmentToDropdownItem, mapRoleToDropdownItem } from '../lib/util/
 import { SelectChangeEvent } from '@mui/material';
 import { getRolesByDepartment } from '../api/role';
 import DateInput from './DateInput';
-
-function onSubmitForm(prevState: any, formData: FormData) {
-    const data = Object.fromEntries(formData.entries()) as Record<string, string>;
-    console.log(typeof new Date(data.dob));
-}
+import { createInitialRegisterEmployeeResponse } from '../lib/util/initial-employee-state';
 
 export default function AddEmployeeForm() {
-    const [message, formAction, isPending] = useActionState(onSubmitForm, null);
+    const [state, formAction, isPending] = useActionState(registerEmployee, createInitialRegisterEmployeeResponse());
     const [departments, setDepartments] = useState<Department[]>([]);
     const [roles, setRoles] = useState<Role[]>([]);
 

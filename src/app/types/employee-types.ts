@@ -3,7 +3,7 @@ export type Employee = {
     lastName: string;
     email: string;
     phoneNumber: string;
-    dob: Date | string;
+    dob: string;
     country: string;
     state: string;
     district: string;
@@ -12,24 +12,10 @@ export type Employee = {
     postalCode: string;
 };
 
-export const createInitialEmployee = (): Employee => ({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    dob: new Date(),
-    country: '',
-    state: '',
-    district: '',
-    city: '',
-    street: '',
-    postalCode: '',
-});
-
 export type RegisterEmployeeResponse = {
     success: boolean;
     data?: Employee;
     validationErrors?: Employee;
     message?: string;
+    prevData?: Record<string, string>;
 };
-
