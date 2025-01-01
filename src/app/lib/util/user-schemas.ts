@@ -16,7 +16,7 @@ const userLoginFormSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters")
 });
 
-const handleZodError = (error: z.ZodError): UserData => {
+const handleUserZodError = (error: z.ZodError): UserData => {
   const errorObject = createInitialUserData();
   error.errors.forEach(obj => {
     const identifier = obj.path[0].toString();
@@ -33,8 +33,7 @@ export const validateUserData = (data: Record<string, string>, request: "Login"|
     return { success: true };
   } catch (error: any) {
     if (error instanceof z.ZodError) {
-      handleZodError(error)
-      return { success: false, validationErrors: handleZodError(error) };
+      return { success: false, validationErrors: handleUserZodError(error) };
     }
     return { success: false, validationErrors: null };
   }

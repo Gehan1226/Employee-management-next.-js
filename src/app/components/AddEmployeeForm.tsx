@@ -14,7 +14,7 @@ import DateInput from './DateInput';
 
 function onSubmitForm(prevState: any, formData: FormData) {
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
-    console.log(data);
+    console.log(typeof new Date(data.dob));
 }
 
 export default function AddEmployeeForm() {

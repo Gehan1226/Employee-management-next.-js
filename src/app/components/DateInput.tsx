@@ -9,7 +9,6 @@ type DateInputProps = {
   name: string
 }
 
-
 export default function DateInput({ label, name }: Readonly<DateInputProps>) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -18,12 +17,13 @@ export default function DateInput({ label, name }: Readonly<DateInputProps>) {
           label={label}
           name={name}
           sx={{
-            width: '100%', 
+            width: '100%',
             '& .MuiOutlinedInput-root': {
-              height: '50px',
+              height: '45px',
+              overflow: 'hidden',
             },
             '& .MuiInputBase-input': {
-              padding: '12px 14px',
+              padding: '10px 12px',
               fontSize: '16px',
             },
             '& .MuiInputLabel-root': {
@@ -33,5 +33,6 @@ export default function DateInput({ label, name }: Readonly<DateInputProps>) {
         />
       </DemoContainer>
     </LocalizationProvider>
+
   );
 }
