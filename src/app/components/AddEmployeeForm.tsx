@@ -49,13 +49,14 @@ export default function AddEmployeeForm() {
 
             <div className='mb-6'>
                 <p className='text-sm text-slate-600 mb-2'>Contact number</p>
-                <PhoneInputField  error='ss'/>
+                <PhoneInputField />
             </div>
 
             <div className='mb-6'>
                 <DateInput
                     label='Date of birth'
                     name='dob'
+                    error='error'
                 />
             </div>
 

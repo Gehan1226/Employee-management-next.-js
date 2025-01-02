@@ -7,9 +7,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 type DateInputProps = {
   label: string;
   name: string
+  error?: string;
 }
 
-export default function DateInput({ label, name }: Readonly<DateInputProps>) {
+export default function DateInput({ label, name, error }: Readonly<DateInputProps>) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DatePicker']}>
@@ -21,6 +22,12 @@ export default function DateInput({ label, name }: Readonly<DateInputProps>) {
             '& .MuiOutlinedInput-root': {
               height: '45px',
               overflow: 'hidden',
+              '& fieldset': {
+                borderColor: error ? '#E34F50' : '#ced4da',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor:  error ? '#E34F50' : 'blue-500', 
+              },
             },
             '& .MuiInputBase-input': {
               padding: '10px 12px',
@@ -32,7 +39,8 @@ export default function DateInput({ label, name }: Readonly<DateInputProps>) {
           }}
         />
       </DemoContainer>
-    </LocalizationProvider>
+      {error && <p className="mt-2 ms-2 text-sm text-red-600">*{error}</p>}
 
+    </LocalizationProvider>
   );
 }

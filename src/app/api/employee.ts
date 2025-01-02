@@ -3,6 +3,7 @@ import { RegisterEmployeeResponse } from "../types/employee-types";
 
 export const registerEmployee = async (prevState: any, formData: FormData): Promise<RegisterEmployeeResponse> => {
     const employeeData = Object.fromEntries(formData.entries()) as Record<string, string>;
+    console.log(employeeData);
     const validatedData = validateEmployee(employeeData);
 
     if (validatedData.validationErrors) {

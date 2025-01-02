@@ -7,11 +7,3 @@
     background:
 		url(/blue-background.jpg) center / cover no-repeat fixed;
 }
-
-.PhoneInput {
-  @apply border-gray-400 !important;
-}
-
-.PhoneInput--focus {
-  @apply border-blue-500 !important;
-}

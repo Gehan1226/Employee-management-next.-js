@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { error } from 'console';
 
 export type DropDownMenuItem = {
     label: string
-    id: string ; 
+    id: string;
 }
 
 type DropDownProps = {
     label: string;
     menuItems: DropDownMenuItem[];
     name: string;
-    handleChange?: (event: SelectChangeEvent) => void 
+    handleChange?: (event: SelectChangeEvent) => void
+    error?: string;
 };
 
 export default function DropDownMenu({
     label,
     menuItems,
     name,
-    handleChange
+    handleChange,
+    error
 }: Readonly<DropDownProps>) {
     const [selectedOption, setSelectedOption] = useState(
-         ''
+        ''
     );
     const onChangeSelect = (event: SelectChangeEvent) => {
         setSelectedOption(event.target.value);
@@ -29,7 +32,7 @@ export default function DropDownMenu({
 
     return (
         <FormControl fullWidth>
-             <InputLabel
+            <InputLabel
                 id={`${name}-label`}
                 sx={{
                     fontSize: "14px",
@@ -38,6 +41,7 @@ export default function DropDownMenu({
                 {label}
             </InputLabel>
             <Select
+                error={!!error}
                 labelId={`${name}-label`}
                 id={name}
                 value={selectedOption}
@@ -52,6 +56,7 @@ export default function DropDownMenu({
                     </MenuItem>
                 ))}
             </Select>
+            {error && <p className="mt-2  text-sm text-red-600">*{error}</p>}
         </FormControl>
     );
 }
