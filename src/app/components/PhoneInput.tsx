@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
-export default function PhoneInputField() {
+type PhoneInputFieldProps = {
+  error?: string;
+};
+
+export default function PhoneInputField({ error }: Readonly<PhoneInputFieldProps>) {
   const [phone, setPhone] = useState<string>('');
 
   return (
@@ -13,8 +17,15 @@ export default function PhoneInputField() {
         onChange={(phone: string) => {
           setPhone(phone);
         }}
-        containerStyle={{ width: '100%',  height: '45px' }}
-        inputStyle={{ width: '100%',  height: '45px' }}
+        containerStyle={{
+          width: '100%', height: '45px', borderColor: error ? 'red' : '#ced4da'
+        }}
+        inputStyle={{
+          width: '100%',
+          height: '45px',
+          borderColor: error ? 'red' : '#ced4da',
+          borderWidth:'1px',
+        }}
       />
     </div>
   );

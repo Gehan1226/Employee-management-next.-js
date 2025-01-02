@@ -41,15 +41,15 @@ export default function AddEmployeeForm() {
         <form className="p-5 mt-4" action={formAction}>
 
             <div className="grid md:grid-cols-2 md:gap-6">
-                <Input label="First Name" id="first_name" name="firstName" />
-                <Input label="Last Name" id="last_name" name="lastName" />
+                <Input label="First Name" id="first_name" name="firstName" error={state.validationErrors?.firstName} />
+                <Input label="Last Name" id="last_name" name="lastName" error={state.validationErrors?.lastName} />
             </div>
 
-            <Input label="Email address" id="floating_email" name="email" />
+            <Input label="Email address" id="floating_email" name="email" error={state.validationErrors?.email} />
 
             <div className='mb-6'>
                 <p className='text-sm text-slate-600 mb-2'>Contact number</p>
-                <PhoneInputField />
+                <PhoneInputField  error='ss'/>
             </div>
 
             <div className='mb-6'>
@@ -100,15 +100,15 @@ export default function AddEmployeeForm() {
 
             <div className="grid md:grid-cols-2 gap-3 mt-6">
 
-                <Input label="State" id="floating_state" name="state" />
+                <Input label="State" id="floating_state" name="state" error={state.validationErrors?.state} />
 
-                <Input label="District" id="floating_district" name="district" />
+                <Input label="District" id="floating_district" name="district" error={state.validationErrors?.district}  />
 
-                <Input label="City" id="floating_city" name="city" />
+                <Input label="City" id="floating_city" name="city" error={state.validationErrors?.city}  />
 
-                <Input label="Street" id="floating_street" name="street" />
+                <Input label="Street" id="floating_street" name="street" error={state.validationErrors?.street} />
 
-                <Input label="Postal code" id="floating_postal" name="postalCode" />
+                <Input label="Postal code" id="floating_postal" name="postalCode" error={state.validationErrors?.postalCode} />
 
             </div>
 
