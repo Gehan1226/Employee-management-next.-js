@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
-import { error } from 'console';
 
 export type DropDownMenuItem = {
     label: string
@@ -41,7 +40,6 @@ export default function DropDownMenu({
                 {label}
             </InputLabel>
             <Select
-                error={!!error}
                 labelId={`${name}-label`}
                 id={name}
                 value={selectedOption}

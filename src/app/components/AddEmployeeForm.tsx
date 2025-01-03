@@ -56,13 +56,11 @@ export default function AddEmployeeForm() {
                 <DateInput
                     label='Date of birth'
                     name='dob'
-                    error='error'
                 />
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
 
-                <div className='flex gap-4 md:items-center flex-col md:flex-row'>
                     <DropDownMenu
                         label="Gender"
                         menuItems={[
@@ -72,24 +70,20 @@ export default function AddEmployeeForm() {
                         ]}
                         name='gender'
                     />
-                </div>
 
-                <div className='flex gap-4 md:items-center flex-col md:flex-row'>
                     <DropDownMenu
                         label="Department"
                         menuItems={mapDepartmentToDropdownItem(departments)}
                         name='department'
                         handleChange={onSelectDepartment}
+                        error='Please select a department first'
                     />
-                </div>
 
-                <div className='flex gap-4 md:items-center flex-col md:flex-row'>
                     <DropDownMenu
                         label="Role"
                         menuItems={mapRoleToDropdownItem(roles)}
                         name='role'
                     />
-                </div>
             </div>
 
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />

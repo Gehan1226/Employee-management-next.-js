@@ -10,23 +10,24 @@ import { getCountriesAndFlags } from '../api/country-names';
 import { CountryDetails } from '../types/response-types';
 
 type CountrySelectorProps = {
-  name: string
+  name: string;
+  error?: string;
 }
 
-const CountrySelector: React.FC<CountrySelectorProps> = ({ name }) => {
+const CountrySelector: React.FC<CountrySelectorProps> = ({ name, error }) => {
   const [countryData, setCountryData] = useState<CountryDetails[]>([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const response = await getCountriesAndFlags();
       setCountryData(response.data ?? []);
-      setError(null);
+      setFetchError(null);
     } catch (err) {
-      setError('Failed to fetch country data.');
+      setFetchError('Failed to fetch country data.');
     } finally {
       setLoading(false);
     }
@@ -74,14 +75,15 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ name }) => {
           label="Country"
           onChange={handleChange}
           sx={{ height: 45 }}
-          disabled={loading || error !== null}
+          disabled={loading || fetchError !== null}
           name={name}
         >
           {loading && <MenuItem disabled>Loading...</MenuItem>}
-          {error && <MenuItem disabled>{error}</MenuItem>}
-          {!loading && !error && menuItems}
+          {fetchError && <MenuItem disabled>{fetchError}</MenuItem>}
+          {!loading && !fetchError && menuItems}
         </Select>
       </FormControl>
+      {error && <p className="mt-2 text-sm text-red-600">*{error}</p>}
     </Box>
   );
 };
