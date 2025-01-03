@@ -11,7 +11,6 @@ export default function Input({ label, id, error, ...props }: Readonly<InputProp
     return (
         <div className="relative z-0 w-full mb-5 group">
             <input
-                type="text"
                 id={id}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 peer border-gray-300 focus:border-blue-600"
                 placeholder=" "

@@ -1,6 +1,5 @@
 "use client";
 import Input from '@/app/components/Input';
-import PhoneInputField from '@/app/components/PhoneInput';
 import React, { useActionState, useEffect, useState } from 'react'
 import { registerEmployee } from '../api/employee';
 import CountrySelector from './CountrySelector';
@@ -41,15 +40,16 @@ export default function AddEmployeeForm() {
         <form className="p-5 mt-4" action={formAction}>
 
             <div className="grid md:grid-cols-2 md:gap-6">
-                <Input label="First Name" id="first_name" name="firstName" error={state.validationErrors?.firstName} />
-                <Input label="Last Name" id="last_name" name="lastName" error={state.validationErrors?.lastName} />
+                <Input type='text' label="First Name" id="first_name" name="firstName" error={state.validationErrors?.firstName} />
+                <Input type='text' label="Last Name" id="last_name" name="lastName" error={state.validationErrors?.lastName} />
             </div>
 
-            <Input label="Email address" id="floating_email" name="email" error={state.validationErrors?.email} />
+            <Input type='text' label="Email address" id="floating_email" name="email" error={state.validationErrors?.email} />
 
             <div className='mb-6'>
-                <p className='text-sm text-slate-600 mb-2'>Contact number</p>
-                <PhoneInputField />
+                {/* <PhoneInputField /> */}
+                <Input type='tel' label="Mobile number" id="mobile" name="phoneNumber" error={state.validationErrors?.lastName} />
+
             </div>
 
             <div className='mb-6'>
@@ -61,49 +61,45 @@ export default function AddEmployeeForm() {
 
             <div className="grid md:grid-cols-2 gap-6">
 
-                    <DropDownMenu
-                        label="Gender"
-                        menuItems={[
-                            { label: "Male", id: 'Male' },
-                            { label: "Female", id: "Female" },
-                            { label: "Other", id: "Other" }
-                        ]}
-                        name='gender'
-                    />
+                <DropDownMenu
+                    label="Gender"
+                    menuItems={[
+                        { label: "Male", id: 'Male' },
+                        { label: "Female", id: "Female" },
+                        { label: "Other", id: "Other" }
+                    ]}
+                    name='gender'
+                />
 
-                    <DropDownMenu
-                        label="Department"
-                        menuItems={mapDepartmentToDropdownItem(departments)}
-                        name='department'
-                        handleChange={onSelectDepartment}
-                        error='Please select a department first'
-                    />
+                <DropDownMenu
+                    label="Department"
+                    menuItems={mapDepartmentToDropdownItem(departments)}
+                    name='department'
+                    handleChange={onSelectDepartment}
+                />
 
-                    <DropDownMenu
-                        label="Role"
-                        menuItems={mapRoleToDropdownItem(roles)}
-                        name='role'
-                    />
+                <DropDownMenu
+                    label="Role"
+                    menuItems={mapRoleToDropdownItem(roles)}
+                    name='role'
+                />
             </div>
 
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
-            <div>
-                <CountrySelector name='country' />
-
-            </div>
+            <CountrySelector name='country' />
 
             <div className="grid md:grid-cols-2 gap-3 mt-6">
 
-                <Input label="State" id="floating_state" name="state" error={state.validationErrors?.state} />
+                <Input type='text' label="State" id="floating_state" name="state" error={state.validationErrors?.state} />
 
-                <Input label="District" id="floating_district" name="district" error={state.validationErrors?.district}  />
+                <Input type='text' label="District" id="floating_district" name="district" error={state.validationErrors?.district} />
 
-                <Input label="City" id="floating_city" name="city" error={state.validationErrors?.city}  />
+                <Input type='text' label="City" id="floating_city" name="city" error={state.validationErrors?.city} />
 
-                <Input label="Street" id="floating_street" name="street" error={state.validationErrors?.street} />
+                <Input type='text' label="Street" id="floating_street" name="street" error={state.validationErrors?.street} />
 
-                <Input label="Postal code" id="floating_postal" name="postalCode" error={state.validationErrors?.postalCode} />
+                <Input type='text' label="Postal code" id="floating_postal" name="postalCode" error={state.validationErrors?.postalCode} />
 
             </div>
 
