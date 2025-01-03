@@ -20,17 +20,10 @@ export default function DateInput({ label, name, error }: Readonly<DateInputProp
           sx={{
             width: '100%',
             '& .MuiOutlinedInput-root': {
-              height: '45px',
-              overflow: 'hidden',
-              '& fieldset': {
-                borderColor: error ? '#E34F50' : '#ced4da',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor:  error ? '#E34F50' : 'blue-500', 
-              },
+              height: '50px',
             },
             '& .MuiInputBase-input': {
-              padding: '10px 12px',
+              padding: '12px 14px',
               fontSize: '16px',
             },
             '& .MuiInputLabel-root': {
@@ -39,8 +32,7 @@ export default function DateInput({ label, name, error }: Readonly<DateInputProp
           }}
         />
       </DemoContainer>
-      {error && <p className="mt-2 ms-2 text-sm text-red-600">*{error}</p>}
-
+      {error && <p className="mt-2 text-sm text-red-600">*{error}</p>}
     </LocalizationProvider>
   );
 }
