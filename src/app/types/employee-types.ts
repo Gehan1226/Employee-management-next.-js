@@ -4,6 +4,9 @@ export type Employee = {
     email: string;
     phoneNumber: string;
     dob: string;
+    gender: string;
+    department: string;
+    role: string;
     country: string;
     state: string;
     district: string;

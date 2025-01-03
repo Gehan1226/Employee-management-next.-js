@@ -11,6 +11,7 @@ import { SelectChangeEvent } from '@mui/material';
 import { getRolesByDepartment } from '../api/role';
 import DateInput from './DateInput';
 import { createInitialRegisterEmployeeResponse } from '../lib/util/initial-employee-state';
+import LoadingButton from './LoadingButton';
 
 export default function AddEmployeeForm() {
     const [state, formAction, isPending] = useActionState(registerEmployee, createInitialRegisterEmployeeResponse());
@@ -47,8 +48,7 @@ export default function AddEmployeeForm() {
             <Input type='text' label="Email address" id="floating_email" name="email" error={state.validationErrors?.email} />
 
             <div className='mb-6'>
-                {/* <PhoneInputField /> */}
-                <Input type='tel' label="Mobile number" id="mobile" name="phoneNumber" error={state.validationErrors?.lastName} />
+                <Input type='tel' label="Mobile number" id="mobile" name="phoneNumber" error={state.validationErrors?.phoneNumber} />
 
             </div>
 
@@ -56,6 +56,7 @@ export default function AddEmployeeForm() {
                 <DateInput
                     label='Date of birth'
                     name='dob'
+                    error={state.validationErrors?.dob}
                 />
             </div>
 
@@ -69,6 +70,7 @@ export default function AddEmployeeForm() {
                         { label: "Other", id: "Other" }
                     ]}
                     name='gender'
+                    error={state.validationErrors?.gender}
                 />
 
                 <DropDownMenu
@@ -76,18 +78,20 @@ export default function AddEmployeeForm() {
                     menuItems={mapDepartmentToDropdownItem(departments)}
                     name='department'
                     handleChange={onSelectDepartment}
+                    error={state.validationErrors?.department}
                 />
 
                 <DropDownMenu
                     label="Role"
                     menuItems={mapRoleToDropdownItem(roles)}
                     name='role'
+                    error={state.validationErrors?.role}
                 />
             </div>
 
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
-            <CountrySelector name='country' />
+            <CountrySelector name='country' error={state.validationErrors?.country} />
 
             <div className="grid md:grid-cols-2 gap-3 mt-6">
 
@@ -104,7 +108,18 @@ export default function AddEmployeeForm() {
             </div>
 
             <div className='flex flex-row-reverse mt-6'>
-                <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                {!isPending &&
+                    <button
+                        type="submit"
+                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                    >
+                        Submit
+                    </button>
+                }
+
+                {isPending &&
+                    <LoadingButton />
+                }
             </div>
 
         </form >
