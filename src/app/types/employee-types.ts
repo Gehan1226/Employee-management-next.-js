@@ -15,10 +15,16 @@ export type Employee = {
     postalCode: string;
 };
 
+export type ValidatedEmployee = {
+    success: boolean;
+    validationErrors?: Employee;
+}
+
 export type RegisterEmployeeResponse = {
     success: boolean;
-    data?: Employee;
-    validationErrors?: Employee;
-    message?: string;
-    prevData?: Record<string, string>;
+    data: Employee;
+    validationErrors: Employee;
+    message: string;
+    prevData: Record<string, string>;
+    backendErrors: string;
 };

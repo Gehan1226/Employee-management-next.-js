@@ -1,4 +1,4 @@
-import { Employee, RegisterEmployeeResponse } from "@/app/types/employee-types";
+import { Employee, RegisterEmployeeResponse, ValidatedEmployee } from "@/app/types/employee-types";
 import { z } from "zod";
 import { createInitialEmployee } from "./initial-employee-state";
 
@@ -41,7 +41,7 @@ const handleEmployeeZodError = (error: z.ZodError): Employee => {
   return errorObject;
 }
 
-export const validateEmployee = (data: Record<string, string>): RegisterEmployeeResponse => {
+export const validateEmployee = (data: Record<string, string>): ValidatedEmployee => {
   try {
     employeeObjectSchema.parse(data);
     return { success: true };

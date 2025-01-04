@@ -12,11 +12,13 @@ import { getRolesByDepartment } from '../api/role';
 import DateInput from './DateInput';
 import { createInitialRegisterEmployeeResponse } from '../lib/util/initial-employee-state';
 import LoadingButton from './LoadingButton';
+import ResponseStateAlert from './ResponseStateAlert';
 
 export default function AddEmployeeForm() {
     const [state, formAction, isPending] = useActionState(registerEmployee, createInitialRegisterEmployeeResponse());
     const [departments, setDepartments] = useState<Department[]>([]);
     const [roles, setRoles] = useState<Role[]>([]);
+    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -37,91 +39,113 @@ export default function AddEmployeeForm() {
         setRoles(roles.data ?? []);
     };
 
+    const closeAlert = () => {
+        setShowAlert(false);
+    };
+
     return (
-        <form className="p-5 mt-4" action={formAction}>
-
-            <div className="grid md:grid-cols-2 md:gap-6">
-                <Input type='text' label="First Name" id="first_name" name="firstName" error={state.validationErrors?.firstName} />
-                <Input type='text' label="Last Name" id="last_name" name="lastName" error={state.validationErrors?.lastName} />
-            </div>
-
-            <Input type='text' label="Email address" id="floating_email" name="email" error={state.validationErrors?.email} />
-
-            <div className='mb-6'>
-                <Input type='tel' label="Mobile number" id="mobile" name="phoneNumber" error={state.validationErrors?.phoneNumber} />
-
-            </div>
-
-            <div className='mb-6'>
-                <DateInput
-                    label='Date of birth'
-                    name='dob'
-                    error={state.validationErrors?.dob}
+        <>
+            {state.backendErrors && showAlert &&
+                <ResponseStateAlert
+                    state="ERROR"
+                    message="Employee register failed!"
+                    description={state.backendErrors}
+                    onClose={closeAlert}
                 />
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-
-                <DropDownMenu
-                    label="Gender"
-                    menuItems={[
-                        { label: "Male", id: 'Male' },
-                        { label: "Female", id: "Female" },
-                        { label: "Other", id: "Other" }
-                    ]}
-                    name='gender'
-                    error={state.validationErrors?.gender}
+            }
+            {state.success && showAlert &&
+                <ResponseStateAlert
+                    state="SUCCESS"
+                    message={state.message ?? "Employee registered successfully!"}
+                    description="Please wait for admin approval."
+                    onClose={closeAlert}
                 />
+            }
 
-                <DropDownMenu
-                    label="Department"
-                    menuItems={mapDepartmentToDropdownItem(departments)}
-                    name='department'
-                    handleChange={onSelectDepartment}
-                    error={state.validationErrors?.department}
-                />
+            <form className="p-5 mt-4" action={formAction}>
 
-                <DropDownMenu
-                    label="Role"
-                    menuItems={mapRoleToDropdownItem(roles)}
-                    name='role'
-                    error={state.validationErrors?.role}
-                />
-            </div>
+                <div className="grid md:grid-cols-2 md:gap-6">
+                    <Input type='text' label="First Name" id="first_name" name="firstName" error={state.validationErrors?.firstName} />
+                    <Input type='text' label="Last Name" id="last_name" name="lastName" error={state.validationErrors?.lastName} />
+                </div>
 
-            <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                <Input type='text' label="Email address" id="floating_email" name="email" error={state.validationErrors?.email} />
 
-            <CountrySelector name='country' error={state.validationErrors?.country} />
+                <div className='mb-6'>
+                    <Input type='tel' label="Mobile number" id="mobile" name="phoneNumber" error={state.validationErrors?.phoneNumber} />
 
-            <div className="grid md:grid-cols-2 gap-3 mt-6">
+                </div>
 
-                <Input type='text' label="State" id="floating_state" name="state" error={state.validationErrors?.state} />
+                <div className='mb-6'>
+                    <DateInput
+                        label='Date of birth'
+                        name='dob'
+                        error={state.validationErrors?.dob}
+                    />
+                </div>
 
-                <Input type='text' label="District" id="floating_district" name="district" error={state.validationErrors?.district} />
+                <div className="grid md:grid-cols-2 gap-6">
 
-                <Input type='text' label="City" id="floating_city" name="city" error={state.validationErrors?.city} />
+                    <DropDownMenu
+                        label="Gender"
+                        menuItems={[
+                            { label: "Male", id: 'Male' },
+                            { label: "Female", id: "Female" },
+                            { label: "Other", id: "Other" }
+                        ]}
+                        name='gender'
+                        error={state.validationErrors?.gender}
+                    />
 
-                <Input type='text' label="Street" id="floating_street" name="street" error={state.validationErrors?.street} />
+                    <DropDownMenu
+                        label="Department"
+                        menuItems={mapDepartmentToDropdownItem(departments)}
+                        name='department'
+                        handleChange={onSelectDepartment}
+                        error={state.validationErrors?.department}
+                    />
 
-                <Input type='text' label="Postal code" id="floating_postal" name="postalCode" error={state.validationErrors?.postalCode} />
+                    <DropDownMenu
+                        label="Role"
+                        menuItems={mapRoleToDropdownItem(roles)}
+                        name='role'
+                        error={state.validationErrors?.role}
+                    />
+                </div>
 
-            </div>
+                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
-            <div className='flex flex-row-reverse mt-6'>
-                {!isPending &&
-                    <button
-                        type="submit"
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-                    >
-                        Submit
-                    </button>
-                }
+                <CountrySelector name='country' error={state.validationErrors?.country} />
 
-                {isPending &&
-                    <LoadingButton />
-                }
-            </div>
+                <div className="grid md:grid-cols-2 gap-3 mt-6">
 
-        </form >
+                    <Input type='text' label="State" id="floating_state" name="state" error={state.validationErrors?.state} />
+
+                    <Input type='text' label="District" id="floating_district" name="district" error={state.validationErrors?.district} />
+
+                    <Input type='text' label="City" id="floating_city" name="city" error={state.validationErrors?.city} />
+
+                    <Input type='text' label="Street" id="floating_street" name="street" error={state.validationErrors?.street} />
+
+                    <Input type='text' label="Postal code" id="floating_postal" name="postalCode" error={state.validationErrors?.postalCode} />
+
+                </div>
+
+                <div className='flex flex-row-reverse mt-6'>
+                    {!isPending &&
+                        <button
+                            type="submit"
+                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                        >
+                            Submit
+                        </button>
+                    }
+
+                    {isPending &&
+                        <LoadingButton />
+                    }
+                </div>
+            </form >
+        </>
     )
 }
