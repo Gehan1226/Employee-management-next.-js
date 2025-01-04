@@ -1,11 +1,11 @@
 "use client";
 import React, { useActionState, useEffect, useState } from 'react'
 import AuthInput from './AuthInput';
-import { registerUser } from '../api/auth';
-import ResponseStateAlert from './ResponseStateAlert';
-import { createInitialAuthResponse } from '../lib/util/initial-user-state';
-import DropDownInput from './DropDownInput';
-import LoadingButton from './LoadingButton';
+import { registerUser } from '../../api/auth';
+import ResponseStateAlert from '../ResponseStateAlert';
+import { createInitialAuthResponse } from '../../lib/util/initial-user-state';
+import DropDownInput from '../DropDownInput';
+import LoadingButton from '../LoadingButton';
 
  
 export default function UserRegisterForm() {

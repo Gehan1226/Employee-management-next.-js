@@ -1,6 +1,6 @@
 "use client";
-import EmployeeCard from '@/app/components/EmployeeCard'
-import EmployeeFilterPopup from '@/app/components/EmployeeFilterPopup';
+import EmployeeCard from '@/app/components/employee/EmployeeCard'
+import EmployeeFilterPopup from '@/app/components/employee/EmployeeFilterPopup';
 import SearchBar from '@/app/components/SearchBar'
 import React, { useState } from 'react'
 

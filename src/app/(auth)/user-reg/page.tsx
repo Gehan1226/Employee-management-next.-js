@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import UserRegisterForm from '@/app/components/UserRegisterForm';
+import UserRegisterForm from '@/app/components/user/UserRegisterForm';
 import Link from 'next/link';
 
 
