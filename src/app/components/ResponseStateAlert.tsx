@@ -11,7 +11,7 @@ type ResponseStateAlertProps = {
 
 export default function ResponseStateAlert({ state, message, description, onClose }: Readonly<ResponseStateAlertProps>) {
     return (
-        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40  backdrop-blur-sm">
+        <div className="fixed inset-0 z-[100] flex items-start justify-center bg-black/40  backdrop-blur-sm">
             <div className="flex flex-col gap-2 text-[10px] sm:text-xs mt-4">
                 <div className="cursor-default flex items-center justify-between w-full h-12 sm:h-14 rounded-lg bg-[#292b39] px-[10px] shadow-black shadow-lg">
                     <div className="flex gap-2">

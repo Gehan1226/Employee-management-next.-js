@@ -33,6 +33,12 @@ export default function AddEmployeeForm() {
         fetchDepartments();
     }, []);
 
+    useEffect(() => {
+        if (state.backendErrors || state.success) {
+            setShowAlert(true);
+        }
+    }, [state]);
+
     const onSelectDepartment = async (event: SelectChangeEvent): Promise<void> => {
         const selectedValue = event.target.value;
         const roles = await getRolesByDepartment(selectedValue);
@@ -61,91 +67,159 @@ export default function AddEmployeeForm() {
                     onClose={closeAlert}
                 />
             }
+            <div className="mt-5 max-w-5xl mx-auto shadow-2xl bg-gray-900 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0">
 
-            <form className="p-5 mt-4" action={formAction}>
+                <p className="font-semibold text-2xl text-center">Employee Registration</p>
 
-                <div className="grid md:grid-cols-2 md:gap-6">
-                    <Input type='text' label="First Name" id="first_name" name="firstName" error={state.validationErrors?.firstName} />
-                    <Input type='text' label="Last Name" id="last_name" name="lastName" error={state.validationErrors?.lastName} />
-                </div>
+                <form className=" p-5 mt-4" action={formAction}>
 
-                <Input type='text' label="Email address" id="floating_email" name="email" error={state.validationErrors?.email} />
+                    <div className="grid md:grid-cols-2 md:gap-6">
+                        <Input
+                            type='text'
+                            label="First Name"
+                            id="first_name"
+                            name="firstName"
+                            error={state.validationErrors?.firstName}
+                            defaultValue={state.prevData?.['firstName']}
+                        />
+                        <Input
+                            type='text'
+                            label="Last Name"
+                            id="last_name"
+                            name="lastName"
+                            error={state.validationErrors?.lastName}
+                            defaultValue={state.prevData?.['lastName']}
+                        />
+                    </div>
 
-                <div className='mb-6'>
-                    <Input type='tel' label="Mobile number" id="mobile" name="phoneNumber" error={state.validationErrors?.phoneNumber} />
-
-                </div>
-
-                <div className='mb-6'>
-                    <DateInput
-                        label='Date of birth'
-                        name='dob'
-                        error={state.validationErrors?.dob}
-                    />
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-
-                    <DropDownMenu
-                        label="Gender"
-                        menuItems={[
-                            { label: "Male", id: 'Male' },
-                            { label: "Female", id: "Female" },
-                            { label: "Other", id: "Other" }
-                        ]}
-                        name='gender'
-                        error={state.validationErrors?.gender}
+                    <Input
+                        type='text'
+                        label="Email address"
+                        id="floating_email"
+                        name="email"
+                        error={state.validationErrors?.email}
+                        defaultValue={state.prevData?.['email']}
                     />
 
-                    <DropDownMenu
-                        label="Department"
-                        menuItems={mapDepartmentToDropdownItem(departments)}
-                        name='department'
-                        handleChange={onSelectDepartment}
-                        error={state.validationErrors?.department}
-                    />
+                    <div className='mb-6'>
+                        <Input
+                            type='tel'
+                            label="Mobile number"
+                            id="mobile"
+                            name="phoneNumber"
+                            error={state.validationErrors?.phoneNumber}
+                            defaultValue={state.prevData?.['mobile']}
+                        />
 
-                    <DropDownMenu
-                        label="Role"
-                        menuItems={mapRoleToDropdownItem(roles)}
-                        name='role'
-                        error={state.validationErrors?.role}
-                    />
-                </div>
+                    </div>
 
-                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                    <div className='mb-6'>
+                        <DateInput
+                            label='Date of birth'
+                            name='dob'
+                            error={state.validationErrors?.dob}
+                        />
+                    </div>
 
-                <CountrySelector name='country' error={state.validationErrors?.country} />
+                    <div className="grid md:grid-cols-2 gap-6">
 
-                <div className="grid md:grid-cols-2 gap-3 mt-6">
+                        <DropDownMenu
+                            label="Gender"
+                            menuItems={[
+                                { label: "Male", id: 'Male' },
+                                { label: "Female", id: "Female" },
+                                { label: "Other", id: "Other" }
+                            ]}
+                            name='gender'
+                            error={state.validationErrors?.gender}
+                        />
 
-                    <Input type='text' label="State" id="floating_state" name="state" error={state.validationErrors?.state} />
+                        <DropDownMenu
+                            label="Department"
+                            menuItems={mapDepartmentToDropdownItem(departments)}
+                            name='department'
+                            handleChange={onSelectDepartment}
+                            error={state.validationErrors?.department}
+                        />
 
-                    <Input type='text' label="District" id="floating_district" name="district" error={state.validationErrors?.district} />
+                        <DropDownMenu
+                            label="Role"
+                            menuItems={mapRoleToDropdownItem(roles)}
+                            name='role'
+                            error={state.validationErrors?.role}
+                        />
+                    </div>
 
-                    <Input type='text' label="City" id="floating_city" name="city" error={state.validationErrors?.city} />
+                    <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
-                    <Input type='text' label="Street" id="floating_street" name="street" error={state.validationErrors?.street} />
+                    <CountrySelector name='country' error={state.validationErrors?.country} />
 
-                    <Input type='text' label="Postal code" id="floating_postal" name="postalCode" error={state.validationErrors?.postalCode} />
+                    <div className="grid md:grid-cols-2 gap-3 mt-6">
 
-                </div>
+                        <Input
+                            type='text'
+                            label="State"
+                            id="floating_state"
+                            name="state"
+                            error={state.validationErrors?.state}
+                            defaultValue={state.prevData?.['state']}
+                        />
 
-                <div className='flex flex-row-reverse mt-6'>
-                    {!isPending &&
-                        <button
-                            type="submit"
-                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-                        >
-                            Submit
-                        </button>
-                    }
+                        <Input
+                            type='text'
+                            label="District"
+                            id="floating_district"
+                            name="district"
+                            error={state.validationErrors?.district}
+                            defaultValue={state.prevData?.['district']}
+                        />
 
-                    {isPending &&
-                        <LoadingButton />
-                    }
-                </div>
-            </form >
+                        <Input
+                            type='text'
+                            label="City"
+                            id="floating_city"
+                            name="city"
+                            error={state.validationErrors?.city}
+                            defaultValue={state.prevData?.['city']}
+                        />
+
+                        <Input
+                            type='text'
+                            label="Street"
+                            id="floating_street"
+                            name="street"
+                            error={state.validationErrors?.street}
+                            defaultValue={state.prevData?.['street']}
+                        />
+
+                        <Input
+                            type='text'
+                            label="Postal code"
+                            id="floating_postal"
+                            name="postalCode"
+                            error={state.validationErrors?.postalCode}
+                            defaultValue={state.prevData?.['postalCode']}
+                        />
+
+                    </div>
+
+                    <div className='flex flex-row-reverse mt-6'>
+                        {!isPending &&
+                            <button
+                                type="submit"
+                                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                            >
+                                Submit
+                            </button>
+                        }
+
+                        {isPending &&
+                            <LoadingButton />
+                        }
+                    </div>
+                </form >
+
+            </div>
         </>
     )
 }
