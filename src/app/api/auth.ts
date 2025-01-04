@@ -13,7 +13,7 @@ export const registerUser = async (prevState: any, formData: FormData): Promise<
 
     try {
         const { repeatPassword, ...filteredData } = data;
-        const response = await axioInstance.post("/user/register", filteredData);
+        const response = await axioInstance.post("/api/v1/auth/register", filteredData);
         return { success: true, message: response.data.message };
     } catch (error: any) {
         if (axios.isAxiosError(error)) {
