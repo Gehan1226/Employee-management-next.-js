@@ -17,5 +17,9 @@ type AuthResponse = {
 type BasicUserInfo  = {
     userName: string;
     email: string;
+}
+
+type BasicUserInfoResponse = {
+    data: BasicUserInfo[];
     message: string;
 }

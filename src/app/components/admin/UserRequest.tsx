@@ -1,11 +1,23 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import RequestCard from './RequestCard'
 import ManageUserRequestPopup from './ManageUserRequestPopup';
+import { getDisabledUsers } from '@/app/api/auth';
 
 export default function UserRequest() {
 
     const [isShowUserRequestPopup, setIsShowUserRequestPopup] = useState(false);
+    const [disabledUsers, setDisabledUsers] = useState<BasicUserInfo[]>([]);
+
+    useEffect(() => {
+        const fetchDisabledUsers = async () => {
+            const response = await getDisabledUsers();
+            if (!response.message) {
+                setDisabledUsers(response.data || []);
+            }
+        };
+        fetchDisabledUsers();
+    }, []);
 
     const handleUserRequestPopup = (value: boolean) => {
         setIsShowUserRequestPopup(value);
@@ -19,11 +31,15 @@ export default function UserRequest() {
                 />
             }
 
-            <div className="mt-5 w-full p-4 bg-blue-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 rounded-lg shadow-lg ">
+            {disabledUsers.map((user) => (
                 <RequestCard
+                    key={user.email}
+
                     handleUserRequestPopup={handleUserRequestPopup}
+                    user={user}
                 />
-            </div>
+            ))}
+
         </>
     )
 }
