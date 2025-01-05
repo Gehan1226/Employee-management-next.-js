@@ -2,7 +2,11 @@ import React from 'react'
 import DropDownMenu from '../DropDownMenu'
 import Image from 'next/image'
 
-export default function ManageUserRequestPopup() {
+type ManageUserRequestPopupProps = {
+  handleUserRequestPopup: (value: boolean) => void
+}
+
+export default function ManageUserRequestPopup({ handleUserRequestPopup }: Readonly<ManageUserRequestPopupProps>) {
   return (
     <div className="fixed inset-0 z-50 flex justify-center bg-gray-500 bg-opacity-75 p-5">
       <div className="relative w-full h-fit max-w-2xl rounded-lg bg-white shadow-lg z-50 flex flex-col">
@@ -12,6 +16,7 @@ export default function ManageUserRequestPopup() {
         <button
           type="button"
           className="absolute top-2 right-2 inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+          onClick={() => handleUserRequestPopup(false)}
         >
           <svg
             className="h-5 w-5"
@@ -77,6 +82,7 @@ export default function ManageUserRequestPopup() {
           <button
             type="button"
             className="text-white bg-gray-400 hover:bg-gray-500 font-medium rounded-lg text-sm px-5 py-2.5"
+            onClick={() => handleUserRequestPopup(false)}
           >
             Cancel
           </button>
