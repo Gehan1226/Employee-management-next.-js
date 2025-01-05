@@ -64,3 +64,32 @@ export const userLogin = async (prevState: any, formData: FormData): Promise<Par
         }
     }
 }
+
+export const getDisabledUsers = async (): Promise<Partial<BasicUserInfo>> => {
+    const url = process.env.NEXT_PUBLIC_DISABLED_USERS_API;
+    if (!url) {
+        console.error("Environment variable 'NEXT_PUBLIC_DISABLED_USERS_API' is not defined.");
+        throw new Error("API URL is undefined. Please check your environment variables.");
+    }
+
+    try {
+        const response = await axioInstance.get(url);
+        return { userName: response.data.data.userName, email: response.data.data.email };
+    } catch (error: any) {
+        if (axios.isAxiosError(error)) {
+            if (error.response) {
+                return {
+                    message: error.response.data?.errorMessage || "An error occurred during registration"
+                };
+            } else if (error.request) {
+                return {
+                    message: "No response received from the server. Please check your network connection."
+                };
+            } else {
+                return { message: error.message || "An unexpected error occurred." };
+            }
+        } else {
+            return { message: error.message || "An unexpected error occurred." };
+        }
+    }
+}

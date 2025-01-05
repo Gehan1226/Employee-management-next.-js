@@ -12,4 +12,10 @@ type AuthResponse = {
     prevData?: Record<string, string>;
     backendErrors?: string;
     message?: string;
-  };
+};
+
+type BasicUserInfo  = {
+    userName: string;
+    email: string;
+    message: string;
+}
