@@ -8,6 +8,7 @@ export default function UserRequest() {
 
     const [isShowUserRequestPopup, setIsShowUserRequestPopup] = useState(false);
     const [disabledUsers, setDisabledUsers] = useState<BasicUserInfo[]>([]);
+    const [selectedUser, setSelectedUser] = useState<BasicUserInfo>();
 
     useEffect(() => {
         const fetchDisabledUsers = async () => {
@@ -23,19 +24,24 @@ export default function UserRequest() {
         setIsShowUserRequestPopup(value);
     }
 
+    const handleAcceptUser = (user: BasicUserInfo) => {
+        setSelectedUser(user);
+    }
+
     return (
         <>
-            {isShowUserRequestPopup &&
+            {isShowUserRequestPopup && selectedUser &&
                 <ManageUserRequestPopup
                     handleUserRequestPopup={handleUserRequestPopup}
+                    user={selectedUser}
                 />
             }
 
             {disabledUsers.map((user) => (
                 <RequestCard
                     key={user.email}
-
                     handleUserRequestPopup={handleUserRequestPopup}
+                    onPressAcceptUser={handleAcceptUser}
                     user={user}
                 />
             ))}

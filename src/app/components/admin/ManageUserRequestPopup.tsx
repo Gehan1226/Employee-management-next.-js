@@ -3,10 +3,11 @@ import DropDownMenu from '../DropDownMenu'
 import Image from 'next/image'
 
 type ManageUserRequestPopupProps = {
-  handleUserRequestPopup: (value: boolean) => void
+  handleUserRequestPopup: (value: boolean) => void;
+  user: BasicUserInfo;
 }
 
-export default function ManageUserRequestPopup({ handleUserRequestPopup }: Readonly<ManageUserRequestPopupProps>) {
+export default function ManageUserRequestPopup({ handleUserRequestPopup, user }: Readonly<ManageUserRequestPopupProps>) {
   return (
     <div className="fixed inset-0 z-50 flex justify-center bg-gray-500 bg-opacity-75 p-5">
       <div className="relative w-full h-fit max-w-2xl rounded-lg bg-white shadow-lg z-50 flex flex-col">
@@ -49,8 +50,8 @@ export default function ManageUserRequestPopup({ handleUserRequestPopup }: Reado
           />
 
           <div className='flex flex-col font-normal'>
-            <p>User-name: <span className='font-semibold'>example user</span></p>
-            <p>Email:  <span className='font-semibold'>example@gmail.com </span></p>
+            <p>User-name: <span className='font-semibold'>{user.userName}</span></p>
+            <p>Email:  <span className='font-semibold'>{user.email}</span></p>
           </div>
 
         </div>
