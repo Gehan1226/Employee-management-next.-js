@@ -59,14 +59,21 @@ export default function ManageUserRequestPopup({ handleUserRequestPopup, user }:
         <div className='flex flex-col justify-between p-5 gap-5 mt-5 sm:flex-row'>
           <DropDownMenu
             label="User role"
-            menuItems={[]}
-            name={''}
+            menuItems={[
+              { label: "User", id: 'USER' },
+              { label: "Manager", id: "MANAGER" },
+              { label: "Admin", id: "ADMIN" }
+            ]}
+            name="role"
           />
 
           <DropDownMenu
             label="Status"
-            menuItems={[]}
-            name={''}
+            menuItems={[
+              { label: "Enable", id: 'USER' },
+              { label: "Disable", id: "MANAGER" }
+            ]}
+            name="enabled"
           />
 
         </div>
