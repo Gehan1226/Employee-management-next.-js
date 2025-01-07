@@ -1,6 +1,7 @@
 import React from 'react'
 import DropDownMenu from '../DropDownMenu'
 import Image from 'next/image'
+import { updateUserRoleAndEnabledStatus } from '@/app/api/auth';
 
 type ManageUserRequestPopupProps = {
   handleUserRequestPopup: (value: boolean) => void;
@@ -8,6 +9,28 @@ type ManageUserRequestPopupProps = {
 }
 
 export default function ManageUserRequestPopup({ handleUserRequestPopup, user }: Readonly<ManageUserRequestPopupProps>) {
+  
+  const onConfirm = async (formData: FormData) => {
+    const role = formData.get('role')?.toString();
+    const enabled = formData.get('enabled')?.toString();
+
+    if (!role || !enabled) {
+      return;
+    }
+
+    try {
+      const response = await updateUserRoleAndEnabledStatus({
+        userName: user.userName,
+        email: user.email,
+        role: role,
+        enabled: enabled === 'Enable',
+      });
+      console.log(response);
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex justify-center bg-gray-500 bg-opacity-75 p-5">
       <div className="relative w-full h-fit max-w-2xl rounded-lg bg-white shadow-lg z-50 flex flex-col">
@@ -56,48 +79,52 @@ export default function ManageUserRequestPopup({ handleUserRequestPopup, user }:
 
         </div>
 
-        <div className='flex flex-col justify-between p-5 gap-5 mt-5 sm:flex-row'>
-          <DropDownMenu
-            label="User role"
-            menuItems={[
-              { label: "User", id: 'USER' },
-              { label: "Manager", id: "MANAGER" },
-              { label: "Admin", id: "ADMIN" }
-            ]}
-            name="role"
-          />
+        <form action={onConfirm} >
 
-          <DropDownMenu
-            label="Status"
-            menuItems={[
-              { label: "Enable", id: 'USER' },
-              { label: "Disable", id: "MANAGER" }
-            ]}
-            name="enabled"
-          />
+          <div className='flex flex-col justify-between p-5 gap-5 mt-5 sm:flex-row'>
+            <DropDownMenu
+              label="User role"
+              menuItems={[
+                { label: "User", id: 'USER' },
+                { label: "Manager", id: "MANAGER" },
+                { label: "Admin", id: "ADMIN" }
+              ]}
+              name="role"
+            />
 
-        </div>
+            <DropDownMenu
+              label="Status"
+              menuItems={[
+                { label: "Enable", id: 'Enable' },
+                { label: "Disable", id: "Disable" }
+              ]}
+              name="enabled"
+            />
+          </div>
 
-        <div className='flex flex-row justify-end border border-t-gray-200 p-3 mt-5 rounded-b-lg gap-3'>
+          <div className='flex flex-row justify-end border border-t-gray-200 p-3 mt-5 rounded-b-lg gap-3'>
 
-          <button
-            type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5"
-          >
-            Confirm
-          </button>
+            <button
+              type="submit"
+              className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5"
+            >
+              Confirm
+            </button>
 
-          <button
-            type="button"
-            className="text-white bg-gray-400 hover:bg-gray-500 font-medium rounded-lg text-sm px-5 py-2.5"
-            onClick={() => handleUserRequestPopup(false)}
-          >
-            Cancel
-          </button>
+            <button
+              type="button"
+              className="text-white bg-gray-400 hover:bg-gray-500 font-medium rounded-lg text-sm px-5 py-2.5"
+              onClick={() => handleUserRequestPopup(false)}
+            >
+              Cancel
+            </button>
+          </div>
 
-        </div>
+        </form>
+
+
 
       </div>
-    </div>
+    </div >
   )
 }

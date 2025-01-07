@@ -23,3 +23,10 @@ type BasicUserInfoResponse = {
     data: BasicUserInfo[];
     message: string;
 }
+
+type UserWithRoleAndEnabledStatus = {
+    userName: string;
+    email: string;
+    role: string;
+    enabled: boolean;
+}
