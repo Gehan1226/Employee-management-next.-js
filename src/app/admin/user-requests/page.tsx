@@ -1,5 +1,5 @@
 "use client";
-import { getDisabledUsers } from '@/app/api/auth';
+import { deleteUser, getDisabledUsers } from '@/app/api/auth';
 import UserRequest from '@/app/components/admin/UserRequest'
 import FilterIcon from '@/app/components/icons/FilterIcon';
 import SortIcon from '@/app/components/icons/SortIcon';
@@ -18,6 +18,15 @@ export default function page() {
     };
     fetchDisabledUsers();
   }, []);
+
+  const onDeleteUser = async (email: string) => {
+    try {
+      const response = await deleteUser(email);
+      console.log(response);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
 
   return (
     <>
@@ -50,7 +59,10 @@ export default function page() {
             </button>
           </div>
 
-          <UserRequest disabledUsers={disabledUsers} />
+          <UserRequest
+            disabledUsers={disabledUsers}
+            handleDeleteUser={onDeleteUser}
+          />
         </>
       ) : (
         <p className="text-center p-5 font-semibold text-2xl mt-5">

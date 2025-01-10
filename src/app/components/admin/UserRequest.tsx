@@ -5,13 +5,13 @@ import DeletePopup from '../DeletePopup';
 
 type UserRequestProps = {
     disabledUsers: BasicUserInfo[];
+    handleDeleteUser: (email: string) => void
 }
 
-export default function UserRequest({ disabledUsers }: Readonly<UserRequestProps>) {
+export default function UserRequest({ disabledUsers, handleDeleteUser }: Readonly<UserRequestProps>) {
     const [selectedUser, setSelectedUser] = useState<BasicUserInfo>();
     const [isShowUserRequestPopup, setIsShowUserRequestPopup] = useState(false);
     const [isShowDeletePopup, setIsShowDeletePopup] = useState(false);
-
 
     const handleUserRequestPopup = (value: boolean) => {
         setIsShowUserRequestPopup(value);
@@ -21,7 +21,7 @@ export default function UserRequest({ disabledUsers }: Readonly<UserRequestProps
         setSelectedUser(user);
     }
 
-    const handleDeleteUser = (user: BasicUserInfo) => {
+    const activateDeletePopup = (user: BasicUserInfo) => {
         setSelectedUser(user);
         setIsShowDeletePopup(true);
 
@@ -42,8 +42,9 @@ export default function UserRequest({ disabledUsers }: Readonly<UserRequestProps
 
             {isShowDeletePopup &&
                 <DeletePopup
-                    deleteItemName={selectedUser?.userName ?? ''}
+                    user={selectedUser}
                     closePopup={onCloseDeletePopup}
+                    onDelete={handleDeleteUser}
                 />
             }
 
@@ -52,7 +53,7 @@ export default function UserRequest({ disabledUsers }: Readonly<UserRequestProps
                     key={user.email}
                     handleUserRequestPopup={handleUserRequestPopup}
                     onPressAcceptUser={handleAcceptUser}
-                    onPressDeleteUser={handleDeleteUser}
+                    onPressDeleteUser={activateDeletePopup}
                     user={user}
                 />
             ))}

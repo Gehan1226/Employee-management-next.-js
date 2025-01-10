@@ -119,3 +119,29 @@ export const updateUserRoleAndEnabledStatus = async (user: UserWithRoleAndEnable
         }
     }
 }
+
+export const deleteUser = async (userEmail: string): Promise<string> => {
+    const url = process.env.NEXT_PUBLIC_API_DELETE_USER;
+    if (!url) {
+        console.error("Environment variable 'NEXT_PUBLIC_DISABLED_USERS_API' is not defined.");
+        throw new Error("API URL is undefined. Please check your environment variables.");
+    }
+
+    try {
+        const response = await axioInstance.delete(`${url}/${userEmail}`);
+        return response.data.message;
+    } catch (error: any) {
+        console.log(error)
+        if (axios.isAxiosError(error)) {
+            if (error.response) {
+                return error.response.data?.errorMessage || "An error occurred during deleting user.";
+            } else if (error.request) {
+                return "No response received from the server. Please check your network connection.";
+            } else {
+                return error.message || "An unexpected error occurred.";
+            }
+        } else {
+            return error.message || "An unexpected error occurred.";
+        }
+    }
+}
