@@ -4,15 +4,16 @@ import Image from 'next/image'
 type RequestCardProps = {
     handleUserRequestPopup: (value: boolean) => void;
     onPressAcceptUser: (user: BasicUserInfo) => void;
-    user: BasicUserInfo
+    onPressDeleteUser: (user: BasicUserInfo) => void;
+    user: BasicUserInfo;
 }
 
-export default function RequestCard({ handleUserRequestPopup, user, onPressAcceptUser }: Readonly<RequestCardProps>) {
+export default function RequestCard({ handleUserRequestPopup, user, onPressAcceptUser, onPressDeleteUser }: Readonly<RequestCardProps>) {
     return (
         <div className="relative overflow-hidden w-full p-4 mt-5 bg-blue-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 rounded-lg shadow-md mb-3">
             <div className="absolute left-0 top-0 h-12 w-12">
                 <div
-                    className="absolute transform -rotate-45 bg-sky-700 text-center text-white font-semibold right-[-55px] top-[32px] w-[170px]">
+                    className="absolute transform -rotate-45 bg-sky-600 text-center text-white font-semibold right-[-55px] top-[32px] w-[170px]">
                    &nbsp;&nbsp;&nbsp;&nbsp; User
                 </div>
             </div>
@@ -57,6 +58,9 @@ export default function RequestCard({ handleUserRequestPopup, user, onPressAccep
                     <button
                         type="button"
                         className="text-white bg-red-500 hover:bg-red-600 font-medium rounded-lg text-sm px-5 py-2.5"
+                        onClick={() => {
+                            onPressDeleteUser(user);
+                        }}
                     >
                         Delete
                     </button>
