@@ -9,8 +9,15 @@ type RequestCardProps = {
 
 export default function RequestCard({ handleUserRequestPopup, user, onPressAcceptUser }: Readonly<RequestCardProps>) {
     return (
-        <div className=" w-full p-4 bg-blue-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 rounded-lg shadow-md mb-3">
-            <div className='flex flex-col justify-between sm:flex-row gap-5'>
+        <div className="relative overflow-hidden w-full p-4 mt-5 bg-blue-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 rounded-lg shadow-md mb-3">
+            <div className="absolute left-0 top-0 h-12 w-12">
+                <div
+                    className="absolute transform -rotate-45 bg-sky-700 text-center text-white font-semibold right-[-55px] top-[32px] w-[170px]">
+                   &nbsp;&nbsp;&nbsp;&nbsp; User
+                </div>
+            </div>
+
+            <div className='flex flex-col justify-between sm:flex-row gap-5 ml-7'>
                 <div className='flex flex-col items-center sm:flex-row'>
                     <Image
                         className="w-16 h-16 rounded-full mt-2"
@@ -31,8 +38,8 @@ export default function RequestCard({ handleUserRequestPopup, user, onPressAccep
 
                 </div>
 
-                <div className='flex items-center font-semibold text-center'>
-                    <p>Request at: {new Date().toDateString()} </p>
+                <div className='flex items-center font-normal text-center'>
+                    <p>Date: {new Date().toDateString()} </p>
                 </div>
 
                 <div className='flex flex-row justify-center gap-3 sm:items-center'>
