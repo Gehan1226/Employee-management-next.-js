@@ -3,6 +3,7 @@ import { deleteUser, getDisabledUsers } from '@/app/api/auth';
 import UserRequest from '@/app/components/admin/UserRequest'
 import FilterIcon from '@/app/components/icons/FilterIcon';
 import SortIcon from '@/app/components/icons/SortIcon';
+import Paginations from '@/app/components/Paginations';
 import SearchBar from '@/app/components/SearchBar'
 import SuccessModal from '@/app/components/SuccessModal';
 import { DeleteResponse } from '@/app/types/response-types';
@@ -42,7 +43,7 @@ export default function page() {
     <>
 
       {responseState &&
-       <SuccessModal onClose={closeModal}/>
+        <SuccessModal onClose={closeModal} />
       }
 
       <div className='bg-blue-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 shadow-md'>
@@ -77,13 +78,17 @@ export default function page() {
             disabledUsers={disabledUsers}
             handleDeleteUser={onDeleteUser}
           />
+
+          <Paginations />
         </>
       ) : (
         <p className="text-center p-5 font-semibold text-2xl mt-5">
           Not Pending User request found....
         </p>
-      )}
 
+        
+      )}
+        <Paginations />
     </>
   )
 }
