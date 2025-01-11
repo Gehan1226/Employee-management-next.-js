@@ -30,3 +30,8 @@ export type RoleResponse = {
     data: Role[];
     message: string;
 };
+
+export type DeleteResponse = {
+    message: string;
+    success: boolean;
+}
