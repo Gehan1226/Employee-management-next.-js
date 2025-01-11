@@ -4,10 +4,17 @@ import UserRequest from '@/app/components/admin/UserRequest'
 import FilterIcon from '@/app/components/icons/FilterIcon';
 import SortIcon from '@/app/components/icons/SortIcon';
 import SearchBar from '@/app/components/SearchBar'
+import SuccessModal from '@/app/components/SuccessModal';
 import React, { useEffect, useState } from 'react'
+
+type sample = {
+  message: string;
+  success: boolean;
+}
 
 export default function page() {
   const [disabledUsers, setDisabledUsers] = useState<BasicUserInfo[]>([]);
+  const [responseState, setResponseState] = useState<sample | null>(null);
 
   useEffect(() => {
     const fetchDisabledUsers = async () => {
@@ -17,19 +24,29 @@ export default function page() {
       }
     };
     fetchDisabledUsers();
-  }, []);
+  }, [responseState]);
 
   const onDeleteUser = async (email: string) => {
     try {
       const response = await deleteUser(email);
+      setResponseState({ message: response, success: true });
       console.log(response);
     } catch (error) {
       console.error("Error deleting user:", error);
+      setResponseState({ message: (error as Error).message, success: false });
     }
+  };
+
+  const closeModal = () => {
+    setResponseState(null);
   };
 
   return (
     <>
+
+      {responseState &&
+       <SuccessModal onClose={closeModal}/>
+      }
 
       <div className=' bg-blue-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 shadow-md'>
         <p className='text-center p-5 font-semibold text-2xl mb-5'>Pending User Requests</p>
