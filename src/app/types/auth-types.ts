@@ -22,6 +22,9 @@ type BasicUserInfo  = {
 type BasicUserInfoResponse = {
     data: BasicUserInfo[];
     message: string;
+    totalPages: number;
+    totalElements: number;
+    currentPage: number;
 }
 
 type UserWithRoleAndEnabledStatus = {

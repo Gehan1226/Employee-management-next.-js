@@ -7,14 +7,12 @@ type PaginationsProps = {
     handleNext: () => void
 }
 
-export default function Paginations({ currentPage, handlePrev, handleNext }: Readonly<PaginationsProps>) {
-
-
+export default function Paginations({ currentPage, handlePrev, handleNext, totalPages }: Readonly<PaginationsProps>) {
 
     return (
         <div className="flex flex-col items-center mt-10">
             <span className="text-sm text-gray-700 dark:text-gray-400">
-                Displaying records <span className="font-semibold text-gray-900 dark:text-white">1</span> to <span className="font-semibold text-gray-900 dark:text-white">10</span> out of <span className="font-semibold text-gray-900 dark:text-white">100</span> total entries.
+                Displaying records <span className="font-semibold text-gray-900 dark:text-white">1</span> to <span className="font-semibold text-gray-900 dark:text-white">10</span> out of <span className="font-semibold text-gray-900 dark:text-white">{totalPages}</span> total pages.
             </span>
 
             <div className="inline-flex mt-2 xs:mt-0">
@@ -31,7 +29,7 @@ export default function Paginations({ currentPage, handlePrev, handleNext }: Rea
                 <button
                     className="flex items-center justify-center px-5 h-10 text-sm font-medium text-white bg-gray-600 border-0 border-s border-gray-700 rounded-e hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleNext}
-                    disabled={currentPage === 2}
+                    disabled={currentPage === totalPages - 1}
                 >
                     Next
                     <svg className="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">

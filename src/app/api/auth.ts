@@ -73,10 +73,15 @@ export const getDisabledUsers = async (currentPage: number): Promise<Partial<Bas
     }
 
     try {
-        const response = await axioInstance.get(url,  {
+        const response = await axioInstance.get(url, {
             params: { page: currentPage, size: 10 },
-          });
-        return { data: response.data.data };
+        });
+        return {
+            data: response.data.data,
+            totalPages: response.data.totalPages,
+            totalElements: response.data.totalElements,
+            currentPage: response.data.currentPage
+        };
     } catch (error: any) {
         if (axios.isAxiosError(error)) {
             if (error.response) {
