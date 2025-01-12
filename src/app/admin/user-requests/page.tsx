@@ -2,6 +2,7 @@
 import { deleteUser, getDisabledUsers } from '@/app/api/auth';
 import UserRequest from '@/app/components/admin/UserRequest'
 import FilterIcon from '@/app/components/icons/FilterIcon';
+import NotificationIcon from '@/app/components/icons/NotificationIcon';
 import SortIcon from '@/app/components/icons/SortIcon';
 import Paginations from '@/app/components/Paginations';
 import SearchBar from '@/app/components/SearchBar'
@@ -87,6 +88,13 @@ export default function page() {
               <FilterIcon />
               Filters
             </button>
+          </div>
+
+          <div className='flex mt-4 ml-4'>
+            <p className='font-semibold bg-gray-300 px-5 py-1 rounded-sm shadow-sm relative'>
+              <NotificationIcon className="absolute -top-1 right-0 w-4 h-4" />
+              Total requests: {paginationData.totalElements}
+            </p>
           </div>
 
           <UserRequest

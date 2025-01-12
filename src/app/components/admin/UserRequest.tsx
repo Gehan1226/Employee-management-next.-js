@@ -48,7 +48,7 @@ export default function UserRequest({ disabledUsers, handleDeleteUser }: Readonl
                 />
             }
 
-            <div className="max-h-[520px] overflow-y-auto px-5 py-5 mt-7 scrollbar-thin scrollbar-thumb-sky-600 scrollbar-track-gray-200">
+            <div className="max-h-[520px] overflow-y-auto px-5 py-3 mt-5 scrollbar-thin scrollbar-thumb-sky-600 scrollbar-track-gray-200">
                 {disabledUsers.map((user) => (
                     <RequestCard
                         key={user.email}
