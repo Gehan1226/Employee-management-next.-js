@@ -26,6 +26,7 @@
     "react-phone-number-input": "^3.4.10",
     "react-select": "^5.9.0",
     "react-select-country-list": "^2.2.3",
+    "tailwind-scrollbar": "^3.1.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {

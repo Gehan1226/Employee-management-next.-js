@@ -14,8 +14,9 @@ export default function Paginations({ currentPage, handlePrev, handleNext }: Rea
     return (
         <div className="flex flex-col items-center mt-10">
             <span className="text-sm text-gray-700 dark:text-gray-400">
-                Showing <span className="font-semibold text-gray-900 dark:text-white">1</span> to <span className="font-semibold text-gray-900 dark:text-white">10</span> of <span className="font-semibold text-gray-900 dark:text-white">100</span> Entries
+                Displaying records <span className="font-semibold text-gray-900 dark:text-white">1</span> to <span className="font-semibold text-gray-900 dark:text-white">10</span> out of <span className="font-semibold text-gray-900 dark:text-white">100</span> total entries.
             </span>
+
             <div className="inline-flex mt-2 xs:mt-0">
                 <button
                     className="flex items-center justify-center px-5 h-10 text-sm font-medium text-white bg-gray-600 rounded-s hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"

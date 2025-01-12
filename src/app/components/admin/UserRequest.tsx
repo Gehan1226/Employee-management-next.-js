@@ -48,15 +48,18 @@ export default function UserRequest({ disabledUsers, handleDeleteUser }: Readonl
                 />
             }
 
-            {disabledUsers.map((user) => (
-                <RequestCard
-                    key={user.email}
-                    handleUserRequestPopup={handleUserRequestPopup}
-                    onPressAcceptUser={handleAcceptUser}
-                    onPressDeleteUser={activateDeletePopup}
-                    user={user}
-                />
-            ))}
+            <div className="max-h-[520px] overflow-y-auto px-5 py-5 mt-7 scrollbar-thin scrollbar-thumb-sky-600 scrollbar-track-gray-200">
+                {disabledUsers.map((user) => (
+                    <RequestCard
+                        key={user.email}
+                        handleUserRequestPopup={handleUserRequestPopup}
+                        onPressAcceptUser={handleAcceptUser}
+                        onPressDeleteUser={activateDeletePopup}
+                        user={user}
+                    />
+                ))}
+            </div>
+
 
         </>
     )
