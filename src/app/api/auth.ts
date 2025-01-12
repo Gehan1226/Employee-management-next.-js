@@ -65,7 +65,7 @@ export const userLogin = async (prevState: any, formData: FormData): Promise<Par
     }
 }
 
-export const getDisabledUsers = async (): Promise<Partial<BasicUserInfoResponse>> => {
+export const getDisabledUsers = async (currentPage: number): Promise<Partial<BasicUserInfoResponse>> => {
     const url = process.env.NEXT_PUBLIC_DISABLED_USERS_API;
     if (!url) {
         console.error("Environment variable 'NEXT_PUBLIC_DISABLED_USERS_API' is not defined.");
@@ -73,7 +73,9 @@ export const getDisabledUsers = async (): Promise<Partial<BasicUserInfoResponse>
     }
 
     try {
-        const response = await axioInstance.get(url);
+        const response = await axioInstance.get(url,  {
+            params: { page: currentPage, size: 10 },
+          });
         return { data: response.data.data };
     } catch (error: any) {
         if (axios.isAxiosError(error)) {

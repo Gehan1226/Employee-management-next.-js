@@ -13,16 +13,17 @@ import React, { useEffect, useState } from 'react'
 export default function page() {
   const [disabledUsers, setDisabledUsers] = useState<BasicUserInfo[]>([]);
   const [responseState, setResponseState] = useState<DeleteResponse | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     const fetchDisabledUsers = async () => {
-      const response = await getDisabledUsers();
+      const response = await getDisabledUsers(currentPage);
       if (!response.message) {
         setDisabledUsers(response.data || []);
       }
     };
     fetchDisabledUsers();
-  }, [responseState]);
+  }, [responseState, currentPage]);
 
   const onDeleteUser = async (email: string) => {
     try {
@@ -37,6 +38,10 @@ export default function page() {
 
   const closeModal = () => {
     setResponseState(null);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -79,16 +84,19 @@ export default function page() {
             handleDeleteUser={onDeleteUser}
           />
 
-          <Paginations />
+          <Paginations 
+            currentPage={currentPage}
+            totalPages={10}
+            handlePrev={() => handlePageChange(currentPage - 1)}
+            handleNext={() => handlePageChange(currentPage + 1)}
+          />
+
         </>
       ) : (
         <p className="text-center p-5 font-semibold text-2xl mt-5">
           Not Pending User request found....
-        </p>
-
-        
+        </p> 
       )}
-        <Paginations />
     </>
   )
 }
