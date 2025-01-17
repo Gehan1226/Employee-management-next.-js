@@ -1,6 +1,7 @@
 "use client";
 import { deleteUser, getDisabledUsers } from '@/app/api/auth';
 import UserRequest from '@/app/components/admin/UserRequest'
+import UserRequestFilter from '@/app/components/admin/UserRequestFilter';
 import FilterIcon from '@/app/components/icons/FilterIcon';
 import NotificationIcon from '@/app/components/icons/NotificationIcon';
 import SortIcon from '@/app/components/icons/SortIcon';
@@ -61,6 +62,8 @@ export default function page() {
       {responseState &&
         <SuccessModal onClose={closeModal} />
       }
+
+      <UserRequestFilter />
 
       <div className='bg-blue-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 shadow-md'>
         <p className='text-center p-5 font-semibold text-2xl mb-5'>Pending User Requests</p>
