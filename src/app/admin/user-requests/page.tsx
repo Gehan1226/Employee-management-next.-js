@@ -17,6 +17,7 @@ export default function page() {
   const [responseState, setResponseState] = useState<DeleteResponse | null>(null);
   const [paginationData, setPaginationData] = useState<PaginationInfo>({ totalPages: 0, totalElements: 0, currentPage: 0 });
   const [isOpenUserFilterPopup, setIsOpenUserFilterPopup] = useState(false);
+  const [filterData, setFilterData] = useState<UserFilters>(userFilterInitials)
 
   useEffect(() => {
     const fetchDisabledUsers = async () => {
@@ -55,6 +56,10 @@ export default function page() {
     }));
   };
 
+  const updateFilters = (filters: UserFilters) => {
+    setFilterData(filters);
+  }
+
   return (
     <>
 
@@ -63,7 +68,10 @@ export default function page() {
       }
 
       {isOpenUserFilterPopup &&
-        <UserRequestFilter onClose={() => setIsOpenUserFilterPopup(false)} />
+        <UserRequestFilter
+          onClose={() => setIsOpenUserFilterPopup(false)}
+          updateFilters={updateFilters}
+        />
       }
 
       <div className='bg-blue-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 shadow-md'>

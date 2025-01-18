@@ -4,10 +4,11 @@ import DateInput from '../DateInput'
 import { Checkbox, FormControlLabel } from '@mui/material'
 
 type UserRequestFilterProps = {
-    onClose: () => void
+    onClose: () => void;
+    updateFilters: (filters: UserFilters) => void;
 }
 
-export default function UserRequestFilter({ onClose }: Readonly<UserRequestFilterProps>) {
+export default function UserRequestFilter({ onClose, updateFilters }: Readonly<UserRequestFilterProps>) {
 
     const handleSubmit = (formData: FormData) => {
         const data = Object.fromEntries(formData.entries()) as Record<string, string>;

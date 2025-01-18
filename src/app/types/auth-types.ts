@@ -33,3 +33,8 @@ type UserWithRoleAndEnabledStatus = {
     role: string;
     enabled: boolean;
 }
+
+type UserFilters = {
+    startDate: string | null;
+    endDate: string | null;
+}
