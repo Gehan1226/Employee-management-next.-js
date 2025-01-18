@@ -8,6 +8,7 @@ import SortIcon from '@/app/components/icons/SortIcon';
 import Paginations from '@/app/components/Paginations';
 import SearchBar from '@/app/components/SearchBar'
 import SuccessModal from '@/app/components/SuccessModal';
+import { userFilterInitials } from '@/app/lib/util/admin-initials';
 import { DeleteResponse } from '@/app/types/response-types';
 import React, { useEffect, useState } from 'react'
 
@@ -21,7 +22,7 @@ export default function page() {
 
   useEffect(() => {
     const fetchDisabledUsers = async () => {
-      const response = await getDisabledUsers(paginationData.currentPage);
+      const response = await getDisabledUsers(paginationData.currentPage, filterData.startDate, filterData.endDate);
       if (!response.message) {
         setDisabledUsers(response.data || []);
         setPaginationData({
@@ -32,7 +33,7 @@ export default function page() {
       }
     };
     fetchDisabledUsers();
-  }, [responseState, paginationData.currentPage]);
+  }, [responseState, paginationData.currentPage, filterData.startDate, filterData.endDate]);
 
   const onDeleteUser = async (email: string) => {
     try {

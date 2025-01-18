@@ -12,7 +12,19 @@ export default function UserRequestFilter({ onClose, updateFilters }: Readonly<U
 
     const handleSubmit = (formData: FormData) => {
         const data = Object.fromEntries(formData.entries()) as Record<string, string>;
-        console.log(data);
+
+        const convertDateFormat = (date: string): string => {
+            const [month, day, year] = date.split('/');
+            return `${year}-${month}-${day}`;
+        };
+
+        data.startDate = convertDateFormat(data.startDate);
+        data.endDate = convertDateFormat(data.endDate);
+
+        updateFilters({
+            startDate: data.startDate,
+            endDate: data.endDate
+        });
     };
 
     return (
