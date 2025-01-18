@@ -16,6 +16,7 @@ export default function page() {
   const [disabledUsers, setDisabledUsers] = useState<BasicUserInfo[]>([]);
   const [responseState, setResponseState] = useState<DeleteResponse | null>(null);
   const [paginationData, setPaginationData] = useState<PaginationInfo>({ totalPages: 0, totalElements: 0, currentPage: 0 });
+  const [isOpenUserFilterPopup, setIsOpenUserFilterPopup] = useState(false);
 
   useEffect(() => {
     const fetchDisabledUsers = async () => {
@@ -31,8 +32,6 @@ export default function page() {
     };
     fetchDisabledUsers();
   }, [responseState, paginationData.currentPage]);
-
-  console.log(paginationData)
 
   const onDeleteUser = async (email: string) => {
     try {
@@ -63,7 +62,9 @@ export default function page() {
         <SuccessModal onClose={closeModal} />
       }
 
-      <UserRequestFilter />
+      {isOpenUserFilterPopup &&
+        <UserRequestFilter onClose={() => setIsOpenUserFilterPopup(false)} />
+      }
 
       <div className='bg-blue-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 shadow-md'>
         <p className='text-center p-5 font-semibold text-2xl mb-5'>Pending User Requests</p>
@@ -87,6 +88,7 @@ export default function page() {
             <button
               type="button"
               className="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none sm:w-auto shadow-md"
+              onClick={() => setIsOpenUserFilterPopup(true)}
             >
               <FilterIcon />
               Filters
