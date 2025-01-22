@@ -27,6 +27,7 @@
     "react-select": "^5.9.0",
     "react-select-country-list": "^2.2.3",
     "tailwind-scrollbar": "^3.1.0",
+    "use-debounce": "^10.0.4",
     "zod": "^3.24.1"
   },
   "devDependencies": {

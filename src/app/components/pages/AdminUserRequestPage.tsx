@@ -11,6 +11,7 @@ import SuccessModal from "@/app/components/SuccessModal";
 import { userFilterInitials } from "@/app/lib/util/admin-initials";
 import { DeleteResponse } from "@/app/types/response-types";
 import React, { useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function AdminUserRequestPage() {
   const [disabledUsers, setDisabledUsers] = useState<BasicUserInfo[]>([]);
@@ -77,6 +78,13 @@ export default function AdminUserRequestPage() {
     setFilterData(filters);
   };
 
+  const handleSearch = useDebouncedCallback((searchTerm: string) => {
+    setFilterData((prev) => ({
+      ...prev,
+      searchTerm,
+    }));
+  }, 300);
+
   return (
     <>
       {responseState && <SuccessModal onClose={closeModal} />}
@@ -98,7 +106,10 @@ export default function AdminUserRequestPage() {
         <>
           <div className="grid grid-cols-6 gap-4">
             <div className="col-span-4">
-              <SearchBar />
+              <SearchBar
+                placeholder="Search Users..."
+                onSearch={handleSearch}
+              />
             </div>
 
             <button
