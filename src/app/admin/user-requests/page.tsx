@@ -1,5 +1,5 @@
-import AdminUserRequest from "@/app/components/pages/AdminUserRequest";
+import AdminUserRequestPage from "@/app/components/pages/AdminUserRequestPage";
 
 export default function Page() {
-  return <AdminUserRequest />;
+  return <AdminUserRequestPage />;
 }

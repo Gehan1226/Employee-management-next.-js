@@ -12,7 +12,7 @@ import { userFilterInitials } from "@/app/lib/util/admin-initials";
 import { DeleteResponse } from "@/app/types/response-types";
 import React, { useEffect, useState } from "react";
 
-export default function AdminUserRequest() {
+export default function AdminUserRequestPage() {
   const [disabledUsers, setDisabledUsers] = useState<BasicUserInfo[]>([]);
   const [responseState, setResponseState] = useState<DeleteResponse | null>(
     null
@@ -30,7 +30,8 @@ export default function AdminUserRequest() {
       const response = await getDisabledUsers(
         paginationData.currentPage,
         filterData.startDate,
-        filterData.endDate
+        filterData.endDate,
+        filterData.searchTerm
       );
       if (!response.message) {
         setDisabledUsers(response.data || []);
@@ -47,6 +48,7 @@ export default function AdminUserRequest() {
     paginationData.currentPage,
     filterData.startDate,
     filterData.endDate,
+    filterData.searchTerm,
   ]);
 
   const onDeleteUser = async (email: string) => {

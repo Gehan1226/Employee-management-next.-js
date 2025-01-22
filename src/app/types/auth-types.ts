@@ -37,4 +37,5 @@ type UserWithRoleAndEnabledStatus = {
 type UserFilters = {
     startDate: string | null;
     endDate: string | null;
+    searchTerm: string | null;
 }

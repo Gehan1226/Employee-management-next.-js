@@ -68,7 +68,8 @@ export const userLogin = async (prevState: any, formData: FormData): Promise<Par
 export const getDisabledUsers = async (
     currentPage: number,
     startDate: string | null,
-    endDate: string | null
+    endDate: string | null,
+    searchTerms: string | null
 ): Promise<Partial<BasicUserInfoResponse>> => {
     const url = process.env.NEXT_PUBLIC_DISABLED_USERS_API;
     if (!url) {
@@ -80,6 +81,7 @@ export const getDisabledUsers = async (
         const params: Record<string, any> = { page: currentPage, size: 10 };
         if (startDate) params.startDate = startDate;
         if (endDate) params.endDate = endDate;
+        if (searchTerms) params.searchTerm = searchTerms;
 
         const response = await axioInstance.get(url, { params });
         return {
