@@ -7,7 +7,7 @@ const menuItems: MenuItem[] = [
     { name: "User Requests", link: "/admin/user-requests", icon: <UserRequestIcon /> },
 ];
 
-export default function layout({ children }: Readonly<{ children: React.ReactNode; }>) {
+export default function Layout({ children }: Readonly<{ children: React.ReactNode; }>) {
 
 
     return (

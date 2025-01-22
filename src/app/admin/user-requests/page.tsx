@@ -13,7 +13,7 @@ import { DeleteResponse } from '@/app/types/response-types';
 import React, { useEffect, useState } from 'react'
 
 
-export default function page() {
+export default function Page() {
   const [disabledUsers, setDisabledUsers] = useState<BasicUserInfo[]>([]);
   const [responseState, setResponseState] = useState<DeleteResponse | null>(null);
   const [paginationData, setPaginationData] = useState<PaginationInfo>({ totalPages: 0, totalElements: 0, currentPage: 0 });

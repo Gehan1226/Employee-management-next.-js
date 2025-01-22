@@ -10,7 +10,7 @@ type RequestCardProps = {
 
 export default function RequestCard({ handleUserRequestPopup, user, onPressAcceptUser, onPressDeleteUser }: Readonly<RequestCardProps>) {
     return (
-        <div className="relative overflow-hidden w-full p-4 mt-5 bg-blue-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 rounded-lg shadow-md mb-3">
+        <div className="relative overflow-hidden w-full p-4 mt-5 bg-slate-200 rounded-lg shadow-md mb-3">
             <div className="absolute left-0 top-0 h-12 w-12">
                 <div
                     className="absolute transform -rotate-45 bg-sky-600 text-center text-white font-semibold right-[-55px] top-[32px] w-[170px]">
