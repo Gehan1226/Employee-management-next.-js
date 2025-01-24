@@ -1,4 +1,5 @@
 import React from "react";
+import { DepartmentTable } from "../admin/DepartmentTable";
 
 export default function AdminDepartmentPage() {
   return (
@@ -18,9 +19,9 @@ export default function AdminDepartmentPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-4 gap-4 mt-5">
-        <div>01</div>
-        <div>09</div>
+      <div className="grid grid-cols-2 gap-4 mt-5">
+        <DepartmentTable />
+        <DepartmentTable />
       </div>
     </>
   );
