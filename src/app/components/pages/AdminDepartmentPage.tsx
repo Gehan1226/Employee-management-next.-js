@@ -1,5 +1,7 @@
 import React from "react";
 import { DepartmentTable } from "../admin/DepartmentTable";
+import { RoleTable } from "../admin/RoleTable";
+import { EmployeeTable } from "../admin/EmployeeTable";
 
 export default function AdminDepartmentPage() {
   return (
@@ -20,8 +22,22 @@ export default function AdminDepartmentPage() {
       </div>
 
       <div className="grid grid-cols-2 gap-4 mt-5">
-        <DepartmentTable />
-        <DepartmentTable />
+        <div className="flex flex-col gap-2">
+          <p className="font-semibold text-center text-lg">Departments Table</p>
+          <DepartmentTable />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mt-5">
+        <div className="flex flex-col gap-2">
+          <p className="font-semibold text-center text-lg">Role Table</p>
+          <RoleTable />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <p className="font-semibold text-center text-lg">Employee Table</p>
+          <EmployeeTable />
+        </div>
       </div>
     </>
   );
