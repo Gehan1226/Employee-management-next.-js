@@ -2,6 +2,14 @@ import React from "react";
 import { DepartmentTable } from "../admin/DepartmentTable";
 import { RoleTable } from "../admin/RoleTable";
 import { EmployeeTable } from "../admin/EmployeeTable";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../card";
+import { DepartmentChart } from "../admin/DepartmentChart";
 
 export default function AdminDepartmentPage() {
   return (
@@ -22,22 +30,35 @@ export default function AdminDepartmentPage() {
       </div>
 
       <div className="grid grid-cols-2 gap-4 mt-5">
-        <div className="flex flex-col gap-2">
-          <p className="font-semibold text-center text-lg">Departments Table</p>
-          <DepartmentTable />
-        </div>
+        <Card className="flex flex-col">
+          <CardHeader className="items-center pb-0">
+            <CardTitle>Department Table</CardTitle>
+          </CardHeader>
+          <CardContent className="flex-1 pb-0">
+            <DepartmentTable />
+          </CardContent>
+        </Card>
+        <DepartmentChart />
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mt-5">
-        <div className="flex flex-col gap-2">
-          <p className="font-semibold text-center text-lg">Role Table</p>
-          <RoleTable />
-        </div>
+        <div className="flex flex-col gap-2 mt-5">
+          <Card className="flex flex-col">
+            <CardHeader className="items-center pb-0">
+              <CardTitle>Roles and Employees Table</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-row gap-4 mt-5">
+              <RoleTable />
+              <EmployeeTable />
+            </CardContent>
+          </Card>
 
-        <div className="flex flex-col gap-2">
+          {/* <p className="font-semibold text-center text-lg">Role Table</p>
+          <RoleTable /> */}
+
+        {/* <div className="flex flex-col gap-2">
           <p className="font-semibold text-center text-lg">Employee Table</p>
           <EmployeeTable />
-        </div>
+        </div> */}
       </div>
     </>
   );

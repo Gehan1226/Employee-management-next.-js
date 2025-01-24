@@ -78,51 +78,33 @@ const data: Employee[] = [
 
 export const columns: ColumnDef<Employee>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "firstName",
-    header: () => <div className="-ml-12">First Name</div>,
+    header: () => <div className="text-center">Employee</div>,
     cell: ({ row }) => (
-      <div className="capitalize py-2 -ml-12">{row.getValue("firstName")}</div>
+      <div className="flex flex-col text-center">
+        <p className="font-semibold">Gehan sithija</p>
+        <p>gehan12@gmail.com</p>
+        {/* <div className="capitalize py-2 -ml-12">{row.getValue("firstName")}</div> */}
+      </div>
     ),
   },
-  {
-    accessorKey: "lastName",
-    header: () => <div className="-ml-12">Last Name</div>,
-    cell: ({ row }) => (
-      <div className="capitalize -ml-12">{row.getValue("lastName")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: () => <div className="-ml-12">Email</div>,
-    cell: ({ row }) => <div className="-ml-12">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "gender",
-    header: "Gender",
-    cell: ({ row }) => <div>{row.getValue("gender")}</div>,
-  },
+  // {
+  //   accessorKey: "lastName",
+  //   header: () => <div className="-ml-12">Last Name</div>,
+  //   cell: ({ row }) => (
+  //     <div className="capitalize -ml-12">{row.getValue("lastName")}</div>
+  //   ),
+  // },
+  // {
+  //   accessorKey: "email",
+  //   header: () => <div className="-ml-12">Email</div>,
+  //   cell: ({ row }) => <div className="-ml-12">{row.getValue("email")}</div>,
+  // },
+  // {
+  //   accessorKey: "gender",
+  //   header: "Gender",
+  //   cell: ({ row }) => <div>{row.getValue("gender")}</div>,
+  // },
 ];
 
 export function EmployeeTable() {

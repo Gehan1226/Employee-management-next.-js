@@ -91,28 +91,32 @@ export const columns: ColumnDef<Department>[] = [
   },
   {
     accessorKey: "name",
-    header: () => <div>Name</div>,
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    header: () => <div className="-ml-12">Name</div>,
+    cell: ({ row }) => (
+      <div className="capitalize -ml-12">{row.getValue("name")}</div>
+    ),
   },
   {
     accessorKey: "manager",
-    header: "Manager",
+    header: () => <div className="-ml-12">Manager</div>,
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("manager")}</div>
+      <div className="capitalize -ml-12">{row.getValue("manager")}</div>
     ),
   },
   {
     accessorKey: "responsibility",
-    header: () => <div>Responsibility</div>,
+    header: () => <div className="-ml-12">Responsibility</div>,
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("responsibility")}</div>
+      <div className="capitalize -ml-12">{row.getValue("responsibility")}</div>
     ),
   },
   {
     accessorKey: "employeeCount",
     header: () => <div>Employee Count</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-center">{row.getValue("employeeCount")}</div>
+      <div className="capitalize text-center">
+        {row.getValue("employeeCount")}
+      </div>
     ),
   },
 ];
