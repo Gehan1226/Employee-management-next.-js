@@ -16,10 +16,21 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { Checkbox } from "../table/checkbox";
 import { Input } from "../table/input";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "../table/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../table/dropdown-menu";
 import { Button } from "../table/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table/table";
-
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../table/table";
 
 type Department = {
   name: string;
@@ -80,7 +91,7 @@ export const columns: ColumnDef<Department>[] = [
   },
   {
     accessorKey: "name",
-    header: "Department Name",
+    header: () => <div>Name</div>,
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
@@ -92,16 +103,16 @@ export const columns: ColumnDef<Department>[] = [
   },
   {
     accessorKey: "responsibility",
-    header: () => <div className="text-right">Responsibility</div>,
+    header: () => <div>Responsibility</div>,
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("responsibility")}</div>
     ),
   },
   {
     accessorKey: "employeeCount",
-    header: () => <div className="text-right">Employee Count</div>,
+    header: () => <div>Employee Count</div>,
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("employeeCount")}</div>
+      <div className="capitalize text-center">{row.getValue("employeeCount")}</div>
     ),
   },
 ];
@@ -179,10 +190,7 @@ export function DepartmentTable() {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead
-                      key={header.id}
-                      className="px-5 py-1 text-center"
-                    >
+                    <TableHead key={header.id} className="">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -203,7 +211,7 @@ export function DepartmentTable() {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-5 py-3 text-center">
+                    <TableCell key={cell.id} className="">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
