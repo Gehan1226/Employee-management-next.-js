@@ -81,9 +81,11 @@ export const columns: ColumnDef<Employee>[] = [
     accessorKey: "firstName",
     header: () => <div className="text-center">Employee</div>,
     cell: ({ row }) => (
-      <div className="flex flex-col text-center">
-        <p className="font-semibold">Gehan sithija</p>
-        <p>gehan12@gmail.com</p>
+      <div>
+        <div className="flex flex-col justify-center">
+          <p className="font-semibold text-left">Gehan sithija</p>
+          <p className="text-left">gehan12@gmail.com</p>
+        </div>
         {/* <div className="capitalize py-2 -ml-12">{row.getValue("firstName")}</div> */}
       </div>
     ),

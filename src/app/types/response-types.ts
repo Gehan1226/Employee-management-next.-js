@@ -9,10 +9,17 @@ export type CountryDetailsResponse = {
     message?: string;
 };
 
+// export type Department = {
+//     id: number;
+//     name: string;
+// }
 export type Department = {
-    id: number;
-    name: string;
-}
+  name: string;
+  manager: string;
+  responsibility: string;
+  employeeCount: number;
+};
+
 
 export type DepartmentResponse = {
     success: boolean;
@@ -35,3 +42,11 @@ export type DeleteResponse = {
     message: string;
     success: boolean;
 }
+
+export type PaginatedDepartmentResponse = {
+    data: Department[];
+    totalPages: number;
+    totalElements: number;
+    currentPage: number;
+    message?: string;
+};

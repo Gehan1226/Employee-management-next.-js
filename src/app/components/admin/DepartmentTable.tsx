@@ -31,13 +31,10 @@ import {
   TableHeader,
   TableRow,
 } from "../table/table";
+import { useEffect, useState } from "react";
+import { getAllDepartmentsWithPagination } from "@/app/api/department";
+import { Department } from "@/app/types/response-types";
 
-type Department = {
-  name: string;
-  manager: string;
-  responsibility: string;
-  employeeCount: number;
-};
 
 const data: Department[] = [
   {
@@ -63,7 +60,7 @@ const data: Department[] = [
     manager: "Michael Brown",
     responsibility: "Handling budgets",
     employeeCount: 15,
-  },
+  }
 ];
 
 export const columns: ColumnDef<Department>[] = [
@@ -122,16 +119,37 @@ export const columns: ColumnDef<Department>[] = [
 ];
 
 export function DepartmentTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [rowSelection, setRowSelection] = useState({});
+
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getAllDepartmentsWithPagination(0);
+      if (!response.data) {
+        return;
+      }
+      setDepartments(response.data);
+    }
+    fetchData();
+  }, []);
+
+
+
+
+
+
+
+
 
   const table = useReactTable({
-    data,
+    data: departments,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
