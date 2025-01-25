@@ -46,8 +46,10 @@ export default function AdminDepartmentPage() {
           <CardHeader className="items-center pb-0">
             <CardTitle>Roles and Employees Table</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-row gap-4 mt-5">
-            <RoleTable />
+          <CardContent className="grid grid-cols-3 gap-4 mt-5">
+            <div className="col-span-2">
+              <RoleTable />
+            </div>
             <EmployeeTable />
           </CardContent>
         </Card>

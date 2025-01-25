@@ -31,6 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "../table/table";
+import Image from "next/image";
 
 type Employee = {
   firstName: string;
@@ -78,35 +79,33 @@ const data: Employee[] = [
 
 export const columns: ColumnDef<Employee>[] = [
   {
-    accessorKey: "firstName",
+    accessorKey: "employee",
     header: () => <div className="text-center">Employee</div>,
     cell: ({ row }) => (
-      <div>
-        <div className="flex flex-col justify-center">
-          <p className="font-semibold text-left">Gehan sithija</p>
-          <p className="text-left">gehan12@gmail.com</p>
+      <div className="flex flex-row gap-5">
+        <Image
+          src="https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
+          alt="Male User Avatar Icon"
+          width={40}
+          height={40}
+        />
+        <div className="flex flex-col ">
+          <p className="font-semibold">Gehan sithija</p>
+          <p className="font-semibold text-slate-500">gehan12@gmail.com</p>
         </div>
         {/* <div className="capitalize py-2 -ml-12">{row.getValue("firstName")}</div> */}
       </div>
     ),
   },
-  // {
-  //   accessorKey: "lastName",
-  //   header: () => <div className="-ml-12">Last Name</div>,
-  //   cell: ({ row }) => (
-  //     <div className="capitalize -ml-12">{row.getValue("lastName")}</div>
-  //   ),
-  // },
-  // {
-  //   accessorKey: "email",
-  //   header: () => <div className="-ml-12">Email</div>,
-  //   cell: ({ row }) => <div className="-ml-12">{row.getValue("email")}</div>,
-  // },
-  // {
-  //   accessorKey: "gender",
-  //   header: "Gender",
-  //   cell: ({ row }) => <div>{row.getValue("gender")}</div>,
-  // },
+  {
+    accessorKey: "gender",
+    header: () => <div className="ml-14">Gender</div>,
+    cell: ({ row }) => (
+      <div className="capitalize text-center font-semibold text-slate-700 bg-sky-200 w-16 rounded-md ml-14">
+        Male
+      </div>
+    ),
+  }
 ];
 
 export function EmployeeTable() {
@@ -143,10 +142,10 @@ export function EmployeeTable() {
         <Input
           placeholder="Filter names..."
           value={
-            (table.getColumn("firstName")?.getFilterValue() as string) ?? ""
+            (table.getColumn("employee")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("firstName")?.setFilterValue(event.target.value)
+            table.getColumn("gender")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
