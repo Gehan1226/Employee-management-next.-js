@@ -34,6 +34,8 @@ import {
 import { useEffect, useState } from "react";
 import { getAllDepartmentsWithPagination } from "@/app/api/department";
 import { Department } from "@/app/types/response-types";
+import { set } from "zod";
+import { useDebouncedCallback } from "use-debounce";
 
 
 const data: Department[] = [
@@ -120,6 +122,9 @@ export const columns: ColumnDef<Department>[] = [
 
 export function DepartmentTable() {
   const [departments, setDepartments] = useState<Department[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     []
@@ -131,22 +136,15 @@ export function DepartmentTable() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getAllDepartmentsWithPagination(0);
+      const response = await getAllDepartmentsWithPagination(currentPage, searchTerm);
       if (!response.data) {
         return;
       }
       setDepartments(response.data);
+      setTotalPages(response.totalPages ?? 0);
     }
     fetchData();
-  }, []);
-
-
-
-
-
-
-
-
+  }, [currentPage, searchTerm]);
 
   const table = useReactTable({
     data: departments,
@@ -167,16 +165,17 @@ export function DepartmentTable() {
     },
   });
 
+  const handleSearch = useDebouncedCallback((value: string) => {
+    setSearchTerm(value); 
+  }, 300);
+
   return (
     <div className="w-full overflow-x-auto">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter names..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
           className="max-w-sm"
+          onChange={(e) => handleSearch(e.target.value)}
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -264,16 +263,18 @@ export function DepartmentTable() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => {
+              setCurrentPage((prev) => prev - 1);
+            }}
+            disabled={currentPage === 0}
           >
             Previous
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            disabled={currentPage === totalPages - 1}
           >
             Next
           </Button>
