@@ -63,23 +63,27 @@ export const columns: ColumnDef<Role>[] = [
   },
   {
     accessorKey: "name",
-    header: () => <div className="-ml-12">Name</div>,
+    header: () => <div className="-ml-16">Name</div>,
     cell: ({ row }) => (
-      <div className="capitalize -ml-12">{row.getValue("name")}</div>
+      <div className="capitalize -ml-16 font-semibold text-indigo-600 py-1">
+        {row.getValue("name")}
+      </div>
     ),
   },
   {
     accessorKey: "description",
-    header: "Description",
+    header: () => <div className="-ml-12">Description</div>,
     cell: ({ row }) => (
-      <div className="capitalize -ml-12">{row.getValue("description")}</div>
+      <div className="capitalize -ml-12 font-semibold text-slate-600">
+        {row.getValue("description")}
+      </div>
     ),
   },
   {
     accessorKey: "employeeCount",
     header: () => <div>Employee Count</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-center">
+      <div className="capitalize text-center mx-auto bg-green-200 w-16 rounded-md">
         {row.getValue("employeeCount")}
       </div>
     ),
