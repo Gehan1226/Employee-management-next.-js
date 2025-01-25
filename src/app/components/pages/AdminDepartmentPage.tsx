@@ -29,8 +29,8 @@ export default function AdminDepartmentPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mt-5">
-        <Card className="flex flex-col">
+      <div className="grid grid-cols-3 gap-4 mt-5">
+        <Card className="flex flex-col col-span-2">
           <CardHeader className="items-center pb-0">
             <CardTitle>Department Table</CardTitle>
           </CardHeader>
@@ -41,18 +41,18 @@ export default function AdminDepartmentPage() {
         <DepartmentChart />
       </div>
 
-        <div className="flex flex-col gap-2 mt-5">
-          <Card className="flex flex-col">
-            <CardHeader className="items-center pb-0">
-              <CardTitle>Roles and Employees Table</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-row gap-4 mt-5">
-              <RoleTable />
-              <EmployeeTable />
-            </CardContent>
-          </Card>
+      <div className="flex flex-col gap-2 mt-5">
+        <Card className="flex flex-col">
+          <CardHeader className="items-center pb-0">
+            <CardTitle>Roles and Employees Table</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-row gap-4 mt-5">
+            <RoleTable />
+            <EmployeeTable />
+          </CardContent>
+        </Card>
 
-          {/* <p className="font-semibold text-center text-lg">Role Table</p>
+        {/* <p className="font-semibold text-center text-lg">Role Table</p>
           <RoleTable /> */}
 
         {/* <div className="flex flex-col gap-2">

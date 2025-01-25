@@ -34,36 +34,9 @@ import {
 import { useEffect, useState } from "react";
 import { getAllDepartmentsWithPagination } from "@/app/api/department";
 import { Department } from "@/app/types/response-types";
-import { set } from "zod";
 import { useDebouncedCallback } from "use-debounce";
 
 
-const data: Department[] = [
-  {
-    name: "Engineering",
-    manager: "John Doe",
-    responsibility: "Developing software",
-    employeeCount: 50,
-  },
-  {
-    name: "Marketing",
-    manager: "Jane Smith",
-    responsibility: "Promoting products",
-    employeeCount: 20,
-  },
-  {
-    name: "HR",
-    manager: "Emily Davis",
-    responsibility: "Managing recruitment",
-    employeeCount: 10,
-  },
-  {
-    name: "Finance",
-    manager: "Michael Brown",
-    responsibility: "Handling budgets",
-    employeeCount: 15,
-  }
-];
 
 export const columns: ColumnDef<Department>[] = [
   {
@@ -92,28 +65,34 @@ export const columns: ColumnDef<Department>[] = [
     accessorKey: "name",
     header: () => <div className="-ml-12">Name</div>,
     cell: ({ row }) => (
-      <div className="capitalize -ml-12">{row.getValue("name")}</div>
+      <div className="capitalize -ml-12 font-semibold text-indigo-600 py-1">
+        {row.getValue("name")}
+      </div>
     ),
   },
   {
     accessorKey: "manager",
-    header: () => <div className="-ml-12">Manager</div>,
+    header: () => <div className="-ml-12">👤 Manager</div>,
     cell: ({ row }) => (
-      <div className="capitalize -ml-12">{row.getValue("manager")}</div>
+      <div className="capitalize -ml-12 font-semibold text-slate-800">
+        {row.getValue("manager")}
+      </div>
     ),
   },
   {
     accessorKey: "responsibility",
     header: () => <div className="-ml-12">Responsibility</div>,
     cell: ({ row }) => (
-      <div className="capitalize -ml-12">{row.getValue("responsibility")}</div>
+      <div className="capitalize -ml-12 font-semibold text-slate-600">
+        {row.getValue("responsibility")}
+      </div>
     ),
   },
   {
     accessorKey: "employeeCount",
     header: () => <div>Employee Count</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-center">
+      <div className="capitalize text-center mx-auto bg-green-200 w-16 rounded-md">
         {row.getValue("employeeCount")}
       </div>
     ),
