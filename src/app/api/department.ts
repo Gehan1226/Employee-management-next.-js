@@ -40,7 +40,7 @@ export const getAllDepartmentsWithPagination = async (
   const url = process.env.NEXT_PUBLIC_API_PAGINATED_DEPARTMENTS;
   if (!url) {
     console.error(
-      "Environment variable 'NEXT_PUBLIC_DISABLED_USERS_API' is not defined."
+      "Environment variable 'NEXT_PUBLIC_API_PAGINATED_DEPARTMENTS' is not defined."
     );
     throw new Error(
       "API URL is undefined. Please check your environment variables."

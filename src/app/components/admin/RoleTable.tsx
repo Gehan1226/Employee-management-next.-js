@@ -31,35 +31,12 @@ import {
   TableHeader,
   TableRow,
 } from "../table/table";
+import { useEffect, useState } from "react";
+import { get } from "http";
+import { getAllRolesWithPagination } from "@/app/api/role";
+import { useDebouncedCallback } from "use-debounce";
+import { Role } from "@/app/types/response-types";
 
-type Role = {
-  name: string;
-  description: string;
-  employeeCount: number;
-};
-
-const data: Role[] = [
-  {
-    name: "Administrator",
-    description: "Manages system settings and user roles",
-    employeeCount: 5,
-  },
-  {
-    name: "Developer",
-    description: "Responsible for coding and development",
-    employeeCount: 20,
-  },
-  {
-    name: "Designer",
-    description: "Creates design assets and UI/UX",
-    employeeCount: 10,
-  },
-  {
-    name: "Tester",
-    description: "Ensures software quality",
-    employeeCount: 8,
-  },
-];
 
 export const columns: ColumnDef<Role>[] = [
   {
@@ -110,16 +87,29 @@ export const columns: ColumnDef<Role>[] = [
 ];
 
 export function RoleTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getAllRolesWithPagination(currentPage, searchTerm);
+      if (!response.data) {
+        return;
+      }
+      setRoles(response.data);
+      setTotalPages(response.totalPages ?? 0);
+    }
+    fetchData();
+  }, [currentPage, searchTerm]);
 
   const table = useReactTable({
-    data,
+    data: roles,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -137,15 +127,16 @@ export function RoleTable() {
     },
   });
 
+  const handleSearch = useDebouncedCallback((value: string) => {
+    setSearchTerm(value);
+  }, 300);
+
   return (
     <div className="w-full overflow-x-auto">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter names..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
+          onChange={(e) => handleSearch(e.target.value)}
           className="max-w-sm"
         />
         <DropdownMenu>
@@ -234,16 +225,18 @@ export function RoleTable() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => {
+              setCurrentPage((prev) => prev - 1);
+            }}
+            disabled={currentPage === 0}
           >
             Previous
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            disabled={currentPage === totalPages - 1}
           >
             Next
           </Button>

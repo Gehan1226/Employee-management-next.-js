@@ -27,10 +27,10 @@ export type DepartmentResponse = {
     message: string;
 };
 
-export type Role = {
-    id: number;
-    name: string;
-};
+// export type Role = {
+//     id: number;
+//     name: string;
+// };
 
 export type RoleResponse = {
     success: boolean;
@@ -45,6 +45,20 @@ export type DeleteResponse = {
 
 export type PaginatedDepartmentResponse = {
     data: Department[];
+    totalPages: number;
+    totalElements: number;
+    currentPage: number;
+    message?: string;
+};
+
+export type Role = {
+  name: string;
+  description: string;
+  employeeCount: number;
+};
+
+export type PaginatedRoleResponse = {
+    data: Role[];
     totalPages: number;
     totalElements: number;
     currentPage: number;
