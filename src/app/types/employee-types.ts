@@ -28,3 +28,4 @@ export type RegisterEmployeeResponse = {
     prevData: Record<string, string>;
     backendErrors: string;
 };
+

@@ -32,50 +32,11 @@ import {
   TableRow,
 } from "../table/table";
 import Image from "next/image";
-
-type Employee = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  dob: string;
-  phoneNumber: string;
-  gender: string;
-};
-
-const data: Employee[] = [
-  {
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    dob: "1990-01-01",
-    phoneNumber: "123-456-7890",
-    gender: "Male",
-  },
-  {
-    firstName: "Jane",
-    lastName: "Smith",
-    email: "jane.smith@example.com",
-    dob: "1985-05-15",
-    phoneNumber: "987-654-3210",
-    gender: "Female",
-  },
-  {
-    firstName: "Emily",
-    lastName: "Johnson",
-    email: "emily.johnson@example.com",
-    dob: "1992-03-10",
-    phoneNumber: "456-789-1234",
-    gender: "Female",
-  },
-  {
-    firstName: "Michael",
-    lastName: "Brown",
-    email: "michael.brown@example.com",
-    dob: "1988-07-22",
-    phoneNumber: "321-654-9870",
-    gender: "Male",
-  },
-];
+import { useEffect, useState } from "react";
+import { getAllEmployeesWithPagination } from "@/app/api/employee";
+import { set } from "zod";
+import { useDebouncedCallback } from "use-debounce";
+import { Employee } from "@/app/types/employee-types";
 
 export const columns: ColumnDef<Employee>[] = [
   {
@@ -90,8 +51,10 @@ export const columns: ColumnDef<Employee>[] = [
           height={40}
         />
         <div className="flex flex-col ">
-          <p className="font-semibold">Gehan sithija</p>
-          <p className="font-semibold text-slate-500">gehan12@gmail.com</p>
+          <p className="font-semibold">
+            {row.original.firstName + " " + row.original.lastName}
+          </p>
+          <p className="font-semibold text-slate-500">{row.original.email}</p>
         </div>
         {/* <div className="capitalize py-2 -ml-12">{row.getValue("firstName")}</div> */}
       </div>
@@ -99,26 +62,42 @@ export const columns: ColumnDef<Employee>[] = [
   },
   {
     accessorKey: "gender",
-    header: () => <div className="ml-14">Gender</div>,
+    header: () => <div className="ml-20">Gender</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-center font-semibold text-slate-700 bg-sky-200 w-16 rounded-md ml-14">
-        Male
+      <div className="capitalize text-center font-semibold text-slate-700 bg-sky-200 w-16 rounded-md ml-20">
+        {row.getValue("gender")}
       </div>
     ),
-  }
+  },
 ];
 
 export function EmployeeTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getAllEmployeesWithPagination(
+        currentPage,
+        searchTerm
+      );
+      if (!response.data) {
+        return;
+      }
+      setEmployees(response.data);
+      setTotalPages(response.totalPages ?? 0);
+    }
+    fetchData();
+  }, [currentPage, searchTerm]);
 
   const table = useReactTable({
-    data,
+    data: employees,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -136,17 +115,16 @@ export function EmployeeTable() {
     },
   });
 
+  const handleSearch = useDebouncedCallback((value: string) => {
+    setSearchTerm(value);
+  }, 300);
+
   return (
     <div className="w-full overflow-x-auto">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter names..."
-          value={
-            (table.getColumn("employee")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("gender")?.setFilterValue(event.target.value)
-          }
+          onChange={(e) => handleSearch(e.target.value)}
           className="max-w-sm"
         />
         <DropdownMenu>
@@ -235,16 +213,18 @@ export function EmployeeTable() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
+            onClick={() => {
+              setCurrentPage((prev) => prev - 1);
+            }}
+            disabled={currentPage === 0}
           >
             Previous
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            disabled={currentPage === totalPages - 1}
           >
             Next
           </Button>

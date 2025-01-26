@@ -1,3 +1,5 @@
+import { Employee } from "./employee-types";
+
 export type CountryDetails = {
     name: string;
     flag: string;
@@ -63,4 +65,12 @@ export type PaginatedRoleResponse = {
     totalElements: number;
     currentPage: number;
     message?: string;
+};
+
+export type PaginatedEmployeeResponse = {
+  data: Employee[];
+  totalPages: number;
+  totalElements: number;
+  currentPage: number;
+  message?: string;
 };
