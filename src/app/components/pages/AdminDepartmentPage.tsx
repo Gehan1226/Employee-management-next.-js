@@ -10,6 +10,8 @@ import {
   CardTitle,
 } from "../card";
 import { DepartmentChart } from "../admin/DepartmentChart";
+import AddDepartmentModal from "../admin/AddDepartmentModal";
+import AddRoleModal from "../admin/AddRoleModal";
 
 export default function AdminDepartmentPage() {
   return (
@@ -20,13 +22,9 @@ export default function AdminDepartmentPage() {
         </p>
       </div>
 
-      <div className="flex gap-4">
-        <button
-          type="button"
-          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
-        >
-          Add Department
-        </button>
+      <div className="flex gap-4 flex-row-reverse w-full">
+        <AddDepartmentModal />
+        <AddRoleModal />
       </div>
 
       <div className="grid grid-cols-3 gap-4 mt-5">
@@ -53,14 +51,6 @@ export default function AdminDepartmentPage() {
             <EmployeeTable />
           </CardContent>
         </Card>
-
-        {/* <p className="font-semibold text-center text-lg">Role Table</p>
-          <RoleTable /> */}
-
-        {/* <div className="flex flex-col gap-2">
-          <p className="font-semibold text-center text-lg">Employee Table</p>
-          <EmployeeTable />
-        </div> */}
       </div>
     </>
   );
