@@ -14,12 +14,12 @@ export default function AddRoleModal() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="text-white bg-blue-700 hover:bg-blue-800 hover:text-white font-medium rounded-lg text-sm px-5 py-5 shadow-md"
+        <button
+          type="button"
+          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
         >
           Add Role
-        </Button>
+        </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { DepartmentTable } from "../admin/DepartmentTable";
 import { RoleTable } from "../admin/RoleTable";
@@ -23,8 +24,10 @@ export default function AdminDepartmentPage() {
       </div>
 
       <div className="flex gap-4 flex-row-reverse w-full">
-        <AddDepartmentModal />
-        <AddRoleModal />
+        <div className="grid grid-cols-2 gap-4">
+          <AddDepartmentModal />
+          <AddRoleModal />
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-4 mt-5">
