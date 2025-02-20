@@ -50,7 +50,7 @@ export default function AdminDepartmentPage() {
             <div className="col-span-2">
               <RoleTable />
             </div>
-            {/* <EmployeeTable /> */}
+            <EmployeeTable />
           </CardContent>
         </Card>
       </div>
