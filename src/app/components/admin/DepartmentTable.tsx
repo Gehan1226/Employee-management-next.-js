@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import {  ChevronDown } from "lucide-react";
 import { Checkbox } from "../table/checkbox";
 import { Input } from "../table/input";
 import {
@@ -35,7 +35,6 @@ import { useEffect, useState } from "react";
 import { getAllDepartmentsWithPagination } from "@/app/api/department";
 import { Department } from "@/app/types/response-types";
 import { useDebouncedCallback } from "use-debounce";
-
 
 
 export const columns: ColumnDef<Department>[] = [
@@ -73,11 +72,26 @@ export const columns: ColumnDef<Department>[] = [
   {
     accessorKey: "manager",
     header: () => <div className="-ml-12">👤 Manager</div>,
-    cell: ({ row }) => (
-      <div className="capitalize -ml-12 font-semibold text-slate-800">
-        {row.getValue("manager")}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const manager = row.getValue("manager");
+
+      let firstName = "";
+      let lastName = "";
+
+      if (
+        manager &&
+        typeof manager === "object" &&
+        "firstName" in manager &&
+        "lastName" in manager
+      ) {
+        firstName = typeof manager.firstName === "string" ? manager.firstName : "";
+        lastName = typeof manager.lastName === "string" ? manager.lastName : "";
+      }
+
+      return (
+        <div className="capitalize -ml-12 font-semibold text-slate-800">{`${firstName} ${lastName}`}</div>
+      );
+    },
   },
   {
     accessorKey: "responsibility",
@@ -125,6 +139,7 @@ export function DepartmentTable() {
     fetchData();
   }, [currentPage, searchTerm]);
 
+  console.log("SSSSSSSSS");
   const table = useReactTable({
     data: departments,
     columns,

@@ -17,7 +17,7 @@ export type CountryDetailsResponse = {
 // }
 export type Department = {
   name: string;
-  manager: string;
+  manager: Employee;
   responsibility: string;
   employeeCount: number;
 };

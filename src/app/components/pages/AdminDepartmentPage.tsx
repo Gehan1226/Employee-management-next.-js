@@ -6,7 +6,6 @@ import { EmployeeTable } from "../admin/EmployeeTable";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "../card";
@@ -51,7 +50,7 @@ export default function AdminDepartmentPage() {
             <div className="col-span-2">
               <RoleTable />
             </div>
-            <EmployeeTable />
+            {/* <EmployeeTable /> */}
           </CardContent>
         </Card>
       </div>

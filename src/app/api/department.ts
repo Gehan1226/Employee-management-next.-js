@@ -1,3 +1,5 @@
+"use server";
+
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import {
@@ -11,7 +13,7 @@ export const getAllDepartments = async (): Promise<
   try {
     const response = await axioInstance.get("/api/v1/department/get-all");
     return { success: true, data: response.data.data };
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
         return {
@@ -27,8 +29,10 @@ export const getAllDepartments = async (): Promise<
       } else {
         return { message: error.message || "An unexpected error occurred." };
       }
+    } else if (error instanceof Error) {
+      return { message: error.message };
     } else {
-      return { message: error.message || "An unexpected error occurred." };
+      return { message: "An unexpected error occurred." };
     }
   }
 };
@@ -48,7 +52,7 @@ export const getAllDepartmentsWithPagination = async (
   }
 
   try {
-    const params: Record<string, any> = { page: currentPage, size: 5 };
+    const params: Record<string, number | string> = { page: currentPage, size: 5 };
     if (searchTerms) params.searchTerm = searchTerms;
     const response = await axioInstance.get(url, { params });
     return {
@@ -57,7 +61,7 @@ export const getAllDepartmentsWithPagination = async (
       totalElements: response.data.totalElements,
       currentPage: response.data.currentPage,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
         return {
@@ -73,8 +77,10 @@ export const getAllDepartmentsWithPagination = async (
       } else {
         return { message: error.message || "An unexpected error occurred." };
       }
+    } else if (error instanceof Error) {
+      return { message: error.message };
     } else {
-      return { message: error.message || "An unexpected error occurred." };
+      return { message: "An unexpected error occurred." };
     }
   }
 };
