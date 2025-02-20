@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { departmentSchema } from "../lib/util/schemas";
 import { Employee } from "./employee-types";
 
 export type Department = {
@@ -12,3 +14,5 @@ export type Role = {
   description: string;
   employeeCount: number;
 };
+
+export type DepartmentFormValues = z.infer<typeof departmentSchema>;

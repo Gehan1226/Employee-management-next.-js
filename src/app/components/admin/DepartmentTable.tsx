@@ -139,7 +139,6 @@ export function DepartmentTable() {
     fetchData();
   }, [currentPage, searchTerm]);
 
-  console.log("SSSSSSSSS");
   const table = useReactTable({
     data: departments,
     columns,

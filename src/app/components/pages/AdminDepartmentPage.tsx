@@ -13,7 +13,9 @@ import { DepartmentChart } from "../admin/DepartmentChart";
 import AddDepartmentModal from "../admin/AddDepartmentModal";
 import AddRoleModal from "../admin/AddRoleModal";
 
+
 export default function AdminDepartmentPage() {
+  
   return (
     <>
       <div className="bg-blue-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0 shadow-md">

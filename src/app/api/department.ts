@@ -6,6 +6,7 @@ import {
   DepartmentResponse,
   PaginatedDepartmentResponse,
 } from "../types/response-types";
+import { DepartmentFormValues } from "../types/department-roles";
 
 export const getAllDepartments = async (): Promise<
   Partial<DepartmentResponse>
@@ -84,3 +85,24 @@ export const getAllDepartmentsWithPagination = async (
     }
   }
 };
+
+export const addDepartment = async (department: DepartmentFormValues) => {
+  try {
+    const response = await axioInstance.post("/api/v1/department/add", department);
+    return response.data.message;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        return { message: error.response.data?.errorMessage || "An error occurred during registration" };
+      } else if (error.request) {
+        return { message: "No response received from the server. Please check your network connection." };
+      } else {
+        return { message: error.message || "An unexpected error occurred." };
+      }
+    } else if (error instanceof Error) {
+      return { message: error.message };
+    } else {
+      return { message: "An unexpected error occurred." };
+    }
+  }
+}
