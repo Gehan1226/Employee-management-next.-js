@@ -1,3 +1,4 @@
+import { Department, Role } from "./department-roles";
 import { Employee } from "./employee-types";
 
 export type CountryDetails = {
@@ -11,28 +12,11 @@ export type CountryDetailsResponse = {
     message?: string;
 };
 
-// export type Department = {
-//     id: number;
-//     name: string;
-// }
-export type Department = {
-  name: string;
-  manager: Employee;
-  responsibility: string;
-  employeeCount: number;
-};
-
-
 export type DepartmentResponse = {
     success: boolean;
     data: Department[];
     message: string;
 };
-
-// export type Role = {
-//     id: number;
-//     name: string;
-// };
 
 export type RoleResponse = {
     success: boolean;
@@ -51,12 +35,6 @@ export type PaginatedDepartmentResponse = {
     totalElements: number;
     currentPage: number;
     message?: string;
-};
-
-export type Role = {
-  name: string;
-  description: string;
-  employeeCount: number;
 };
 
 export type PaginatedRoleResponse = {

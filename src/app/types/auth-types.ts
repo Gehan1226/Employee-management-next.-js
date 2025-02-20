@@ -1,11 +1,11 @@
-type UserData = {
+export type UserData = {
     userName: string;
     email: string;
     password: string;
     repeatPassword: string;
 };
 
-type AuthResponse = {
+export type AuthResponse = {
     success: boolean;
     data?: null;
     validationErrors?: UserData | null;  // validationErrors can be a string or a key-value pair for specific fields
@@ -14,12 +14,12 @@ type AuthResponse = {
     message?: string;
 };
 
-type BasicUserInfo  = {
+export type BasicUserInfo  = {
     userName: string;
     email: string;
 }
 
-type BasicUserInfoResponse = {
+export type BasicUserInfoResponse = {
     data: BasicUserInfo[];
     message: string;
     totalPages: number;
@@ -27,14 +27,14 @@ type BasicUserInfoResponse = {
     currentPage: number;
 }
 
-type UserWithRoleAndEnabledStatus = {
+export type UserWithRoleAndEnabledStatus = {
     userName: string;
     email: string;
     role: string;
     enabled: boolean;
 }
 
-type UserFilters = {
+export type UserFilters = {
     startDate: string | null;
     endDate: string | null;
     searchTerm: string | null;
