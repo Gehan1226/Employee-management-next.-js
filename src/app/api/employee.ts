@@ -5,7 +5,7 @@ import { RegisterEmployeeResponse } from "../types/employee-types";
 import { PaginatedEmployeeResponse } from "../types/response-types";
 
 export const registerEmployee = async (
-  prevState: any,
+  prevState: unknown,
   formData: FormData
 ): Promise<Partial<RegisterEmployeeResponse>> => {
   const employeeData = Object.fromEntries(formData.entries()) as Record<
@@ -29,8 +29,7 @@ export const registerEmployee = async (
       employeeData
     );
     return { success: true, message: response.data.message };
-  } catch (error: any) {
-    console.log(error);
+  } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
         return {
@@ -75,7 +74,10 @@ export const getAllEmployeesWithPagination = async (
   }
 
   try {
-    const params: Record<string, any> = { page: currentPage, size: 5 };
+    const params: Record<string, number | string> = {
+      page: currentPage,
+      size: 5,
+    };
     if (searchTerms) params.searchTerm = searchTerms;
     const response = await axioInstance.get(url, { params });
     return {
@@ -84,24 +86,42 @@ export const getAllEmployeesWithPagination = async (
       totalElements: response.data.totalElements,
       currentPage: response.data.currentPage,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
         return {
           message:
             error.response.data?.errorMessage ||
-            "An error occurred during registration",
+            "An error occurred during fetching employees.",
         };
       } else if (error.request) {
         return {
           message:
             "No response received from the server. Please check your network connection.",
         };
-      } else {
-        return { message: error.message || "An unexpected error occurred." };
       }
-    } else {
       return { message: error.message || "An unexpected error occurred." };
+    } else {
+      return { message: (error as Error)?.message || "An unexpected error occurred." };
+    }
+  }
+};
+
+
+export const getEmployeesWithoutManagers = async () => {
+  try {
+    const response = await axioInstance.get("/api/v1/employee/without-manager");
+    return response.data.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        return error.response.data?.errorMessage || "An error occurred during fetching employees.";
+      } else if (error.request) {
+        return "No response received from the server. Please check your network connection.";
+      }
+      return error.message || "An unexpected error occurred.";
+    } else {
+      return (error as Error)?.message || "An unexpected error occurred.";
     }
   }
 };
