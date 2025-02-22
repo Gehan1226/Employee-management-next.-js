@@ -5,7 +5,5 @@ export const departmentSchema = z.object({
   responsibility: z
     .string()
     .min(5, "Responsibility must be at least 5 characters"),
-  manager: z
-    .string()
-    .refine((val) => val !== "1", "Please select a valid manager"),
+  manager: z.string().min(1, "Manager is required"),
 });

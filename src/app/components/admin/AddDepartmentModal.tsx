@@ -13,6 +13,8 @@ import {
   Modal,
   Select,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { getEmployeesWithoutManagers } from "@/app/api/employee";
 
 const style = {
   position: "absolute",
@@ -35,6 +37,16 @@ export default function AddDepartmentModal() {
     formState: { errors },
   } = useForm<DepartmentFormValues>({
     resolver: zodResolver(departmentSchema),
+    defaultValues: {
+      name: "", 
+      responsibility: "",
+      manager: "", 
+    },
+  });
+
+  const {data: employees} = useQuery({
+    queryKey: ["departments"],
+    queryFn: getEmployeesWithoutManagers,
   });
 
   const onSubmit = async (data: DepartmentFormValues) => {
@@ -120,7 +132,6 @@ export default function AddDepartmentModal() {
                 <Controller
                   name="manager"
                   control={control}
-                  defaultValue=""
                   render={({ field }) => (
                     <Select
                       labelId="combo-box-label"
@@ -130,10 +141,14 @@ export default function AddDepartmentModal() {
                       id="manager"
                       className="bg-gray-50"
                     >
-                      <MenuItem value="">Select...</MenuItem>
-                      <MenuItem value="option1">Option 1</MenuItem>
-                      <MenuItem value="option2">Option 2</MenuItem>
-                      <MenuItem value="option3">Option 3</MenuItem>
+                      {employees?.map((employee) => (
+                        <MenuItem key={employee.id} value={employee.id.toString()}>
+                          <p>
+                            {employee.firstName} {employee.lastName}{" "}
+                            <span className="text-right">🧑‍💼 employee</span>
+                          </p>
+                        </MenuItem>
+                      ))}
                     </Select>
                   )}
                 />

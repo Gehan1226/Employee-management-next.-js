@@ -1,3 +1,4 @@
+"use client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import "./globals.css";
 import queryClient from "./lib/util/queryClient";

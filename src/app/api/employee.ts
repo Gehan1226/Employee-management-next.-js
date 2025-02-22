@@ -109,7 +109,7 @@ export const getAllEmployeesWithPagination = async (
 
 export const getEmployeesWithoutManagers = async (): Promise<EmployeeResponse[]> => {
   try {
-    const response = await axioInstance.get("/api/v1/employee/without-manager");
+    const response = await axioInstance.get("/api/v1/employee/non-managers");
     return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
