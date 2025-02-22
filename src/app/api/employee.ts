@@ -1,7 +1,7 @@
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import { validateEmployee } from "../lib/util/employee-schemas";
-import { RegisterEmployeeResponse } from "../types/employee-types";
+import { EmployeeResponse, RegisterEmployeeResponse } from "../types/employee-types";
 import { PaginatedEmployeeResponse } from "../types/response-types";
 
 export const registerEmployee = async (
@@ -46,13 +46,13 @@ export const registerEmployee = async (
         };
       } else {
         return {
-          backendErrors: error.message || "An unexpected error occurred.",
+          backendErrors: (error as Error).message || "An unexpected error occurred.",
           prevData: employeeData,
         };
       }
     } else {
       return {
-        backendErrors: error.message || "An unexpected error occurred.",
+        backendErrors: (error as Error).message || "An unexpected error occurred.",
         prevData: employeeData,
       };
     }
@@ -107,21 +107,20 @@ export const getAllEmployeesWithPagination = async (
   }
 };
 
-
-export const getEmployeesWithoutManagers = async () => {
+export const getEmployeesWithoutManagers = async (): Promise<EmployeeResponse[]> => {
   try {
     const response = await axioInstance.get("/api/v1/employee/without-manager");
     return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return error.response.data?.errorMessage || "An error occurred during fetching employees.";
+        throw new Error(error.response.data?.errorMessage || "An error occurred during fetching employees.");
       } else if (error.request) {
-        return "No response received from the server. Please check your network connection.";
+        throw new Error("No response received from the server. Please check your network connection.");
       }
-      return error.message || "An unexpected error occurred.";
+      throw new Error(error.message || "An unexpected error occurred.");
     } else {
-      return (error as Error)?.message || "An unexpected error occurred.";
+      throw new Error((error as Error)?.message || "An unexpected error occurred.");
     }
   }
 };

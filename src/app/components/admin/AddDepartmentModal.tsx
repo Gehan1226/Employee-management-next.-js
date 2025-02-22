@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { departmentSchema } from "@/app/lib/util/schemas";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,7 +26,7 @@ const style = {
   p: 2,
 };
 export default function AddDepartmentModal() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const {
     control,
