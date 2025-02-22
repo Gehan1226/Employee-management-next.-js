@@ -1,22 +1,35 @@
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../dialog";
 import { departmentSchema } from "@/app/lib/util/schemas";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DepartmentFormValues } from "@/app/types/department-roles";
 import { addDepartment } from "@/app/api/department";
+import {
+  Box,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+} from "@mui/material";
 
-
-
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 800,
+  bgcolor: "background.paper",
+  border: "1px solid #000",
+  boxShadow: 24,
+  p: 2,
+};
 export default function AddDepartmentModal() {
+  const [open, setOpen] = React.useState(false);
+
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -30,28 +43,34 @@ export default function AddDepartmentModal() {
     console.log(response);
   };
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button
-          type="button"
-          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
-        >
-          Add Department
-        </button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] w-5/6">
-        <DialogHeader>
-          <DialogTitle>Create new department</DialogTitle>
-          <DialogDescription>
+    <div>
+      <button
+        type="button"
+        className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
+        onClick={handleOpen}
+      >
+        Add Department
+      </button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <p className="font-semibold text-lg">Create new department</p>
+          <p className="text-sm text-gray-500">
             Create a new department by entering the required details. Click
             &apos;Save&apos; to confirm your changes.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
+          </p>
+
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-5 px-4"
+            className="flex flex-col gap-5 px-4 mt-8"
           >
             <div>
               <label
@@ -77,7 +96,7 @@ export default function AddDepartmentModal() {
             <div>
               <label
                 htmlFor="responsibility"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900"
               >
                 Department Responsibility
               </label>
@@ -85,7 +104,7 @@ export default function AddDepartmentModal() {
                 type="text"
                 id="responsibility"
                 {...register("responsibility")}
-                className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Input department responsibility"
               />
               {errors.responsibility && (
@@ -95,27 +114,33 @@ export default function AddDepartmentModal() {
               )}
             </div>
 
-            <div>
-              <label
-                htmlFor="manager"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Manager
-              </label>
-              <select
-                id="manager"
-                {...register("manager")}
-                className="rounded-sm w-full bg-gray-50 border border-gray-300 text-gray-900 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-              >
-                <option value="1">Select a manager</option>
-                <option value="2">Manager 1</option>
-                <option value="3">Manager 2</option>
-              </select>
-              {errors.manager && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.manager.message}
-                </p>
-              )}
+            <div className="mt-2">
+              <FormControl fullWidth error={!!errors.manager}>
+                <InputLabel id="combo-box-label">Select Manager</InputLabel>
+                <Controller
+                  name="manager"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Select
+                      labelId="combo-box-label"
+                      {...field}
+                      label="Select an Option"
+                      autoWidth
+                      id="manager"
+                      className="bg-gray-50"
+                    >
+                      <MenuItem value="">Select...</MenuItem>
+                      <MenuItem value="option1">Option 1</MenuItem>
+                      <MenuItem value="option2">Option 2</MenuItem>
+                      <MenuItem value="option3">Option 3</MenuItem>
+                    </Select>
+                  )}
+                />
+                {errors.manager && (
+                  <FormHelperText>{errors.manager.message}</FormHelperText>
+                )}
+              </FormControl>
             </div>
 
             <div className="flex justify-end">
@@ -127,8 +152,8 @@ export default function AddDepartmentModal() {
               </button>
             </div>
           </form>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </Box>
+      </Modal>
+    </div>
   );
 }
