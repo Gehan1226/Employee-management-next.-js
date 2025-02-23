@@ -20,3 +20,8 @@ export type Role = {
 export type DepartmentFormValues = z.infer<typeof departmentSchema>;
 
 export type RoleFormValues = z.infer<typeof roleSchema>;
+
+export type DepartmentEmployeeCount = {
+  name: string;
+  employeeCount: number;
+};

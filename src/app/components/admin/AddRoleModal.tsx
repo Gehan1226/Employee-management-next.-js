@@ -57,7 +57,7 @@ export default function AddRoleModal() {
     <div>
       <button
         type="button"
-        className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
+        className="text-white w-full bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
         onClick={handleOpen}
       >
         Add Role

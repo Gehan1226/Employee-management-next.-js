@@ -1,8 +1,6 @@
-"use client";
-
 import * as React from "react";
 import { TrendingUp } from "lucide-react";
-import { Label, Pie, PieChart } from "recharts";
+import { Label, LabelProps, Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -18,13 +16,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/app/components/chart";
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 390, fill: "var(--color-other)" },
-];
+import { useQuery } from "@tanstack/react-query";
+import { retrieveDepartmentEmployeeCounts } from "@/app/api/department";
+import { DepartmentEmployeeCount } from "@/app/types/department-roles";
 
 const chartConfig = {
   visitors: {
@@ -52,10 +46,53 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+const colors = [
+  "var(--color-chrome)",
+  "var(--color-safari)",
+  "var(--color-firefox)",
+  "var(--color-edge)",
+  "var(--color-other)",
+];
+
+const convertToChartData = (data: DepartmentEmployeeCount[]) => {
+  data = data.sort((a, b) => b.employeeCount - a.employeeCount);
+  const chartData: { browser: string; visitors: number; fill: string }[] = [];
+  const other = {
+    browser: "other",
+    visitors: 0,
+    fill: colors[colors.length - 1],
+  };
+
+  for (let i = 0; i < data.length; i++) {
+    if (i >= 5) {
+      other.visitors += data[i].employeeCount;
+    } else {
+      chartData.push({
+        browser: data[i].name,
+        visitors: data[i].employeeCount,
+        fill: colors[i],
+      });
+    }
+  }
+  if (other.visitors > 0) {
+    chartData.push(other);
+  }
+  return chartData;
+};
+
 export function DepartmentChart() {
+  const { data} = useQuery({
+    queryKey: ["chart-data"],
+    queryFn: retrieveDepartmentEmployeeCounts,
+  });
+
   const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, []);
+    return data?.reduce((acc, curr) => acc + curr.employeeCount, 0);
+  }, [data]);
+
+  const chartData = React.useMemo(() => {
+    return convertToChartData(data ?? []);
+  }, [data]);
 
   return (
     <Card className="flex flex-col">
@@ -81,7 +118,7 @@ export function DepartmentChart() {
               strokeWidth={5}
             >
               <Label
-                content={({ viewBox }:any) => {
+                content={({ viewBox }: LabelProps) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                     return (
                       <text
@@ -95,11 +132,11 @@ export function DepartmentChart() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalVisitors?.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
+                          y={(viewBox.cy ?? 0) + 24}
                           className="fill-muted-foreground"
                         >
                           Visitors
