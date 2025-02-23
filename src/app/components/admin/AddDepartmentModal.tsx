@@ -16,18 +16,8 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getEmployeesWithoutManagers } from "@/app/api/employee";
 import { toast } from "react-hot-toast";
+import { X } from "lucide-react";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 800,
-  bgcolor: "background.paper",
-  border: "1px solid #000",
-  boxShadow: 24,
-  p: 2,
-};
 export default function AddDepartmentModal() {
   const [open, setOpen] = useState(false);
 
@@ -57,7 +47,7 @@ export default function AddDepartmentModal() {
         success: <b>Department created successfully!</b>,
         error: <b>Could not save department.</b>,
       });
-    }
+    },
   });
 
   const handleOpen = () => setOpen(true);
@@ -83,7 +73,13 @@ export default function AddDepartmentModal() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] bg-white rounded-[10px] shadow-lg p-7">
+            <button
+              className="absolute top-3 right-3 p-2 rounded-full bg-gray-200 hover:bg-gray-300"
+              onClick={handleClose}
+            >
+              <X className="w-5 h-5" />
+            </button>
           <p className="font-semibold text-lg">Create new department</p>
           <p className="text-sm text-gray-500">
             Create a new department by entering the required details. Click
