@@ -53,7 +53,10 @@ export const getAllDepartmentsWithPagination = async (
   }
 
   try {
-    const params: Record<string, number | string> = { page: currentPage, size: 5 };
+    const params: Record<string, number | string> = {
+      page: currentPage,
+      size: 5,
+    };
     if (searchTerms) params.searchTerm = searchTerms;
     const response = await axioInstance.get(url, { params });
     return {
@@ -86,23 +89,38 @@ export const getAllDepartmentsWithPagination = async (
   }
 };
 
-export const addDepartment = async (department: DepartmentFormValues) => {
+export const addDepartment = async (
+  department: DepartmentFormValues
+): Promise<string> => {
+  const data = {
+    name: department.name,
+    responsibility: department.responsibility,
+    manager: {
+      id: department.manager,
+    },
+  };
+
   try {
-    const response = await axioInstance.post("/api/v1/department/add", department);
+    const response = await axioInstance.post("/api/v1/department/add", data);
     return response.data.message;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return { message: error.response.data?.errorMessage || "An error occurred during registration" };
+        throw new Error(
+          error.response.data?.errorMessage ||
+            "An error occurred during department creation."
+        );
       } else if (error.request) {
-        return { message: "No response received from the server. Please check your network connection." };
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
       } else {
-        return { message: error.message || "An unexpected error occurred." };
+        throw new Error(error.message || "An unexpected error occurred.");
       }
-    } else if (error instanceof Error) {
-      return { message: error.message };
     } else {
-      return { message: "An unexpected error occurred." };
+      throw new Error(
+        (error as Error).message || "An unexpected error occurred."
+      );
     }
   }
-}
+};

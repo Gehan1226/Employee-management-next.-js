@@ -13,8 +13,9 @@ import {
   Modal,
   Select,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getEmployeesWithoutManagers } from "@/app/api/employee";
+import { toast } from "react-hot-toast";
 
 const style = {
   position: "absolute",
@@ -38,25 +39,34 @@ export default function AddDepartmentModal() {
   } = useForm<DepartmentFormValues>({
     resolver: zodResolver(departmentSchema),
     defaultValues: {
-      name: "", 
+      name: "",
       responsibility: "",
-      manager: "", 
+      manager: "",
     },
   });
 
-  const {data: employees} = useQuery({
+  const { data: employees } = useQuery({
     queryKey: ["departments"],
     queryFn: getEmployeesWithoutManagers,
   });
 
-  const onSubmit = async (data: DepartmentFormValues) => {
-    console.log("Form Data:", data);
-    const response = await addDepartment(data);
-    console.log(response);
-  };
+  const mutation = useMutation({
+    mutationFn: (data: DepartmentFormValues) => {
+      return toast.promise(addDepartment(data), {
+        loading: "Creating department...",
+        success: <b>Department created successfully!</b>,
+        error: <b>Could not save department.</b>,
+      });
+    }
+  });
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const onSubmit = async (data: DepartmentFormValues) => {
+    mutation.mutate(data);
+    handleClose();
+  };
 
   return (
     <div>
@@ -142,7 +152,10 @@ export default function AddDepartmentModal() {
                       className="bg-gray-50"
                     >
                       {employees?.map((employee) => (
-                        <MenuItem key={employee.id} value={employee.id.toString()}>
+                        <MenuItem
+                          key={employee.id}
+                          value={employee.id.toString()}
+                        >
                           <p>
                             {employee.firstName} {employee.lastName}{" "}
                             <span className="text-right">🧑‍💼 employee</span>
