@@ -19,7 +19,7 @@ import { toast } from "react-hot-toast";
 import { X } from "lucide-react";
 
 export default function AddDepartmentModal() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const {
     control,
@@ -37,7 +37,7 @@ export default function AddDepartmentModal() {
   });
 
   const { data: employees } = useQuery({
-    queryKey: ["departments"],
+    queryKey: ["departments-without-managers"],
     queryFn: getEmployeesWithoutManagers,
   });
 
@@ -147,7 +147,6 @@ export default function AddDepartmentModal() {
                       labelId="combo-box-label"
                       {...field}
                       label="Select an Option"
-                      autoWidth
                       id="manager"
                       className="bg-gray-50"
                     >
@@ -157,7 +156,7 @@ export default function AddDepartmentModal() {
                           value={employee.id.toString()}
                         >
                           <p>
-                            🧑‍💻{employee.firstName} {employee.lastName} -
+                            {employee.firstName} {employee.lastName} -
                             <span className="ml-3">
                               🛠️ {employee.role.name}
                             </span>

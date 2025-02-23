@@ -2,39 +2,33 @@
 
 import axios from "axios";
 import axioInstance from "../lib/axios";
+import { PaginatedDepartmentResponse } from "../types/response-types";
 import {
+  DepartmentFormValues,
   DepartmentResponse,
-  PaginatedDepartmentResponse,
-} from "../types/response-types";
-import { DepartmentFormValues } from "../types/department-roles";
+} from "../types/department-roles";
 
-export const getAllDepartments = async (): Promise<
-  Partial<DepartmentResponse>
-> => {
+export const getAllDepartments = async (): Promise<DepartmentResponse[]> => {
   try {
     const response = await axioInstance.get("/api/v1/department/get-all");
-    return { success: true, data: response.data.data };
+    return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return {
-          message:
-            error.response.data?.errorMessage ||
-            "An error occurred during fetching departments.",
-        };
+        throw new Error(
+          error.response.data?.errorMessage ||
+            "An error occurred during fetching departments."
+        );
       } else if (error.request) {
-        return {
-          message:
-            "No response received from the server. Please check your network connection.",
-        };
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
       } else {
-        return { message: error.message || "An unexpected error occurred." };
+        throw new Error(error.message || "An unexpected error occurred.");
       }
-    } else if (error instanceof Error) {
-      return { message: error.message };
     } else {
-      return { message: "An unexpected error occurred." };
-    }
+      throw new Error((error as Error).message || "An unexpected error occurred.");
+    } 
   }
 };
 

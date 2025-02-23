@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { departmentSchema } from "../lib/util/schemas";
-import { Employee } from "./employee-types";
+import { departmentSchema, roleSchema } from "../lib/util/schemas";
+import { EmployeeResponse } from "./employee-types";
 
-export type Department = {
+export type DepartmentResponse = {
+  id: number;
   name: string;
-  manager: Employee;
+  manager: EmployeeResponse;
   responsibility: string;
   employeeCount: number;
 };
@@ -17,3 +18,5 @@ export type Role = {
 };
 
 export type DepartmentFormValues = z.infer<typeof departmentSchema>;
+
+export type RoleFormValues = z.infer<typeof roleSchema>;
