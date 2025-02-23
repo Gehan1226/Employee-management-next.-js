@@ -1,20 +1,24 @@
 import React, { useState } from "react";
-import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Modal, Select } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Modal,
+  Select,
+} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { X } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { roleSchema } from "@/app/lib/util/schemas";
 import { RoleFormValues } from "@/app/types/department-roles";
 import { getAllDepartments } from "@/app/api/department";
-import { useQuery } from "@tanstack/react-query";
+import {  useQuery } from "@tanstack/react-query";
+import { useAddRoleMutation } from "@/app/hooks/useAddRoleMutation";
 
 export default function AddRoleModal() {
   const [open, setOpen] = useState<boolean>(false);
-
-  const {data: departments} = useQuery({
-    queryKey: ["departments"],
-    queryFn: getAllDepartments,
-  });
 
   const {
     control,
@@ -30,6 +34,14 @@ export default function AddRoleModal() {
       department: "",
     },
   });
+
+  const { data: departments } = useQuery({
+    queryKey: ["departments"],
+    queryFn: getAllDepartments,
+  });
+
+  const mutation = useAddRoleMutation();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     reset();
@@ -37,7 +49,7 @@ export default function AddRoleModal() {
   };
 
   const onSubmit = async (data: RoleFormValues) => {
-    // mutation.mutate(data);
+    mutation.mutate(data);
     handleClose();
   };
 

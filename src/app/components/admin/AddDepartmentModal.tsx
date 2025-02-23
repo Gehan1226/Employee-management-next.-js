@@ -3,7 +3,6 @@ import { departmentSchema } from "@/app/lib/util/schemas";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DepartmentFormValues } from "@/app/types/department-roles";
-import { addDepartment } from "@/app/api/department";
 import {
   Box,
   FormControl,
@@ -13,10 +12,10 @@ import {
   Modal,
   Select,
 } from "@mui/material";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getEmployeesWithoutManagers } from "@/app/api/employee";
-import { toast } from "react-hot-toast";
 import { X } from "lucide-react";
+import useAddDepartmentMutation from "@/app/hooks/useAddDepartmentMutation";
 
 export default function AddDepartmentModal() {
   const [open, setOpen] = useState<boolean>(false);
@@ -41,15 +40,7 @@ export default function AddDepartmentModal() {
     queryFn: getEmployeesWithoutManagers,
   });
 
-  const mutation = useMutation({
-    mutationFn: (data: DepartmentFormValues) => {
-      return toast.promise(addDepartment(data), {
-        loading: "Creating department...",
-        success: <b>Department created successfully!</b>,
-        error: <b>Could not save department.</b>,
-      });
-    },
-  });
+  const mutation = useAddDepartmentMutation();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {

@@ -1,25 +1,39 @@
+"use server";
+
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import { PaginatedRoleResponse, RoleResponse } from "../types/response-types";
+import { RoleFormValues } from "../types/department-roles";
 
-export const getRolesByDepartment = async (departmentId: string): Promise<Partial<RoleResponse>> => {
-    try {
-        const response = await axioInstance.get(`/api/v1/role/get-by-department/${departmentId}`);
-        return {success: true, data: response.data.data};        
-    } catch (error: any) {
-        if (axios.isAxiosError(error)) {
-            if (error.response) {
-                return { message: error.response.data?.errorMessage || "An error occurred during fetching departments."};
-            } else if (error.request) {
-                return { message: "No response received from the server. Please check your network connection."};
-            } else {
-                return { message: error.message || "An unexpected error occurred."};
-            }
-        } else {
-            return { message: error.message || "An unexpected error occurred."};
-        }
+export const getRolesByDepartment = async (
+  departmentId: string
+): Promise<Partial<RoleResponse>> => {
+  try {
+    const response = await axioInstance.get(
+      `/api/v1/role/get-by-department/${departmentId}`
+    );
+    return { success: true, data: response.data.data };
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        return {
+          message:
+            error.response.data?.errorMessage ||
+            "An error occurred during fetching departments.",
+        };
+      } else if (error.request) {
+        return {
+          message:
+            "No response received from the server. Please check your network connection.",
+        };
+      } else {
+        return { message: error.message || "An unexpected error occurred." };
+      }
+    } else {
+      return { message: error.message || "An unexpected error occurred." };
     }
-}
+  }
+};
 
 export const getAllRolesWithPagination = async (
   currentPage: number,
@@ -63,6 +77,38 @@ export const getAllRolesWithPagination = async (
       }
     } else {
       return { message: error.message || "An unexpected error occurred." };
+    }
+  }
+};
+
+export const addRole = async (role: RoleFormValues): Promise<string> => {
+  const data = {
+    name: role.name,
+    description: role.description,
+    department: {
+      id: role.department,
+    },
+  }
+  try {
+    const response = await axioInstance.post("/api/v1/role", data);
+    return response.data.message;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        throw new Error(
+          error.response.data?.errorMessage ||
+            "An error occurred during registration"
+        );
+      } else if (error.request) {
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
+      }
+      throw new Error(error.message || "An unexpected error occurred.");
+    } else {
+      throw new Error(
+        (error as Error).message || "An unexpected error occurred."
+      );
     }
   }
 };
