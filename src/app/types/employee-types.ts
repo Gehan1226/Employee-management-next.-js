@@ -1,3 +1,5 @@
+import { Role } from "./department-roles";
+
 export type Employee = {
   firstName: string;
   lastName: string;
@@ -49,9 +51,7 @@ export type EmployeeResponse = {
   phoneNumber: string;
   gender: "Male" | "Female" | "Other";
   department: string | null;
-  role: {
-    id: number;
-  };
+  role: Role;
   address: Address;
   manager: boolean;
 };

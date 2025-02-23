@@ -25,6 +25,7 @@ export default function AddDepartmentModal() {
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<DepartmentFormValues>({
     resolver: zodResolver(departmentSchema),
@@ -51,7 +52,10 @@ export default function AddDepartmentModal() {
   });
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    reset();
+    setOpen(false);
+  };
 
   const onSubmit = async (data: DepartmentFormValues) => {
     mutation.mutate(data);
@@ -74,12 +78,12 @@ export default function AddDepartmentModal() {
         aria-describedby="modal-modal-description"
       >
         <Box className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] bg-white rounded-[10px] shadow-lg p-7">
-            <button
-              className="absolute top-3 right-3 p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-              onClick={handleClose}
-            >
-              <X className="w-5 h-5" />
-            </button>
+          <button
+            className="absolute top-3 right-3 p-2 rounded-full bg-gray-200 hover:bg-gray-300"
+            onClick={handleClose}
+          >
+            <X className="w-5 h-5" />
+          </button>
           <p className="font-semibold text-lg">Create new department</p>
           <p className="text-sm text-gray-500">
             Create a new department by entering the required details. Click
@@ -153,8 +157,10 @@ export default function AddDepartmentModal() {
                           value={employee.id.toString()}
                         >
                           <p>
-                            {employee.firstName} {employee.lastName}{" "}
-                            <span className="text-right">🧑‍💼 employee</span>
+                            🧑‍💻{employee.firstName} {employee.lastName} -
+                            <span className="ml-3">
+                              🛠️ {employee.role.name}
+                            </span>
                           </p>
                         </MenuItem>
                       ))}
