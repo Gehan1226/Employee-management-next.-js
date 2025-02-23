@@ -24,20 +24,20 @@ const chartConfig = {
   visitors: {
     label: "Visitors",
   },
-  chrome: {
-    label: "Chrome",
+  department1: {
+    label: "Department1",
     color: "hsl(var(--chart-1))",
   },
-  safari: {
-    label: "Safari",
+  department2: {
+    label: "Department2",
     color: "hsl(var(--chart-2))",
   },
-  firefox: {
-    label: "Firefox",
+  department3: {
+    label: "Department3",
     color: "hsl(var(--chart-3))",
   },
-  edge: {
-    label: "Edge",
+  department4: {
+    label: "Department4",
     color: "hsl(var(--chart-4))",
   },
   other: {
@@ -47,10 +47,10 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const colors = [
-  "var(--color-chrome)",
-  "var(--color-safari)",
-  "var(--color-firefox)",
-  "var(--color-edge)",
+  "var(--color-department1)",
+  "var(--color-department2)",
+  "var(--color-department3)",
+  "var(--color-department4)",
   "var(--color-other)",
 ];
 
@@ -97,8 +97,8 @@ export function DepartmentChart() {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Department-wise Employee Distribution</CardTitle>
+        <CardDescription>January - December 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -139,7 +139,7 @@ export function DepartmentChart() {
                           y={(viewBox.cy ?? 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Employees
                         </tspan>
                       </text>
                     );
@@ -155,7 +155,7 @@ export function DepartmentChart() {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing total employees for the last year
         </div>
       </CardFooter>
     </Card>
