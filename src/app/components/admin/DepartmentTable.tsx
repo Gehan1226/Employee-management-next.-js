@@ -33,11 +33,11 @@ import {
 } from "../table/table";
 import { useEffect, useState } from "react";
 import { getAllDepartmentsWithPagination } from "@/app/api/department";
-import { Department } from "@/app/types/response-types";
 import { useDebouncedCallback } from "use-debounce";
+import { DepartmentResponse } from "@/app/types/department-roles";
 
 
-export const columns: ColumnDef<Department>[] = [
+export const columns: ColumnDef<DepartmentResponse>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -114,7 +114,7 @@ export const columns: ColumnDef<Department>[] = [
 ];
 
 export function DepartmentTable() {
-  const [departments, setDepartments] = useState<Department[]>([]);
+  const [departments, setDepartments] = useState<DepartmentResponse[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
