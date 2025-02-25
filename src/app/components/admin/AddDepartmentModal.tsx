@@ -43,6 +43,7 @@ export default function AddDepartmentModal() {
   const mutation = useAddDepartmentMutation();
 
   const handleOpen = () => setOpen(true);
+
   const handleClose = () => {
     reset();
     setOpen(false);
