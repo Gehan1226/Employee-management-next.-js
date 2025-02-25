@@ -34,9 +34,9 @@ import { ChevronDown } from "lucide-react";
 export const columns: ColumnDef<TaskResponse>[] = [
   {
     accessorKey: "taskDescription",
-    header: () => <div >Description</div>,
+    header: () => <div>Task Description</div>,
     cell: ({ row }) => (
-      <div className="capitalize font-semibold text-indigo-600 py-1">
+      <div className="font-semibold text-slate-600">
         {row.getValue("taskDescription")}
       </div>
     ),
@@ -54,7 +54,7 @@ export const columns: ColumnDef<TaskResponse>[] = [
     accessorKey: "assignedTime",
     header: () => <div>Assign Time</div>,
     cell: ({ row }) => (
-      <div className="capitalize  font-semibold text-slate-600">
+      <div className="font-semibold text-slate-600">
         {row.getValue("assignedTime")}
       </div>
     ),
@@ -63,7 +63,7 @@ export const columns: ColumnDef<TaskResponse>[] = [
     accessorKey: "dueDate",
     header: () => <div>Due Date</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-center bg-green-200 w-16 rounded-md">
+      <div className="font-semibold text-slate-600">
         {row.getValue("dueDate")}
       </div>
     ),
@@ -72,7 +72,7 @@ export const columns: ColumnDef<TaskResponse>[] = [
     accessorKey: "dueTime",
     header: () => <div>Due Time</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-center bg-green-200 w-16 rounded-md">
+      <div className="capitalize font-semibold text-slate-600">
         {row.getValue("dueTime")}
       </div>
     ),
@@ -93,8 +93,6 @@ export default function CreatedTasks() {
     queryKey: ["tasks-paginated"],
     queryFn: getAllTasksWithPagination,
   });
-
-  console.log(tasks);
 
   const table = useReactTable({
     data: Array.isArray(tasks) ? tasks : [],

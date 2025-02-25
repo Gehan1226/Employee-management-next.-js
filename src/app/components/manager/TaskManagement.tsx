@@ -1,5 +1,6 @@
 import React from "react";
 import CreatedTasks from "./CreatedTasks";
+import { Card, CardContent, CardHeader, CardTitle } from "../card";
 
 export default function TaskManagement() {
   return (
@@ -10,9 +11,18 @@ export default function TaskManagement() {
         </p>
       </div>
 
-      <div>
-        <CreatedTasks />
+      <div className="flex gap-4 flex-row-reverse w-full">
+
       </div>
+
+      <Card className="flex flex-col col-span-2">
+        <CardHeader className="items-center pb-0">
+          <CardTitle>Task Table</CardTitle>
+        </CardHeader>
+        <CardContent className="flex-1 pb-0">
+          <CreatedTasks />
+        </CardContent>
+      </Card>
     </>
   );
 }
