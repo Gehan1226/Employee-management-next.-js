@@ -7,6 +7,8 @@ import {
   Modal,
   Select,
 } from "@mui/material";
+import MobileStepper from "@mui/material/MobileStepper";
+import Button from "@mui/material/Button";
 import { X } from "lucide-react";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -14,15 +16,16 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { TaskFormValues } from "@/app/types/schema-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskSchema } from "@/app/lib/util/schemas";
 import EmployeeTaskSelector from "./EmployeeTaskSelector";
 
-
 export default function AddTaskModal() {
   const [open, setOpen] = useState(false);
-  const [isNext, setIsNext] = useState(false);
+  const [activeStep, setActiveStep] = useState(2);
 
   const {
     control,
@@ -40,6 +43,14 @@ export default function AddTaskModal() {
     },
   });
 
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 3);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 3);
+  };
+
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => {
@@ -49,10 +60,6 @@ export default function AddTaskModal() {
 
   const onSubmit = (data: TaskFormValues) => {
     console.log("Submitted Data:", data);
-  };
-
-  const onSelectNext = () => {
-    setIsNext(true);
   };
 
   return (
@@ -87,7 +94,7 @@ export default function AddTaskModal() {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-5 px-4 mt-8"
           >
-            {!isNext && (
+            {activeStep !== 5 && (
               <>
                 <div>
                   <label
@@ -215,23 +222,49 @@ export default function AddTaskModal() {
               </>
             )}
 
-            <EmployeeTaskSelector />
+            {activeStep === 5 && (
+              <>
+                <EmployeeTaskSelector />
 
-            <button
-              type="button"
-              className="text-white bg-blue-700 w-28 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
-              onClick={onSelectNext}
-            >
-              Next
-            </button>
+                <div className="flex justify-center">
+                  <button
+                    type="submit"
+                    className="text-white bg-blue-700 w-28 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
+                  >
+                    Save Task
+                  </button>
+                </div>
+              </>
+            )}
 
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="text-white bg-blue-700 w-28 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
-              >
-                Save
-              </button>
+            <div className="flex justify-center">
+              <MobileStepper
+                variant="progress"
+                steps={6}
+                position="static"
+                activeStep={activeStep}
+                sx={{ maxWidth: 600, flexGrow: 1 }}
+                nextButton={
+                  <Button
+                    size="small"
+                    onClick={handleNext}
+                    disabled={activeStep === 5}
+                  >
+                    Next
+                    <KeyboardArrowRight />
+                  </Button>
+                }
+                backButton={
+                  <Button
+                    size="small"
+                    onClick={handleBack}
+                    disabled={activeStep === 2}
+                  >
+                    <KeyboardArrowLeft />
+                    Back
+                  </Button>
+                }
+              />
             </div>
           </form>
         </Box>
