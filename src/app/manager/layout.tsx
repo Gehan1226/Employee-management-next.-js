@@ -1,8 +1,9 @@
+import AddEmployeeIcon from "@/components/icons/AddEmployeeIcon";
+import DashboardIcon from "@/components/icons/DashboardIcon";
+import EmployeeViewIcon from "@/components/icons/EmployeeViewIcon";
+import SideBar from "@/components/SideBar";
 import { ClipboardList } from "lucide-react";
-import SideBar from "../components/SideBar";
-import AddEmployeeIcon from "../components/icons/AddEmployeeIcon";
-import DashboardIcon from "../components/icons/DashboardIcon";
-import EmployeeViewIcon from "../components/icons/EmployeeViewIcon";
+
 
 const menuItems: MenuItem[] = [
   {
