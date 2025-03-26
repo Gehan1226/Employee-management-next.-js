@@ -1,10 +1,10 @@
-import AddEmployeeForm from '@/components/employee/AddEmployeeForm';
+import AddEmployeePage from '@/components/pages/manager/AddEmployeePage';
 import React from 'react';
 
 export default function page() {
 
   return (
-    <AddEmployeeForm />
+    <AddEmployeePage />
   )
 }
 

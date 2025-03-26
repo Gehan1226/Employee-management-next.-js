@@ -1,22 +1,28 @@
 "use client";
-import React, { useEffect, useState, useCallback } from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Avatar } from '@mui/material';
-import { getCountriesAndFlags } from '../api/country-names';
-import { CountryDetails } from '../types/response-types';
+import React, { useEffect, useState, useCallback } from "react";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { Avatar } from "@mui/material";
+import { getCountriesAndFlags } from "../api/country-names";
+import { CountryDetails } from "../types/response-types";
+import { Controller } from "react-hook-form";
 
 type CountrySelectorProps = {
   name: string;
   error?: string;
-}
+  control?: any;
+};
 
-const CountrySelector: React.FC<CountrySelectorProps> = ({ name, error }) => {
+const CountrySelector: React.FC<CountrySelectorProps> = ({
+  name,
+  error,
+  control,
+}) => {
   const [countryData, setCountryData] = useState<CountryDetails[]>([]);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
@@ -27,7 +33,7 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ name, error }) => {
       setCountryData(response.data ?? []);
       setFetchError(null);
     } catch (err) {
-      setFetchError('Failed to fetch country data.');
+      setFetchError("Failed to fetch country data.");
     } finally {
       setLoading(false);
     }
@@ -61,28 +67,35 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({ name, error }) => {
 
   return (
     <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel
-          id="country-select-label"
-          sx={{ fontSize: "14px", }}
-        >
-          Country
-        </InputLabel>
-        <Select
-          labelId="country-select-label"
-          id="country-select"
-          value={selectedOption}
-          label="Country"
-          onChange={handleChange}
-          sx={{ height: 45 }}
-          disabled={loading || fetchError !== null}
-          name={name}
-        >
-          {loading && <MenuItem disabled>Loading...</MenuItem>}
-          {fetchError && <MenuItem disabled>{fetchError}</MenuItem>}
-          {!loading && !fetchError && menuItems}
-        </Select>
-      </FormControl>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <FormControl fullWidth>
+            <InputLabel id="country-select-label" sx={{ fontSize: "14px" }}>
+              Country
+            </InputLabel>
+            <Select
+              {...field}
+              labelId="country-select-label"
+              id="country-select"
+              value={selectedOption}
+              label="Country"
+              onChange={(e) => {
+                field.onChange(e.target.value);
+                handleChange(e);
+              }}
+              sx={{ height: 45 }}
+              disabled={loading || fetchError !== null}
+              name={name}
+            >
+              {loading && <MenuItem disabled>Loading...</MenuItem>}
+              {fetchError && <MenuItem disabled>{fetchError}</MenuItem>}
+              {!loading && !fetchError && menuItems}
+            </Select>
+          </FormControl>
+        )}
+      />
       {error && <p className="mt-2 text-sm text-red-600">*{error}</p>}
     </Box>
   );
