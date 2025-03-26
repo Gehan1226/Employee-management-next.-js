@@ -7,6 +7,9 @@ import { Card, CardContent } from "../card";
 import Image from "next/image";
 import AddEmployeeStepper from "../manager/AddEmployeeStepper";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { employeeFormSchema } from "@/lib/schema/employee";
 
 const steps = [
   "Select campaign settings",
@@ -15,46 +18,56 @@ const steps = [
 ];
 
 export default function AddEmployeeForm() {
-  const [step, setStep] = useState<"STEP1" | "STEP2">("STEP1");
-
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
 
-  const totalSteps = () => {
-    return steps.length;
-  };
+  const {
+    register: step1Register,
+    formState: { errors: step1Errors },
+    handleSubmit: step1HandleSubmit,
+    control: step1Control,
+  } = useForm({
+    resolver: zodResolver(employeeFormSchema.shape.step1),
+    mode: "onBlur",
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      dob: undefined,
+      gender: undefined,
+    },
+  });
 
-  const completedSteps = () => {
-    return Object.keys(completed).length;
-  };
+  const step2Form = useForm({
+    resolver: zodResolver(employeeFormSchema.shape.step2),
+    mode: "onBlur",
+    defaultValues: {
+      country: "",
+      state: "",
+      district: "",
+      city: "",
+      street: "",
+      postalCode: "",
+    },
+  });
 
-  const isLastStep = () => {
-    return activeStep === totalSteps() - 1;
-  };
-
-  const allStepsCompleted = () => {
-    return completedSteps() === totalSteps();
-  };
-
-  const handleNext = () => {
-    setStep("STEP2");
+  const handleNext = async () => {
     setCompleted({
       ...completed,
       [activeStep]: true,
     });
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
-    setActiveStep(newActiveStep);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleStep = (step: number) => () => {
     setActiveStep(step);
+  };
+
+  const onSubmitForm1 = (data: any) => {
+    console.log(data);
   };
 
   return (
@@ -73,26 +86,30 @@ export default function AddEmployeeForm() {
                 completed={completed}
                 handleStep={handleStep}
               />
-
             </div>
 
-            <form className="px-20 mt-10">
-              {step === "STEP1" && (
+            <form
+              className="px-20 mt-10"
+              onSubmit={step1HandleSubmit(onSubmitForm1)}
+            >
+              {activeStep === 0 && (
                 <>
                   <div className="grid md:grid-cols-2 md:gap-6">
                     <Input
                       type="text"
                       label="First Name"
                       id="first_name"
-                      name="firstName"
                       placeholder="john"
+                      {...step1Register("firstName")}
+                      error={step1Errors.firstName?.message}
                     />
                     <Input
                       type="text"
                       label="Last Name"
                       id="last_name"
-                      name="lastName"
                       placeholder="doe"
+                      {...step1Register("lastName")}
+                      error={step1Errors.lastName?.message}
                     />
                   </div>
 
@@ -101,8 +118,9 @@ export default function AddEmployeeForm() {
                       type="text"
                       label="Email address"
                       id="floating_email"
-                      name="email"
                       placeholder="joe@doe.com"
+                      {...step1Register("email")}
+                      error={step1Errors.email?.message}
                     />
                   </div>
 
@@ -111,13 +129,19 @@ export default function AddEmployeeForm() {
                       type="tel"
                       label="Mobile number"
                       id="mobile"
-                      name="phoneNumber"
                       placeholder="1234567890"
+                      {...step1Register("phoneNumber")}
+                      error={step1Errors.phoneNumber?.message}
                     />
                   </div>
 
-                  <div className="mb-6 ">
-                    <DateInput label="Date of birth" name="dob" />
+                  <div className="mb-6">
+                    <DateInput
+                      label="Date of Birth"
+                      name="dob"
+                      control={step1Control}
+                      error={step1Errors.dob?.message}
+                    />
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6">
@@ -129,6 +153,8 @@ export default function AddEmployeeForm() {
                         { label: "Other", id: "Other" },
                       ]}
                       name="gender"
+                      control={step1Control}
+                      error={step1Errors.gender?.message}
                     />
 
                     {/* <DropDownMenu
@@ -151,7 +177,7 @@ export default function AddEmployeeForm() {
                 </>
               )}
 
-              {step === "STEP2" && (
+              {activeStep === 1 && (
                 <>
                   <CountrySelector name="country" />
 
@@ -195,20 +221,19 @@ export default function AddEmployeeForm() {
               )}
 
               <div className="flex flex-row-reverse mt-6">
-                {step === "STEP2" && (
+                {/* {activeStep === 1 && (
                   <button
                     type="submit"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
                   >
                     Submit
                   </button>
-                )}
+                )} */}
 
-                {step === "STEP1" && (
+                {activeStep === 0 && (
                   <button
-                    type="button"
+                    type="submit"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-                    onClick={handleNext}
                   >
                     Next
                   </button>

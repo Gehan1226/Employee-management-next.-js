@@ -1,38 +1,59 @@
 import React from 'react'
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-type DateInputProps = {
+import { Controller } from "react-hook-form";
+import dayjs from 'dayjs';
+
+interface DateInputProps {
   label: string;
-  name: string
+  name: string;
+  control: any;
   error?: string;
 }
 
-export default function DateInput({ label, name, error }: Readonly<DateInputProps>) {
+export default function DateInput({
+  label,
+  name,
+  control,
+  error,
+}: Readonly<DateInputProps>) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DatePicker']}>
-        <DatePicker
-          label={label}
-          name={name}
-          sx={{
-            width: '100%',
-            '& .MuiOutlinedInput-root': {
-              height: '50px',
-            },
-            '& .MuiInputBase-input': {
-              padding: '12px 14px',
-              fontSize: '16px',
-            },
-            '& .MuiInputLabel-root': {
-              fontSize: '14px',
-            },
-          }}
-        />
-      </DemoContainer>
-      {error && <p className="mt-2 text-sm text-red-600">*{error}</p>}
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <DatePicker
+            {...field}
+            label={label}
+            value={field.value ? dayjs(field.value) : null}
+            onChange={(date) => {
+              field.onChange(date?.toDate() ?? null);
+            }}
+            slotProps={{
+              textField: {
+                error: !!error,
+                helperText: error,
+              },
+            }}
+            sx={{
+              width: "100%",
+              "& .MuiOutlinedInput-root": {
+                height: "50px",
+              },
+              "& .MuiInputBase-input": {
+                padding: "12px 14px",
+                fontSize: "16px",
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: "14px",
+              },
+            }}
+          />
+        )}
+      />
     </LocalizationProvider>
   );
 }

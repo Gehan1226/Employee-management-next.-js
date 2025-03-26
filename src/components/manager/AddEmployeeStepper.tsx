@@ -13,7 +13,6 @@ type AddEmployeeStepperProps = {
 
 export default function AddEmployeeStepper({ steps, activeStep, completed, handleStep }: Readonly<AddEmployeeStepperProps>) {
 
-  
   return (
     <Box sx={{ width: "100%" }}>
       <Stepper nonLinear activeStep={activeStep} alternativeLabel>
