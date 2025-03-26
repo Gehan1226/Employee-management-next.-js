@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/card";
 import AddEmployeeStepper from "@/components/manager/AddEmployeeStepper";
 import EmployeePersonalDetailsForm from "@/components/manager/EmployeePersonalDetailsForm";
 import EmployeeAddressForm from "@/components/manager/EmployeeAddressForm";
+import { CircleCheckBig } from "lucide-react";
 
 const steps = [
   "Select campaign settings",
@@ -45,8 +46,6 @@ export default function AddEmployeePage() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  console.log(data, address);
-
   return (
     <div className="px-16 py-5 overflow-hidden">
       <Card className="py-5">
@@ -74,6 +73,13 @@ export default function AddEmployeePage() {
 
             {activeStep === 1 && (
               <EmployeeAddressForm onFormSubmit={onSubmitAddress} />
+            )}
+
+            {activeStep === 2 && (
+              <div className="flex flex-col items-center mt-10">
+                <CircleCheckBig size={48} color="#2f5cb6" strokeWidth={1.75} />
+                <p>Employee added successfully !</p>
+              </div>
             )}
 
             <Image

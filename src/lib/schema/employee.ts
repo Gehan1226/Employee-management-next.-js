@@ -15,6 +15,8 @@ const personalInfoSchema = z.object({
   gender: z.enum(["Male", "Female", "Other"], {
     required_error: "Select a gender",
   }),
+  department: z.string().min(1, "Department is required"),
+  role: z.string().min(1, "Role is required"),
 });
 
 const addressInfoSchema = z.object({

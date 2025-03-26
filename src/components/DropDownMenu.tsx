@@ -20,6 +20,7 @@ type DropDownProps = {
   handleChange?: (event: SelectChangeEvent) => void;
   error?: string;
   control?: any;
+  onChange?: (value: string) => void;
 };
 
 export default function DropDownMenu({
@@ -29,6 +30,7 @@ export default function DropDownMenu({
   handleChange,
   control,
   error,
+  onChange
 }: Readonly<DropDownProps>) {
   return (
     <Controller
@@ -52,7 +54,8 @@ export default function DropDownMenu({
             label={label}
             onChange={(e) => {
               field.onChange(e); 
-              handleChange?.(e); 
+              handleChange?.(e);
+              onChange?.(e.target.value);
             }}
             sx={{ height: 45 }}
           >

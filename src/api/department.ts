@@ -11,7 +11,7 @@ import {
 
 export const getAllDepartments = async (): Promise<DepartmentResponse[]> => {
   try {
-    const response = await axioInstance.get("/api/v1/department/get-all");
+    const response = await axioInstance.get("/api/v1/department");
     return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

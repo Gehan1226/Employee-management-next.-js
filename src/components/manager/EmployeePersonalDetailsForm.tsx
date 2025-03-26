@@ -1,11 +1,14 @@
 import { employeeFormSchema } from "@/lib/schema/employee";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../Input";
 import DropDownMenu from "../DropDownMenu";
 import DateInput from "../DateInput";
-import CountrySelector from "../CountrySelector";
+import { useQuery } from "@tanstack/react-query";
+import { getAllDepartments } from "@/api/department";
+import { mapDepartmentToDropdownItem, mapRoleToDropdownItem } from "@/lib/util/map-object";
+import { getRolesByDepartment } from "@/api/role";
 
 type EmployeePersonalDetailsFormProps = {
   activeStep: number;
@@ -16,6 +19,10 @@ export default function EmployeePersonalDetailsForm({
   activeStep,
   onFormSubmit,
 }: Readonly<EmployeePersonalDetailsFormProps>) {
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState<
+    string | null
+  >();
+
   const {
     register,
     formState: { errors },
@@ -23,7 +30,6 @@ export default function EmployeePersonalDetailsForm({
     control,
   } = useForm({
     resolver: zodResolver(employeeFormSchema.shape.step1),
-    mode: "onBlur",
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -31,7 +37,19 @@ export default function EmployeePersonalDetailsForm({
       phoneNumber: "",
       dob: undefined,
       gender: undefined,
+      department: undefined,
     },
+  });
+
+  const { data: departments } = useQuery({
+    queryKey: ["all-departments"],
+    queryFn: getAllDepartments,
+  });
+
+  const { data: roles } = useQuery({
+    queryKey: ["roles-by-department", selectedDepartmentId],
+    queryFn: () => getRolesByDepartment(selectedDepartmentId),
+    enabled: !!selectedDepartmentId,
   });
 
   return (
@@ -99,20 +117,22 @@ export default function EmployeePersonalDetailsForm({
           error={errors.gender?.message}
         />
 
-        {/* <DropDownMenu
-                            label="Department"
-                            menuItems={mapDepartmentToDropdownItem(departments)}
-                            name='department'
-                            handleChange={onSelectDepartment}
-                            error={state.validationErrors?.department}
-                        />
+        <DropDownMenu
+          label="Department"
+          menuItems={mapDepartmentToDropdownItem(departments ?? [])}
+          name="department"
+          control={control}
+          error={errors.department?.message}
+          onChange={(id) => setSelectedDepartmentId(id)}
+        />
 
-                        <DropDownMenu
-                            label="Role"
-                            menuItems={mapRoleToDropdownItem(roles)}
-                            name='role'
-                            error={state.validationErrors?.role}
-                        /> */}
+        <DropDownMenu
+          label="Role"
+          menuItems={mapRoleToDropdownItem(roles ?? [])}
+          name="role"
+          control={control}
+          error={errors.role?.message}
+        />
       </div>
 
       <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />

@@ -2,35 +2,34 @@
 
 import axios from "axios";
 import axioInstance from "../lib/axios";
-import { PaginatedRoleResponse, RoleResponse } from "../types/response-types";
-import { RoleFormValues } from "../types/department-roles";
+import { PaginatedRoleResponse } from "../types/response-types";
+import { RoleFormValues, RoleResponse } from "../types/department-roles";
 
 export const getRolesByDepartment = async (
-  departmentId: string
-): Promise<Partial<RoleResponse>> => {
+  departmentId: string | null | undefined
+): Promise<RoleResponse[]> => {
+  if (!departmentId) {
+    throw new Error("Department ID not provided for role fetching.");
+  }
+
   try {
     const response = await axioInstance.get(
-      `/api/v1/role/get-by-department/${departmentId}`
+      `/api/v1/role/by-department/${departmentId}`
     );
-    return { success: true, data: response.data.data };
+    return response.data.data;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return {
-          message:
-            error.response.data?.errorMessage ||
-            "An error occurred during fetching departments.",
-        };
+        throw new Error(error.response.data?.errorMessage || "An error occurred.");
       } else if (error.request) {
-        return {
-          message:
-            "No response received from the server. Please check your network connection.",
-        };
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
       } else {
-        return { message: error.message || "An unexpected error occurred." };
+        throw new Error(error.message || "An unexpected error occurred.");
       }
     } else {
-      return { message: error.message || "An unexpected error occurred." };
+      throw new Error((error as Error).message || "An unexpected error occurred.");
     }
   }
 };
@@ -88,7 +87,7 @@ export const addRole = async (role: RoleFormValues): Promise<string> => {
     department: {
       id: role.department,
     },
-  }
+  };
   try {
     const response = await axioInstance.post("/api/v1/role", data);
     return response.data.message;
