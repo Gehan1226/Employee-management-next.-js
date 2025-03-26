@@ -2,6 +2,7 @@
 import axios from "axios";
 import { validateUserData } from "../lib/util/user-schemas";
 import axioInstance from "../lib/axios";
+import { AuthResponse, BasicUserInfoResponse, UserWithRoleAndEnabledStatus } from "@/types/auth-types";
 
 export const registerUser = async (
   prevState: unknown,

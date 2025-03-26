@@ -1,3 +1,4 @@
+import { BasicUserInfo } from '@/types/auth-types';
 import React from 'react'
 
 type DeletePopupProps = {

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { departmentSchema } from "@/app/lib/util/schemas";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DepartmentFormValues } from "@/app/types/department-roles";
 import {
   Box,
   FormControl,
@@ -13,9 +11,11 @@ import {
   Select,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { getEmployeesWithoutManagers } from "@/app/api/employee";
 import { X } from "lucide-react";
-import useAddDepartmentMutation from "@/app/hooks/useAddDepartmentMutation";
+import { DepartmentFormValues } from "@/types/department-roles";
+import { departmentSchema } from "@/lib/util/schemas";
+import useAddDepartmentMutation from "@/hooks/useAddDepartmentMutation";
+import { getEmployeesWithoutManagers } from "@/api/employee";
 
 export default function AddDepartmentModal() {
   const [open, setOpen] = useState<boolean>(false);
