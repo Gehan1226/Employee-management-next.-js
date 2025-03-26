@@ -1,14 +1,17 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { employeeFormSchema } from "@/lib/schema/employee";
+import { addressInfoSchema, personalInfoSchema } from "@/lib/schema/employee";
 import { Card, CardContent } from "@/components/card";
 import AddEmployeeStepper from "@/components/manager/AddEmployeeStepper";
 import EmployeePersonalDetailsForm from "@/components/manager/EmployeePersonalDetailsForm";
 import EmployeeAddressForm from "@/components/manager/EmployeeAddressForm";
 import { CircleCheckBig } from "lucide-react";
+import { EmployeeCreateRequest } from "@/types/employee";
+import { z } from "zod";
+import { useQuery } from "@tanstack/react-query";
+import { getAllDepartments } from "@/api/department";
+import { getRolesByDepartment } from "@/api/role";
 
 const steps = [
   "Select campaign settings",
@@ -21,15 +24,54 @@ export default function AddEmployeePage() {
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
-  const [data, setData] = useState();
-  const [address, setAddress] = useState();
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState<
+    string | null
+  >();
+
+
+  const [employeeData, setEmployeeData] = useState<EmployeeCreateRequest>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    dob: "",
+    gender: "",
+    departmentId: "",
+    roleId: "",
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      country: "",
+      district: "",
+    },
+  });
+
+  const { data: departments } = useQuery({
+      queryKey: ["all-departments"],
+      queryFn: getAllDepartments,
+    });
+  
+    const { data: roles } = useQuery({
+      queryKey: ["roles-by-department", selectedDepartmentId],
+      queryFn: () => getRolesByDepartment(selectedDepartmentId),
+      enabled: !!selectedDepartmentId,
+    });
+  
 
   const handleStep = (step: number) => () => {
     setActiveStep(step);
   };
 
-  const onSubmitPersonalDetails = (data: any) => {
-    setData(data);
+  const onSubmitPersonalDetails = (
+    data: z.infer<typeof personalInfoSchema>
+  ) => {
+    setEmployeeData((prev) => ({
+      ...prev,
+      ...data,
+      dob: data.dob instanceof Date ? data.dob.toISOString() : data.dob,
+    }));
     setCompleted({
       ...completed,
       [activeStep]: true,
@@ -37,13 +79,20 @@ export default function AddEmployeePage() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const onSubmitAddress = (data: any) => {
-    setAddress(data);
+  const onSubmitAddress = (data: z.infer<typeof addressInfoSchema>) => {
+    setEmployeeData((prev) => ({
+      ...prev,
+      address: data,
+    }));
     setCompleted({
       ...completed,
       [activeStep]: true,
     });
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const onSelectDepartment = (departmentId: string) => {
+    setSelectedDepartmentId(departmentId);
   };
 
   return (
@@ -68,6 +117,10 @@ export default function AddEmployeePage() {
               <EmployeePersonalDetailsForm
                 activeStep={activeStep}
                 onFormSubmit={onSubmitPersonalDetails}
+                defaultValues={employeeData}
+                departments={departments ?? []}
+                roles={roles ?? []}
+                onSelectDepartment={onSelectDepartment}
               />
             )}
 

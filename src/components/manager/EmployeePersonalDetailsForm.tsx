@@ -5,24 +5,31 @@ import { useForm } from "react-hook-form";
 import Input from "../Input";
 import DropDownMenu from "../DropDownMenu";
 import DateInput from "../DateInput";
-import { useQuery } from "@tanstack/react-query";
-import { getAllDepartments } from "@/api/department";
-import { mapDepartmentToDropdownItem, mapRoleToDropdownItem } from "@/lib/util/map-object";
-import { getRolesByDepartment } from "@/api/role";
+
+import {
+  mapDepartmentToDropdownItem,
+  mapRoleToDropdownItem,
+} from "@/lib/util/map-object";
+import { EmployeeCreateRequest } from "@/types/employee";
+import { DepartmentResponse, RoleResponse } from "@/types/department-roles";
 
 type EmployeePersonalDetailsFormProps = {
   activeStep: number;
   onFormSubmit: (data: any) => void;
+  defaultValues: EmployeeCreateRequest;
+  departments: DepartmentResponse[];
+  roles: RoleResponse[];
+  onSelectDepartment: (departmentId: string) => void;
 };
 
 export default function EmployeePersonalDetailsForm({
   activeStep,
   onFormSubmit,
+  defaultValues,
+  onSelectDepartment,
+  departments,
+  roles,
 }: Readonly<EmployeePersonalDetailsFormProps>) {
-  const [selectedDepartmentId, setSelectedDepartmentId] = useState<
-    string | null
-  >();
-
   const {
     register,
     formState: { errors },
@@ -31,25 +38,15 @@ export default function EmployeePersonalDetailsForm({
   } = useForm({
     resolver: zodResolver(employeeFormSchema.shape.step1),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      dob: undefined,
-      gender: undefined,
-      department: undefined,
+      firstName: defaultValues.firstName,
+      lastName: defaultValues.lastName,
+      email: defaultValues.email,
+      phoneNumber: defaultValues.phoneNumber,
+      dob: defaultValues.dob,
+      gender: defaultValues.gender,
+      departmentId: defaultValues.departmentId,
+      roleId: defaultValues.roleId,
     },
-  });
-
-  const { data: departments } = useQuery({
-    queryKey: ["all-departments"],
-    queryFn: getAllDepartments,
-  });
-
-  const { data: roles } = useQuery({
-    queryKey: ["roles-by-department", selectedDepartmentId],
-    queryFn: () => getRolesByDepartment(selectedDepartmentId),
-    enabled: !!selectedDepartmentId,
   });
 
   return (
@@ -120,18 +117,18 @@ export default function EmployeePersonalDetailsForm({
         <DropDownMenu
           label="Department"
           menuItems={mapDepartmentToDropdownItem(departments ?? [])}
-          name="department"
+          name="departmentId"
           control={control}
-          error={errors.department?.message}
-          onChange={(id) => setSelectedDepartmentId(id)}
+          error={errors.departmentId?.message}
+          onChange={onSelectDepartment}
         />
 
         <DropDownMenu
           label="Role"
           menuItems={mapRoleToDropdownItem(roles ?? [])}
-          name="role"
+          name="roleId"
           control={control}
-          error={errors.role?.message}
+          error={errors.roleId?.message}
         />
       </div>
 

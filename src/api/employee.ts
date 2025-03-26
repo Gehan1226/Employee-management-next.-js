@@ -1,7 +1,7 @@
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import { validateEmployee } from "../lib/util/employee-schemas";
-import { EmployeeResponse, RegisterEmployeeResponse } from "../types/employee-types";
+import { EmployeeResponse, RegisterEmployeeResponse } from "../types/employee";
 import { PaginatedEmployeeResponse } from "../types/response-types";
 
 export const registerEmployee = async (
@@ -46,13 +46,15 @@ export const registerEmployee = async (
         };
       } else {
         return {
-          backendErrors: (error as Error).message || "An unexpected error occurred.",
+          backendErrors:
+            (error as Error).message || "An unexpected error occurred.",
           prevData: employeeData,
         };
       }
     } else {
       return {
-        backendErrors: (error as Error).message || "An unexpected error occurred.",
+        backendErrors:
+          (error as Error).message || "An unexpected error occurred.",
         prevData: employeeData,
       };
     }
@@ -102,25 +104,36 @@ export const getAllEmployeesWithPagination = async (
       }
       return { message: error.message || "An unexpected error occurred." };
     } else {
-      return { message: (error as Error)?.message || "An unexpected error occurred." };
+      return {
+        message: (error as Error)?.message || "An unexpected error occurred.",
+      };
     }
   }
 };
 
-export const getEmployeesWithoutManagers = async (): Promise<EmployeeResponse[]> => {
+export const getEmployeesWithoutManagers = async (): Promise<
+  EmployeeResponse[]
+> => {
   try {
     const response = await axioInstance.get("/api/v1/employee/non-managers");
     return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        throw new Error(error.response.data?.errorMessage || "An error occurred during fetching employees.");
+        throw new Error(
+          error.response.data?.errorMessage ||
+            "An error occurred during fetching employees."
+        );
       } else if (error.request) {
-        throw new Error("No response received from the server. Please check your network connection.");
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
       }
       throw new Error(error.message || "An unexpected error occurred.");
     } else {
-      throw new Error((error as Error)?.message || "An unexpected error occurred.");
+      throw new Error(
+        (error as Error)?.message || "An unexpected error occurred."
+      );
     }
   }
 };

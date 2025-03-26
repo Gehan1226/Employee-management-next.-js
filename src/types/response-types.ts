@@ -1,5 +1,5 @@
 import { DepartmentResponse, Role } from "./department-roles";
-import { Employee, EmployeeResponse } from "./employee-types";
+import { Employee, EmployeeResponse } from "./employee";
 
 export type CountryDetails = {
   name: string;

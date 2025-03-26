@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const personalInfoSchema = z.object({
+export const personalInfoSchema = z.object({
   firstName: z.string().min(2, "First name is required"),
   lastName: z.string().min(2, "Last name is required"),
   email: z.string().email("Invalid email"),
@@ -12,14 +12,12 @@ const personalInfoSchema = z.object({
     }),
     z.string().datetime() 
   ]),
-  gender: z.enum(["Male", "Female", "Other"], {
-    required_error: "Select a gender",
-  }),
-  department: z.string().min(1, "Department is required"),
-  role: z.string().min(1, "Role is required"),
+  gender: z.string().min(4, "gender is required"),
+  departmentId: z.string().min(1, "Department is required"),
+  roleId: z.string().min(1, "Role is required"),
 });
 
-const addressInfoSchema = z.object({
+export const addressInfoSchema = z.object({
   country: z.string().min(1, "Country is required"),
   state: z.string().min(2, "State is required"),
   district: z.string().min(2, "District is required"),
