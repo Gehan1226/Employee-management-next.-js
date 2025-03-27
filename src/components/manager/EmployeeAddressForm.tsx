@@ -22,7 +22,6 @@ export default function EmployeeAddressForm({
     control,
   } = useForm({
     resolver: zodResolver(employeeFormSchema.shape.step2),
-    mode: "onBlur",
     defaultValues: {
       country: "",
       state: "",

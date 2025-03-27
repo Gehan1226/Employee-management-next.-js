@@ -57,4 +57,25 @@ export class Employee {
   getEmployeeData() {
     return { ...this.personalInfo, address: this.addressInfo };
   }
+
+  reset() {
+    this.personalInfo = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      dob: "",
+      gender: "",
+      departmentId: "",
+      roleId: "",
+    };
+    this.addressInfo = {
+      country: "",
+      state: "",
+      district: "",
+      city: "",
+      street: "",
+      postalCode: "",
+    };
+  }
 }

@@ -1,12 +1,10 @@
 "use client";
-import Image from "next/image";
 import { useState } from "react";
 import { addressInfoSchema, personalInfoSchema } from "@/lib/schema/employee";
 import { Card, CardContent } from "@/components/card";
 import AddEmployeeStepper from "@/components/manager/AddEmployeeStepper";
 import EmployeePersonalDetailsForm from "@/components/manager/EmployeePersonalDetailsForm";
 import EmployeeAddressForm from "@/components/manager/EmployeeAddressForm";
-import { CircleCheckBig } from "lucide-react";
 import { EmployeeCreateRequest } from "@/types/employee";
 import { z } from "zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -15,6 +13,8 @@ import { getRolesByDepartment } from "@/api/role";
 import Loading from "@/components/animations/Loading";
 import { saveEmployee } from "@/api/employee";
 import { Employee } from "@/lib/class/employee";
+import SuccessMessage from "@/components/animations/SuccessMessage";
+import EmployeeImage from "@/components/animations/EmployeeImage";
 
 const steps = [
   "Employee Personal Details",
@@ -51,6 +51,7 @@ export default function AddEmployeePage() {
         ...completed,
         [activeStep]: true,
       });
+      employee.reset();
     },
   });
 
@@ -74,15 +75,12 @@ export default function AddEmployeePage() {
   };
 
   const onSubmitAddress = (data: z.infer<typeof addressInfoSchema>) => {
-    
     employee.setAddressInfo(data);
-
     setCompleted({
       ...completed,
       [activeStep]: true,
     });
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
     mutation.mutate(employee.getEmployeeData());
   };
 
@@ -121,40 +119,18 @@ export default function AddEmployeePage() {
               />
             )}
 
-            {/* {activeStep === 2 && (
-              <>
-                
-                <div className="flex flex-col items-center mt-10">
-                  <CircleCheckBig
-                    size={48}
-                    color="#2f5cb6"
-                    strokeWidth={1.75}
-                  />
-                  <p>Employee added successfully !</p>
-                </div>
-              </>
-            )} */}
-
             {mutation.isPending && (
               <div className="flex flex-col items-center mt-10">
                 <Loading />
+                <p className="font-mono"> Saving Employee .....</p>
               </div>
             )}
 
             {mutation.isSuccess && (
-              <div className="flex flex-col items-center mt-10">
-                <CircleCheckBig size={48} color="#2f5cb6" strokeWidth={1.75} />
-                <p>Employee added successfully !</p>
-              </div>
+              <SuccessMessage message="Employee added successfully!" />
             )}
 
-            <Image
-              src="/employee-img-1.png"
-              alt="employee image"
-              width={300}
-              height={300}
-              className="absolute -top-24 -right-44 "
-            />
+            <EmployeeImage value={mutation.isSuccess} />
           </div>
         </CardContent>
       </Card>
