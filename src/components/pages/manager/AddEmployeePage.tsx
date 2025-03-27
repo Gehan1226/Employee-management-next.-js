@@ -14,9 +14,9 @@ import { getAllDepartments } from "@/api/department";
 import { getRolesByDepartment } from "@/api/role";
 
 const steps = [
-  "Select campaign settings",
-  "Create an ad group",
-  "Create an ad",
+  "Employee Personal Details",
+  "Employee Address",
+  "Save Employee",
 ];
 
 export default function AddEmployeePage() {
@@ -58,11 +58,6 @@ export default function AddEmployeePage() {
       queryFn: () => getRolesByDepartment(selectedDepartmentId),
       enabled: !!selectedDepartmentId,
     });
-  
-
-  const handleStep = (step: number) => () => {
-    setActiveStep(step);
-  };
 
   const onSubmitPersonalDetails = (
     data: z.infer<typeof personalInfoSchema>
@@ -109,7 +104,6 @@ export default function AddEmployeePage() {
                 steps={steps}
                 activeStep={activeStep}
                 completed={completed}
-                handleStep={handleStep}
               />
             </div>
 

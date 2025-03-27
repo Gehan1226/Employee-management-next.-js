@@ -70,7 +70,7 @@ export default function EmployeePersonalDetailsForm({
         />
       </div>
 
-      <div className="">
+      <div className="mt-5">
         <Input
           type="text"
           label="Email address"
@@ -81,7 +81,7 @@ export default function EmployeePersonalDetailsForm({
         />
       </div>
 
-      <div className="mb-6 ">
+      <div className="mt-5">
         <Input
           type="tel"
           label="Mobile number"
@@ -92,7 +92,7 @@ export default function EmployeePersonalDetailsForm({
         />
       </div>
 
-      <div className="mb-6">
+      <div className="mt-5">
         <DateInput
           label="Date of Birth"
           name="dob"
@@ -101,7 +101,7 @@ export default function EmployeePersonalDetailsForm({
         />
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-6 mt-5">
         <DropDownMenu
           label="Gender"
           menuItems={[

@@ -8,17 +8,16 @@ type AddEmployeeStepperProps = {
   steps: string[];
   activeStep: number;
   completed: { [key: number]: boolean };
-  handleStep: (step: number) => () => void;
 };
 
-export default function AddEmployeeStepper({ steps, activeStep, completed, handleStep }: Readonly<AddEmployeeStepperProps>) {
+export default function AddEmployeeStepper({ steps, activeStep, completed }: Readonly<AddEmployeeStepperProps>) {
 
   return (
     <Box sx={{ width: "100%" }}>
       <Stepper nonLinear activeStep={activeStep} alternativeLabel>
         {steps.map((label, index) => (
           <Step key={label} completed={completed[index]}>
-            <StepButton color="inherit" onClick={handleStep(index)}>
+            <StepButton color="inherit">
               {label}
             </StepButton>
           </Step>

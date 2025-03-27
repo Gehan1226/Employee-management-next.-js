@@ -71,7 +71,7 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({
         name={name}
         control={control}
         render={({ field }) => (
-          <FormControl fullWidth>
+          <FormControl fullWidth error={!!error}>
             <InputLabel id="country-select-label" sx={{ fontSize: "14px" }}>
               Country
             </InputLabel>
@@ -85,7 +85,7 @@ const CountrySelector: React.FC<CountrySelectorProps> = ({
                 field.onChange(e.target.value);
                 handleChange(e);
               }}
-              sx={{ height: 45 }}
+              sx={{ height: 45, backgroundColor: "#F9FAFB" }}
               disabled={loading || fetchError !== null}
               name={name}
             >

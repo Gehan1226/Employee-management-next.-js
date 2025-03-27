@@ -34,7 +34,7 @@ export default function EmployeeAddressForm({
     <form className="px-20 mt-10" onSubmit={handleSubmit(onFormSubmit)}>
       <CountrySelector name="country" control={control} error={errors.country?.message} />
 
-      <div className="grid md:grid-cols-2 gap-3 mt-6">
+      <div className="grid md:grid-cols-2 gap-y-4 gap-x-5  mt-6">
         <Input
           type="text"
           label="State"

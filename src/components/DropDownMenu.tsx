@@ -30,7 +30,7 @@ export default function DropDownMenu({
   handleChange,
   control,
   error,
-  onChange
+  onChange,
 }: Readonly<DropDownProps>) {
   return (
     <Controller
@@ -50,14 +50,14 @@ export default function DropDownMenu({
             {...field}
             labelId={`${name}-label`}
             id={name}
-            value={field.value || ""} 
+            value={field.value || ""}
             label={label}
             onChange={(e) => {
-              field.onChange(e); 
+              field.onChange(e);
               handleChange?.(e);
               onChange?.(e.target.value);
             }}
-            sx={{ height: 45 }}
+            sx={{ height: 45, backgroundColor: "#F9FAFB" }}
           >
             {menuItems.map((item) => (
               <MenuItem key={item.id} value={item.id}>
@@ -65,9 +65,7 @@ export default function DropDownMenu({
               </MenuItem>
             ))}
           </Select>
-          {error && (
-            <p className="mt-2 text-sm text-red-600">*{error}</p>
-          )}
+          {error && <p className="mt-2 text-sm text-red-600">*{error}</p>}
         </FormControl>
       )}
     />

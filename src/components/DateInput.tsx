@@ -42,6 +42,7 @@ export default function DateInput({
               width: "100%",
               "& .MuiOutlinedInput-root": {
                 height: "50px",
+                backgroundColor: "#F9FAFB",
               },
               "& .MuiInputBase-input": {
                 padding: "12px 14px",
