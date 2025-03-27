@@ -7,10 +7,12 @@ import { employeeFormSchema } from "@/lib/schema/employee";
 
 type EmployeeAddressFormProps = {
   onFormSubmit: (data: any) => void;
+  handleBack: () => void;
 };
 
 export default function EmployeeAddressForm({
   onFormSubmit,
+  handleBack,
 }: Readonly<EmployeeAddressFormProps>) {
   const {
     register,
@@ -32,7 +34,11 @@ export default function EmployeeAddressForm({
 
   return (
     <form className="px-20 mt-10" onSubmit={handleSubmit(onFormSubmit)}>
-      <CountrySelector name="country" control={control} error={errors.country?.message} />
+      <CountrySelector
+        name="country"
+        control={control}
+        error={errors.country?.message}
+      />
 
       <div className="grid md:grid-cols-2 gap-y-4 gap-x-5  mt-6">
         <Input
@@ -75,8 +81,21 @@ export default function EmployeeAddressForm({
           error={errors.postalCode?.message}
         />
       </div>
-      <div className="flex flex-row-reverse">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+
+      <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+
+      <div className="flex justify-between mt-5">
+        <button
+          type="button"
+          className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleBack}
+        >
+          back
+        </button>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
           Save Employee
         </button>
       </div>

@@ -90,6 +90,10 @@ export default function AddEmployeePage() {
     setSelectedDepartmentId(departmentId);
   };
 
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
   return (
     <div className="px-16 py-5 overflow-hidden">
       <Card className="py-5">
@@ -119,7 +123,7 @@ export default function AddEmployeePage() {
             )}
 
             {activeStep === 1 && (
-              <EmployeeAddressForm onFormSubmit={onSubmitAddress} />
+              <EmployeeAddressForm onFormSubmit={onSubmitAddress} handleBack={handleBack}/>
             )}
 
             {activeStep === 2 && (
