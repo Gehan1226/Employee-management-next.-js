@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addressInfoSchema, personalInfoSchema } from "@/lib/schema/employee";
 import { Card, CardContent } from "@/components/card";
 import AddEmployeeStepper from "@/components/manager/AddEmployeeStepper";
@@ -15,6 +15,8 @@ import { saveEmployee } from "@/api/employee";
 import { Employee } from "@/lib/class/employee";
 import SuccessMessage from "@/components/animations/SuccessMessage";
 import EmployeeImage from "@/components/animations/EmployeeImage";
+import ErrorMessage from "@/components/animations/ErrorMessage";
+import toast from "react-hot-toast";
 
 const steps = [
   "Employee Personal Details",
@@ -33,16 +35,28 @@ export default function AddEmployeePage() {
     string | null
   >();
 
-  const { data: departments } = useQuery({
+  const { data: departments, error: departmentsError } = useQuery({
     queryKey: ["all-departments"],
     queryFn: getAllDepartments,
   });
 
-  const { data: roles } = useQuery({
+  const { data: roles, error: rolesError } = useQuery({
     queryKey: ["roles-by-department", selectedDepartmentId],
     queryFn: () => getRolesByDepartment(selectedDepartmentId),
     enabled: !!selectedDepartmentId,
   });
+
+  useEffect(() => {
+    if (departmentsError) {
+      toast.error(departmentsError.message, { position: "top-right" });
+    }
+  }, [departmentsError]);
+
+  useEffect(() => {
+    if (rolesError) {
+      toast.error(rolesError.message, { position: "top-right" });
+    }
+  }, [rolesError]);
 
   const mutation = useMutation({
     mutationFn: (data: EmployeeCreateRequest) => saveEmployee(data),
@@ -128,6 +142,29 @@ export default function AddEmployeePage() {
 
             {mutation.isSuccess && (
               <SuccessMessage message="Employee added successfully!" />
+            )}
+
+            {mutation.isError && (
+              <ErrorMessage
+                message="Error adding employee!"
+                error={mutation.error.message}
+              />
+            )}
+
+            {activeStep === 2 && (
+              <div className="flex flex-row-reverse mt-7 ">
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => {
+                    setActiveStep(0);
+                    setCompleted({});
+                    employee.reset();
+                    mutation.reset();
+                  }}
+                >
+                  create new employee
+                </button>
+              </div>
             )}
 
             <EmployeeImage value={mutation.isSuccess} />
