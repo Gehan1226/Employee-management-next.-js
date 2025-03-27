@@ -9,9 +9,11 @@ import EmployeeAddressForm from "@/components/manager/EmployeeAddressForm";
 import { CircleCheckBig } from "lucide-react";
 import { EmployeeCreateRequest } from "@/types/employee";
 import { z } from "zod";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getAllDepartments } from "@/api/department";
 import { getRolesByDepartment } from "@/api/role";
+import Loading from "@/components/animations/Loading";
+import { saveEmployee } from "@/api/employee";
 
 const steps = [
   "Employee Personal Details",
@@ -27,7 +29,6 @@ export default function AddEmployeePage() {
   const [selectedDepartmentId, setSelectedDepartmentId] = useState<
     string | null
   >();
-
 
   const [employeeData, setEmployeeData] = useState<EmployeeCreateRequest>({
     firstName: "",
@@ -49,15 +50,33 @@ export default function AddEmployeePage() {
   });
 
   const { data: departments } = useQuery({
-      queryKey: ["all-departments"],
-      queryFn: getAllDepartments,
-    });
-  
-    const { data: roles } = useQuery({
-      queryKey: ["roles-by-department", selectedDepartmentId],
-      queryFn: () => getRolesByDepartment(selectedDepartmentId),
-      enabled: !!selectedDepartmentId,
-    });
+    queryKey: ["all-departments"],
+    queryFn: getAllDepartments,
+  });
+
+  const { data: roles } = useQuery({
+    queryKey: ["roles-by-department", selectedDepartmentId],
+    queryFn: () => getRolesByDepartment(selectedDepartmentId),
+    enabled: !!selectedDepartmentId,
+  });
+
+  const mutation = useMutation({
+    mutationFn: (data: EmployeeCreateRequest) => saveEmployee(data),
+    onSuccess: () => {
+      setCompleted({
+        ...completed,
+        [activeStep]: true,
+      });
+    },
+  });
+
+  const onSelectDepartment = (departmentId: string) => {
+    setSelectedDepartmentId(departmentId);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
   const onSubmitPersonalDetails = (
     data: z.infer<typeof personalInfoSchema>
@@ -84,14 +103,11 @@ export default function AddEmployeePage() {
       [activeStep]: true,
     });
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
 
-  const onSelectDepartment = (departmentId: string) => {
-    setSelectedDepartmentId(departmentId);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    mutation.mutate({
+      ...employeeData,
+      address: data,
+    });
   };
 
   return (
@@ -123,10 +139,33 @@ export default function AddEmployeePage() {
             )}
 
             {activeStep === 1 && (
-              <EmployeeAddressForm onFormSubmit={onSubmitAddress} handleBack={handleBack}/>
+              <EmployeeAddressForm
+                onFormSubmit={onSubmitAddress}
+                handleBack={handleBack}
+              />
             )}
 
-            {activeStep === 2 && (
+            {/* {activeStep === 2 && (
+              <>
+                
+                <div className="flex flex-col items-center mt-10">
+                  <CircleCheckBig
+                    size={48}
+                    color="#2f5cb6"
+                    strokeWidth={1.75}
+                  />
+                  <p>Employee added successfully !</p>
+                </div>
+              </>
+            )} */}
+
+            {mutation.isPending && (
+              <div className="flex flex-col items-center mt-10">
+                <Loading />
+              </div>
+            )}
+
+            {mutation.isSuccess && (
               <div className="flex flex-col items-center mt-10">
                 <CircleCheckBig size={48} color="#2f5cb6" strokeWidth={1.75} />
                 <p>Employee added successfully !</p>
