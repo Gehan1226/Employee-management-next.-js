@@ -14,12 +14,15 @@ import { getAllDepartments } from "@/api/department";
 import { getRolesByDepartment } from "@/api/role";
 import Loading from "@/components/animations/Loading";
 import { saveEmployee } from "@/api/employee";
+import { Employee } from "@/lib/class/employee";
 
 const steps = [
   "Employee Personal Details",
   "Employee Address",
   "Save Employee",
 ];
+
+const employee = new Employee();
 
 export default function AddEmployeePage() {
   const [activeStep, setActiveStep] = useState(0);
@@ -29,25 +32,6 @@ export default function AddEmployeePage() {
   const [selectedDepartmentId, setSelectedDepartmentId] = useState<
     string | null
   >();
-
-  const [employeeData, setEmployeeData] = useState<EmployeeCreateRequest>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    dob: "",
-    gender: "",
-    departmentId: "",
-    roleId: "",
-    address: {
-      street: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      country: "",
-      district: "",
-    },
-  });
 
   const { data: departments } = useQuery({
     queryKey: ["all-departments"],
@@ -81,11 +65,7 @@ export default function AddEmployeePage() {
   const onSubmitPersonalDetails = (
     data: z.infer<typeof personalInfoSchema>
   ) => {
-    setEmployeeData((prev) => ({
-      ...prev,
-      ...data,
-      dob: data.dob instanceof Date ? data.dob.toISOString() : data.dob,
-    }));
+    employee.setPersonalInfo(data);
     setCompleted({
       ...completed,
       [activeStep]: true,
@@ -94,20 +74,16 @@ export default function AddEmployeePage() {
   };
 
   const onSubmitAddress = (data: z.infer<typeof addressInfoSchema>) => {
-    setEmployeeData((prev) => ({
-      ...prev,
-      address: data,
-    }));
+    
+    employee.setAddressInfo(data);
+
     setCompleted({
       ...completed,
       [activeStep]: true,
     });
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
-    mutation.mutate({
-      ...employeeData,
-      address: data,
-    });
+    mutation.mutate(employee.getEmployeeData());
   };
 
   return (
@@ -131,7 +107,7 @@ export default function AddEmployeePage() {
               <EmployeePersonalDetailsForm
                 activeStep={activeStep}
                 onFormSubmit={onSubmitPersonalDetails}
-                defaultValues={employeeData}
+                defaultValues={employee.getEmployeeData()}
                 departments={departments ?? []}
                 roles={roles ?? []}
                 onSelectDepartment={onSelectDepartment}

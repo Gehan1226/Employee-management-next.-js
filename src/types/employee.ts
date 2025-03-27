@@ -13,7 +13,7 @@ export type EmployeeCreateRequest = {
   lastName: string;
   email: string;
   phoneNumber: string;
-  dob: string;
+  dob: string | Date;
   gender: string;
   departmentId: string;
   roleId: string;
