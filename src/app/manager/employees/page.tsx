@@ -1,7 +1,7 @@
 "use client";
-import EmployeeCard from '@/app/components/employee/EmployeeCard'
-import EmployeeFilterPopup from '@/app/components/employee/EmployeeFilterPopup';
-import SearchBar from '@/app/components/SearchBar'
+import EmployeeCard from '@/components/employee/EmployeeCard';
+import EmployeeFilterPopup from '@/components/employee/EmployeeFilterPopup';
+import SearchBar from '@/components/SearchBar';
 import React, { useState } from 'react'
 
 export default function page() {
@@ -17,7 +17,7 @@ export default function page() {
 
       <div className="grid grid-cols-6 gap-4">
         <div className="col-span-4">
-          <SearchBar />
+          <SearchBar placeholder="Search" onSearch={() => { }} />
         </div>
 
         <button id="sortDropdownButton1" data-dropdown-toggle="dropdownSort1" type="button" className="flex w-full items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 sm:w-auto">

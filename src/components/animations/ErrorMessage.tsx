@@ -1,12 +1,15 @@
 import { motion } from "framer-motion";
-import { BookOpenText, BookText, ShieldAlert } from "lucide-react";
+import { BookText, ShieldAlert } from "lucide-react";
 import React from "react";
 
 type ErrorMessageProps = {
   message: string;
-  error: string
+  error: string;
 };
-export default function ErrorMessage({ message, error }: Readonly<ErrorMessageProps>) {
+export default function ErrorMessage({
+  message,
+  error,
+}: Readonly<ErrorMessageProps>) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
@@ -35,10 +38,8 @@ export default function ErrorMessage({ message, error }: Readonly<ErrorMessagePr
         <p className="font-semibold">{message}</p>
 
         <div className="w-4/5 border border-red-500 rounded-md shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] font-normal p-3 relative">
-          <p>
-           {error}
-          </p>
-      
+          <p>{error}</p>
+
           <BookText
             size={20}
             color="#ff2929"

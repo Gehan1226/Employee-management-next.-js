@@ -18,7 +18,7 @@ const menuItems: MenuItem[] = [
   },
   {
     name: "Employee View",
-    link: "/manager/emp-view",
+    link: "/manager/employees",
     icon: <EmployeeViewIcon />,
   },
   { name: "Task", link: "/manager/task", icon: <ClipboardList /> },

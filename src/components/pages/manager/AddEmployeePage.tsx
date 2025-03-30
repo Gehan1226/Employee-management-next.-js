@@ -98,6 +98,13 @@ export default function AddEmployeePage() {
     mutation.mutate(employee.getEmployeeData());
   };
 
+  const onCreateNewEmployee = () => {
+     setActiveStep(0);
+     setCompleted({});
+     employee.reset();
+     mutation.reset(); 
+  };
+
   return (
     <div className="px-16 py-5 overflow-hidden">
       <Card className="py-5">
@@ -155,12 +162,7 @@ export default function AddEmployeePage() {
               <div className="flex flex-row-reverse mt-7 ">
                 <button
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => {
-                    setActiveStep(0);
-                    setCompleted({});
-                    employee.reset();
-                    mutation.reset();
-                  }}
+                  onClick={onCreateNewEmployee}
                 >
                   create new employee
                 </button>
