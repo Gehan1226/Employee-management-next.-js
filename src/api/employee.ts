@@ -1,3 +1,4 @@
+"use server";
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import { EmployeeCreateRequest, EmployeeResponse } from "../types/employee";
