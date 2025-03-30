@@ -14,7 +14,7 @@ export default function SearchBar({
     <form className="w-full">
       <label
         htmlFor="default-search"
-        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+        className="mb-2 text-sm font-medium text-gray-900 sr-only"
       >
         Search
       </label>
@@ -39,7 +39,7 @@ export default function SearchBar({
         <input
           type="search"
           id="default-search"
-          className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 shadow-md "
+          className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-card text-card-foreground shadow focus:ring-blue-500 focus:border-blue-500 "
           placeholder={placeholder}
           onChange={(e) => onSearch(e.target.value)}
           required
