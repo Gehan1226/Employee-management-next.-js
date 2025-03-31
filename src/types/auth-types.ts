@@ -5,14 +5,6 @@ export type UserData = {
     repeatPassword: string;
 };
 
-export type AuthResponse = {
-    success: boolean;
-    data?: null;
-    validationErrors?: UserData | null;  // validationErrors can be a string or a key-value pair for specific fields
-    prevData?: Record<string, string>;
-    backendErrors?: string;
-    message?: string;
-};
 
 export type BasicUserInfo  = {
     userName: string;

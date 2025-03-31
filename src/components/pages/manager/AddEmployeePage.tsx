@@ -148,7 +148,7 @@ export default function AddEmployeePage() {
             )}
 
             {mutation.isSuccess && (
-              <SuccessMessage message="Employee added successfully!" />
+              <SuccessMessage message="Employee added successfully!" className="mt-10" />
             )}
 
             {mutation.isError && (

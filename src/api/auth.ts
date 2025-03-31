@@ -1,100 +1,87 @@
 "use server";
 import axios from "axios";
-import { validateUserData } from "../lib/util/user-schemas";
 import axioInstance from "../lib/axios";
-import { AuthResponse, BasicUserInfoResponse, UserWithRoleAndEnabledStatus } from "@/types/auth-types";
+import {
+  BasicUserInfoResponse,
+  UserWithRoleAndEnabledStatus,
+} from "@/types/auth-types";
+import { z } from "zod";
+import { userRegisterFormSchema } from "@/lib/schema/user";
 
-export const registerUser = async (
-  prevState: unknown,
-  formData: FormData
-): Promise<Partial<AuthResponse>> => {
-  const data = Object.fromEntries(formData.entries()) as Record<string, string>;
-  const validatedData = validateUserData(data, "Register");
-
-  if (validatedData.validationErrors) {
-    return { prevData: data, ...validatedData };
-  }
-
+export const saveUser = async (
+  data: z.infer<typeof userRegisterFormSchema>
+): Promise<string> => {
   try {
-    const { repeatPassword, ...filteredData } = data;
-    const response = await axioInstance.post(
-      "/api/v1/auth/register",
-      filteredData
-    );
-    return { success: true, message: response.data.message };
-  } catch (error: any) {
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        return {
-          backendErrors:
-            error.response.data?.errorMessage ||
-            "An error occurred during registration",
-          prevData: data,
-        };
-      } else if (error.request) {
-        return {
-          backendErrors:
-            "No response received from the server. Please check your network connection.",
-          prevData: data,
-        };
-      } else {
-        return {
-          backendErrors: error.message || "An unexpected error occurred.",
-          prevData: data,
-        };
-      }
-    } else {
-      return {
-        backendErrors: error.message || "An unexpected error occurred.",
-        prevData: data,
-      };
-    }
-  }
-};
-
-export const userLogin = async (
-  prevState: unknown,
-  formData: FormData
-): Promise<Partial<AuthResponse>> => {
-  const data = Object.fromEntries(formData.entries()) as Record<string, string>;
-  const validatedData = validateUserData(data, "Login");
-
-  if (validatedData.validationErrors) {
-    return { prevData: data, ...validatedData };
-  }
-
-  try {
-    const { repeatPassword, ...filteredData } = data;
-    const response = await axioInstance.post("/user/login", filteredData);
-    return { success: true, message: response.data.message };
+    const response = await axioInstance.post("/api/v1/auth");
+    return response.data.message;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        return {
-          backendErrors:
-            error.response.data?.errorMessage ||
-            "An error occurred during registration",
-          prevData: data,
-        };
+        throw new Error(
+          error.response.data?.errorMessage ||
+            "An error occurred during user signup"
+        );
       } else if (error.request) {
-        return {
-          backendErrors:
-            "No response received from the server. Please check your network connection.",
-          prevData: data,
-        };
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
       } else {
-        return {
-          backendErrors: error.message || "An unexpected error occurred.",
-          prevData: data,
-        };
+        throw new Error(
+          error.message || "An unexpected error occurred during user signup."
+        );
       }
-    } else if (error instanceof Error) {
-      return { backendErrors: error.message };
     } else {
-      return { backendErrors: "An unexpected error occurred." };
+      throw new Error(
+        (error as Error).message ||
+          "An unexpected error occurred during user signup."
+      );
     }
   }
 };
+
+// export const userLogin = async (
+//   prevState: unknown,
+//   formData: FormData
+// ): Promise<Partial<AuthResponse>> => {
+//   const data = Object.fromEntries(formData.entries()) as Record<string, string>;
+//   const validatedData = validateUserData(data, "Login");
+
+//   if (validatedData.validationErrors) {
+//     return { prevData: data, ...validatedData };
+//   }
+
+//   try {
+//     const { repeatPassword, ...filteredData } = data;
+//     const response = await axioInstance.post("/user/login", filteredData);
+//     return { success: true, message: response.data.message };
+//   } catch (error: unknown) {
+//     if (axios.isAxiosError(error)) {
+//       if (error.response) {
+//         return {
+//           backendErrors:
+//             error.response.data?.errorMessage ||
+//             "An error occurred during registration",
+//           prevData: data,
+//         };
+//       } else if (error.request) {
+//         return {
+//           backendErrors:
+//             "No response received from the server. Please check your network connection.",
+//           prevData: data,
+//         };
+//       } else {
+//         return {
+//           backendErrors: error.message || "An unexpected error occurred.",
+//           prevData: data,
+//         };
+//       }
+//     } else if (error instanceof Error) {
+//       return { backendErrors: error.message };
+//     } else {
+//       return { backendErrors: "An unexpected error occurred." };
+//     }
+//   }
+// };
 
 export const getDisabledUsers = async (
   currentPage: number,
@@ -180,7 +167,7 @@ export const updateUserRoleAndEnabledStatus = async (
         return error.message || "An unexpected error occurred.";
       }
     } else if (error instanceof Error) {
-      return  error.message ;
+      return error.message;
     } else {
       return "An unexpected error occurred.";
     }
@@ -215,7 +202,7 @@ export const deleteUser = async (userEmail: string): Promise<string> => {
         return error.message || "An unexpected error occurred.";
       }
     } else if (error instanceof Error) {
-      return  error.message ;
+      return error.message;
     } else {
       return "An unexpected error occurred.";
     }

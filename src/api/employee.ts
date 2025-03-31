@@ -15,18 +15,18 @@ export const saveEmployee = async (
       if (error.response) {
         throw new Error(
           error.response.data?.errorMessage ||
-            "An error occurred during registration"
+            "An error occurred during employee registration"
         );
       } else if (error.request) {
         throw new Error(
           "No response received from the server. Please check your network connection."
         );
       } else {
-        throw new Error(error.message || "An unexpected error occurred.");
+        throw new Error(error.message || "An unexpected error occurred during employee registration.");
       }
     } else {
       throw new Error(
-        (error as Error).message || "An unexpected error occurred."
+        (error as Error).message || "An unexpected error occurred during employee registration."
       );
     }
   }

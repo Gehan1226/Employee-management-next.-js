@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
-import UserRegisterForm from '@/app/components/user/UserRegisterForm';
 import Link from 'next/link';
+import UserRegisterForm from '@/components/user/UserRegisterForm';
 
 
 export default function page() {
@@ -28,8 +28,7 @@ export default function page() {
 
       </div>
 
-      <div className="
-      flex flex-col basis-3/5 h-screen p-6 bg-white border border-white rounded-t-[20px] md:rounded-s-[50px] md:rounded-tr-none shadow-[0px_0px_37px_-1px_rgba(0,_0,_0,_0.7)] justify-between">
+      <div className="flex flex-col basis-3/5 h-screen p-6 bg-white border border-white rounded-t-[20px] md:rounded-s-[50px] md:rounded-tr-none shadow-[0px_0px_37px_-1px_rgba(0,_0,_0,_0.7)] justify-between">
 
         <p className="font-semibold text-sky-600 text-3xl text-center mt-3">Sign up to Emplytic</p>
 

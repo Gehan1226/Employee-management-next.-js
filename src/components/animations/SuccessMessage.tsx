@@ -3,8 +3,9 @@ import { CircleCheckBig } from "lucide-react";
 
 type SuccessMessageProps = {
   message: string;
+  className?: string;
 }
-export default function SuccessMessage({ message }: Readonly<SuccessMessageProps>) {
+export default function SuccessMessage({ message, className }: Readonly<SuccessMessageProps>) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
@@ -14,7 +15,7 @@ export default function SuccessMessage({ message }: Readonly<SuccessMessageProps
         ease: "easeOut",
         bounce: 0.4,
       }}
-      className="flex flex-col items-center mt-10 gap-2"
+      className={`flex flex-col items-center gap-2 ${className}`}
     >
       <motion.div
         initial={{ scale: 0 }}
