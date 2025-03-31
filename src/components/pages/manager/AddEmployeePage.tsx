@@ -155,6 +155,7 @@ export default function AddEmployeePage() {
               <ErrorMessage
                 message="Error adding employee!"
                 error={mutation.error.message}
+                className="mt-10"
               />
             )}
 

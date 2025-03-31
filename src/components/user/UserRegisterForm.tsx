@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AuthInput from "./AuthInput";
 import { saveUser } from "../../api/auth";
 import LoadingButton from "../LoadingButton";
@@ -8,15 +8,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { userRegisterFormSchema } from "@/lib/schema/user";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
-import toast from "react-hot-toast";
 import AlertDialogSlide from "../Alert";
+import { useRouter } from "next/navigation";
 
 export default function UserRegisterForm() {
-  const [state, setState] = useState(false);
+  const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
+  const [openErrorAlert, setOpenErrorAlert] = useState(false);
+  const router = useRouter();
+
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm({
     resolver: zodResolver(userRegisterFormSchema),
     defaultValues: {
@@ -30,14 +34,27 @@ export default function UserRegisterForm() {
   const mutation = useMutation({
     mutationFn: (data: z.infer<typeof userRegisterFormSchema>) =>
       saveUser(data),
-    onSuccess: (data) => {
-      toast.success(data, { position: "top-right" });
+    onSuccess: () => {
+      reset();
+      setOpenSuccessAlert(true);
     },
+    onError: (error) => {
+      setOpenErrorAlert(true);},
   });
 
   const onFormSubmit = (data: z.infer<typeof userRegisterFormSchema>) => {
-    setState(true);
+    mutation.mutate(data);
   };
+
+  const handleCloseSuccessAlert = () => {
+    setOpenSuccessAlert(false);
+    mutation.reset();
+    router.push("/user-login");
+  };
+
+  const handleCloseErrorAlert = () => {
+    setOpenErrorAlert(false);
+  }
 
   return (
     <form className="w-full mx-auto p-7" onSubmit={handleSubmit(onFormSubmit)}>
@@ -109,22 +126,36 @@ export default function UserRegisterForm() {
       </div>
 
       <div className="flex flex-row-reverse">
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-3xl text-sm font-semibold px-10 py-3 text-center"
-        >
-          Sign up
-        </button>
+        {!mutation.isPending && (
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-3xl text-sm font-semibold px-10 py-3 text-center"
+          >
+            Sign up
+          </button>
+        )}
 
-        {/* {isPending && <LoadingButton />} */}
+        {mutation.isPending && <LoadingButton />}
       </div>
+
       <AlertDialogSlide
-        open={state}
+        state="SUCCESS"
+        open={openSuccessAlert}
         message="User registered successfully!"
-        description=" You can now login to your account as a new user. Wait for the admin to
+        successDescription=" You can now login to your account as a new user. Wait for the admin to
           activate your account and you can start using the platform."
-        handleClose={() => setState(false)}
+        handleClose={handleCloseSuccessAlert}
       />
+
+      <AlertDialogSlide
+        state="ERROR"
+        open={openErrorAlert}
+        message="User registration failed!"
+        errorDescription={mutation.error?.message}
+        handleClose={handleCloseErrorAlert}
+      />
+
+      
     </form>
   );
 }

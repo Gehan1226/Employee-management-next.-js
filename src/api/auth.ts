@@ -11,8 +11,15 @@ import { userRegisterFormSchema } from "@/lib/schema/user";
 export const saveUser = async (
   data: z.infer<typeof userRegisterFormSchema>
 ): Promise<string> => {
+  const requestData = {
+    userName: data.userName,
+    email: data.email,
+    password: data.password,
+    roleList: ["EMPLOYEE"],
+  };
+
   try {
-    const response = await axioInstance.post("/api/v1/auth");
+    const response = await axioInstance.post("/api/v1/auth", requestData);
     return response.data.message;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

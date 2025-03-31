@@ -5,10 +5,12 @@ import React from "react";
 type ErrorMessageProps = {
   message: string;
   error: string;
+  className?: string;
 };
 export default function ErrorMessage({
   message,
   error,
+  className,
 }: Readonly<ErrorMessageProps>) {
   return (
     <motion.div
@@ -19,14 +21,14 @@ export default function ErrorMessage({
         ease: "easeOut",
         bounce: 0.4,
       }}
-      className="flex flex-col items-center mt-10 gap-2"
+      className={`flex flex-col items-center gap-2 ${className}`}
     >
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1.2 }}
         transition={{ type: "spring", stiffness: 300, damping: 10 }}
       >
-        <ShieldAlert size={48} color="#fe2020" strokeWidth={1.75} />
+        <ShieldAlert size={48} color="#FE0002" strokeWidth={1.75} />
       </motion.div>
 
       <motion.div

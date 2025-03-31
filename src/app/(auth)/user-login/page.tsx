@@ -1,5 +1,6 @@
-import GoogleLogin from '@/app/components/GoogleLogin'
-import UserLoginForm from '@/app/components/user/UserLoginForm'
+
+import GoogleLogin from '@/components/GoogleLogin'
+import UserLoginForm from '@/components/user/UserLoginForm'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
