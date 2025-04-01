@@ -7,6 +7,7 @@ import {
 } from "@/types/auth-types";
 import { z } from "zod";
 import { userLoginFormSchema, userRegisterFormSchema } from "@/lib/schema/user";
+import { cookies } from "next/headers";
 
 export const saveUser = async (
   data: z.infer<typeof userRegisterFormSchema>
@@ -51,6 +52,20 @@ export const userLogin = async (
 ): Promise<string> => {
   try {
     const response = await axioInstance.post("/api/v1/auth/login", data);
+
+    const responseData = response.data;
+    if (responseData.data?.token) {
+      (await cookies()).set({
+        name: "authToken",
+        value: responseData.data.token,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 7,
+      });
+    }
+
     return response.data.message;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

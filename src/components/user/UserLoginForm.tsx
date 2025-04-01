@@ -27,7 +27,7 @@ export default function UserLoginForm() {
   });
 
   const mutation = useMutation({
-    mutationFn: (data: z.infer<typeof userLoginFormSchema>) => userLogin(data),
+    mutationFn: userLogin,
     onSuccess: (data) => {
       setOpenSuccessAlert(true);
     },
