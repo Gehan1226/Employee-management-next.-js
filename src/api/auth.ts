@@ -59,7 +59,7 @@ export const userLogin = async (
         name: "authToken",
         value: responseData.data.token,
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: false, // for development
         path: "/",
         sameSite: "lax",
         maxAge: 60 * 60 * 24 * 7,
