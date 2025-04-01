@@ -131,7 +131,7 @@ export default function EmployeePersonalDetailsForm({
         />
       </div>
 
-      <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+      <hr className="h-px my-8 bg-gray-200 border-0" />
 
       <div className="flex flex-row-reverse mt-6">
         {activeStep === 0 && (

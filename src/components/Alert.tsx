@@ -8,6 +8,8 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import SuccessMessage from "./animations/SuccessMessage";
 import ErrorMessage from "./animations/ErrorMessage";
+import { Divider } from "@mui/material";
+import { Mail } from "lucide-react";
 
 type AlertDialogSlideProps = {
   state: "ERROR" | "SUCCESS";
@@ -44,24 +46,27 @@ export default function AlertDialogSlide({
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogContent>
-        <DialogTitle className="text-center" color="primary">
-          {"Message Alert"}
-        </DialogTitle>
-
+        <div className="flex gap-2 justify-center items-center">
+          <Mail color="#098aec" />
+          <p className="font-semibold text-sky-600 text-xl">
+            Message Alert
+          </p>
+        </div>
         {state === "SUCCESS" ? (
-          <SuccessMessage message={message} className="mt-5" />
+          <SuccessMessage message={message} className="mt-10" />
         ) : (
           <ErrorMessage
             message={message}
             error={errorDescription ?? ""}
-            className="mt-5"
+            className="mt-10"
           />
         )}
 
-        <DialogContentText id="alert-dialog-slide-description" className="mt-5">
+        <DialogContentText id="alert-dialog-slide-description" className="mt-7">
           {successDescription}
         </DialogContentText>
       </DialogContent>
+      <Divider variant="middle" className="mb-3" />
       <DialogActions>
         <button
           className="text-white bg-blue-600 hover:bg-blue-800 border-2 border-white rounded-lg text-md font-semibold px-10 py-2 text-center"

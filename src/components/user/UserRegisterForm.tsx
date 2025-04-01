@@ -155,7 +155,6 @@ export default function UserRegisterForm() {
         handleClose={handleCloseErrorAlert}
       />
 
-      
     </form>
   );
 }

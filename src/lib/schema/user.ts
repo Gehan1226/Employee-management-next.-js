@@ -9,3 +9,8 @@ export const userRegisterFormSchema = z.object({
     message: "Passwords must match",
     path: ["repeatPassword"],
 });
+
+export const userLoginFormSchema = z.object({
+    userName: z.string().min(4, "User name should be at least 4 characters").max(20, "User name must be less than 20 characters"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+});
