@@ -4,7 +4,6 @@ import EmployeeViewIcon from "@/components/icons/EmployeeViewIcon";
 import SideBar from "@/components/SideBar";
 import { ClipboardList } from "lucide-react";
 
-
 const menuItems: MenuItem[] = [
   {
     name: "Dashboard",
@@ -24,7 +23,7 @@ const menuItems: MenuItem[] = [
   { name: "Task", link: "/manager/task", icon: <ClipboardList /> },
 ];
 
-export default function layout({
+export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return <SideBar menuItems={menuItems}>{children}</SideBar>;

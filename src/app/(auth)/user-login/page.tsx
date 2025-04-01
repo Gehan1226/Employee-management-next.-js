@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function page() {
+export default function Page() {
   return (
     <div className="flex flex-col-reverse md:flex-row sm:flex-col-reverse h-fit w-full">
       <div className="basis-3/5 h-screen bg-white border border-white rounded-t-[20px] md:rounded-r-[50px] md:rounded-tl-none shadow-[0px_0px_37px_-1px_rgba(0,_0,_0,_0.7)] justify-between">

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import UserRegisterForm from '@/components/user/UserRegisterForm';
 
 
-export default function page() {
+export default function Page() {
 
   return (
     <>
