@@ -17,7 +17,7 @@ export default function AdminAccount() {
         </div>
         <Divider orientation="vertical" variant="middle" flexItem />
         <div className="flex flex-col">
-          <p className="font-semibold ">Gehan </p>
+          <p className="font-semibold ">Gehan Sithija</p>
           <p className="font-semibold text-xs text-slate-500">
             gehansithija1226@gmail.com
           </p>

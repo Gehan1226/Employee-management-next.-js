@@ -1,16 +1,15 @@
 import AdminAccount from "@/components/account/AdminAccount";
 import EmployeeAccount from "@/components/account/EmployeeAccount";
 import ManagerAccount from "@/components/account/ManagerAccount";
-import { Bell, MoveLeft } from "lucide-react";
+import NotifactionButton from "@/components/user/NotifactionButton";
+import { MoveLeft } from "lucide-react";
 import React from "react";
 
 export default function Page() {
   return (
     <div className="min-h-screen w-full relative">
       <div className="absolute top-3 right-3">
-        <button className="flex gap-2 bg-slate-100 hover:bg-slate-300 rounded-md px-5 py-2 shadow-md font-semibold text-sm">
-          <Bell color="#000000" /> Notifications
-        </button>
+        <NotifactionButton />
       </div>
 
       <div className="min-h-screen flex items-center justify-center">
