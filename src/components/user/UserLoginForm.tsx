@@ -9,8 +9,10 @@ import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { userLogin } from "@/api/auth";
 import AlertDialogSlide from "../Alert";
+import { useRouter } from "next/navigation";
 
 export default function UserLoginForm() {
+  const router = useRouter();
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
   const [openErrorAlert, setOpenErrorAlert] = useState(false);
 
@@ -28,10 +30,10 @@ export default function UserLoginForm() {
 
   const mutation = useMutation({
     mutationFn: userLogin,
-    onSuccess: (data) => {
+    onSuccess: () => {
       setOpenSuccessAlert(true);
     },
-    onError: (error) => {
+    onError: () => {
       setOpenErrorAlert(true);
     },
   });
@@ -43,6 +45,7 @@ export default function UserLoginForm() {
   const handleCloseSuccessAlert = () => {
     setOpenSuccessAlert(false);
     mutation.reset();
+    router.push("/account-selection");
   };
 
   const handleCloseErrorAlert = () => {

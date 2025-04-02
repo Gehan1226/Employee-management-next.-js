@@ -7,7 +7,7 @@ import {
 } from "@/types/auth-types";
 import { z } from "zod";
 import { userLoginFormSchema, userRegisterFormSchema } from "@/lib/schema/user";
-import { cookies } from "next/headers";
+import { createAuthCookie } from "@/lib/util/cookie";
 
 export const saveUser = async (
   data: z.infer<typeof userRegisterFormSchema>
@@ -55,15 +55,7 @@ export const userLogin = async (
 
     const responseData = response.data;
     if (responseData.data?.token) {
-      (await cookies()).set({
-        name: "authToken",
-        value: responseData.data.token,
-        httpOnly: true,
-        secure: false, // for development
-        path: "/",
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 7,
-      });
+      await createAuthCookie(responseData.data.token);
     }
 
     return response.data.message;

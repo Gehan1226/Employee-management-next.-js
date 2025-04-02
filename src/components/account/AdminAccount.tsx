@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Divider } from "@mui/material";
 import Image from "next/image";
 

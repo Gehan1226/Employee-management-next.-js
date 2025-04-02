@@ -1,8 +1,8 @@
 import AdminAccount from "@/components/account/AdminAccount";
 import EmployeeAccount from "@/components/account/EmployeeAccount";
 import ManagerAccount from "@/components/account/ManagerAccount";
+import LogoutButton from "@/components/user/LogoutButton";
 import NotifactionButton from "@/components/user/NotifactionButton";
-import { MoveLeft } from "lucide-react";
 import React from "react";
 
 export default function Page() {
@@ -29,10 +29,7 @@ export default function Page() {
       </div>
 
       <div className="absolute bottom-3 left-3">
-        <button className="flex gap-2 px-5 py-2 font-semibold text-md text-white hover:bg-red-500 rounded-md hover:shadow-md">
-          <MoveLeft color="#ffffff" />
-          <p>Log out</p>
-        </button>
+        <LogoutButton />
       </div>
     </div>
   );
