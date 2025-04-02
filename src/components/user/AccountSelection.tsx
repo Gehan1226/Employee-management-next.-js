@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NotifactionButton from "./NotifactionButton";
 import EmployeeAccount from "../account/EmployeeAccount";
 import ManagerAccount from "../account/ManagerAccount";
@@ -9,26 +9,26 @@ import { getUserDetailsByName } from "@/api/auth";
 import { decodeJwt } from "@/lib/util/jwt";
 
 export default function AccountSelection() {
-  const userNameRef = useRef<string>(null);  
+  const [userName, setUserName] = useState<string | null>(null);
 
-//   const {} = useQuery({
-//     queryKey: ["user"],
-//     queryFn: () => getUserDetailsByName,
-//   });
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUserDetailsByName(userName || ""),
+    enabled: !!userName,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await decodeJwt();
-        // Use the data here
-        console.log(data);
+        setUserName(data.sub);
       } catch (error) {
         console.error("Error decoding JWT:", error);
       }
     };
-
     fetchData();
   }, []);
+
   return (
     <>
       <div className="absolute top-3 right-3">
@@ -45,9 +45,13 @@ export default function AccountSelection() {
             your information is protected.
           </p>
 
-          <EmployeeAccount />
-          <ManagerAccount />
-          <AdminAccount />
+          {user && (
+            <>
+              <EmployeeAccount user={user} />
+              <ManagerAccount user={user} />
+              <AdminAccount user={user} />
+            </>
+          )}
         </div>
       </div>
     </>

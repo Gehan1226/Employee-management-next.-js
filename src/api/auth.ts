@@ -213,8 +213,8 @@ export const deleteUser = async (userEmail: string): Promise<string> => {
 
 export const getUserDetailsByName = async (name: string): Promise<UserResponse> => {
   try{
-    const response = await axioInstance.get(`/api/v1/user/${name}`);
-    return response.data;
+    const response = await axioInstance.get(`/api/v1/auth/${name}`);
+    return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {

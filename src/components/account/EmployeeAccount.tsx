@@ -1,8 +1,13 @@
 import React from 'react'
 import { Divider } from "@mui/material";
 import Image from "next/image";
+import { UserResponse } from '@/types/auth-types';
 
-export default function EmployeeAccount() {
+type EmployeeAccountProps = {
+  user: UserResponse
+}
+
+export default function EmployeeAccount({ user }: Readonly<EmployeeAccountProps>) {
   return (
     <div className="bg-violet-100 flex justify-center items-center gap-10 px-3 py-3 rounded-md shadow-md mt-8">
       <div className="flex gap-4 justify-center items-center">
@@ -17,9 +22,9 @@ export default function EmployeeAccount() {
         </div>
         <Divider orientation="vertical" variant="middle" flexItem />
         <div className="flex flex-col">
-          <p className="font-semibold ">Gehan Sithija</p>
+          <p className="font-semibold ">{user.userName}</p>
           <p className="font-semibold text-xs text-slate-500">
-            gehansithija1226@gmail.com
+            {user.email}
           </p>
         </div>
       </div>
