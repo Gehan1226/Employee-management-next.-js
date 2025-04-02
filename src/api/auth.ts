@@ -3,6 +3,7 @@ import axios from "axios";
 import axioInstance from "../lib/axios";
 import {
   BasicUserInfoResponse,
+  UserResponse,
   UserWithRoleAndEnabledStatus,
 } from "@/types/auth-types";
 import { z } from "zod";
@@ -206,6 +207,32 @@ export const deleteUser = async (userEmail: string): Promise<string> => {
       return error.message;
     } else {
       return "An unexpected error occurred.";
+    }
+  }
+};
+
+export const getUserDetailsByName = async (name: string): Promise<UserResponse> => {
+  try{
+    const response = await axioInstance.get(`/api/v1/user/${name}`);
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        throw new Error(
+          error.response.data?.errorMessage ||
+            "An error occurred during fetching user details."
+        );
+      } else if (error.request) {
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
+      } else {
+        throw new Error(error.message || "An unexpected error occurred.");
+      }
+    } else {
+      throw new Error(
+        (error as Error).message || "An unexpected error occurred."
+      );
     }
   }
 };

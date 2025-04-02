@@ -31,3 +31,13 @@ export type UserFilters = {
     endDate: string | null;
     searchTerm: string | null;
 }
+
+export type UserRole = "ADMIN" | "MANAGER" | "EMPLOYEE";
+
+export type UserResponse = {
+  userName: string;
+  email: string;
+  roleList: UserRole[];
+  enabled: boolean;
+  createdDate: string;
+};
