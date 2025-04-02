@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function EmployeeAccount() {
   return (
-    <div className="bg-violet-100 flex justify-center items-center gap-10 px-3 py-3 rounded-md shadow-md mt-5">
+    <div className="bg-violet-100 flex justify-center items-center gap-10 px-3 py-3 rounded-md shadow-md mt-8">
       <div className="flex gap-4 justify-center items-center">
         <div className="flex flex-col justify-center items-center">
           <Image
