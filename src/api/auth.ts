@@ -9,6 +9,7 @@ import {
 import { z } from "zod";
 import { userLoginFormSchema, userRegisterFormSchema } from "@/lib/schema/user";
 import { createAuthCookie } from "@/lib/util/cookie";
+import { User } from "@/lib/class/user";
 
 export const saveUser = async (
   data: z.infer<typeof userRegisterFormSchema>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NotifactionButton from "./NotifactionButton";
 import EmployeeAccount from "../account/EmployeeAccount";
 import ManagerAccount from "../account/ManagerAccount";
@@ -13,7 +13,7 @@ export default function AccountSelection() {
 
   const { data: user } = useQuery({
     queryKey: ["user"],
-    queryFn: () => getUserDetailsByName(userName || ""),
+    queryFn: () => getUserDetailsByName(userName ?? ""),
     enabled: !!userName,
   });
 
