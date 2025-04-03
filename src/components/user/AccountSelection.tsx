@@ -7,11 +7,15 @@ import AdminAccount from "../account/AdminAccount";
 import { useQuery } from "@tanstack/react-query";
 import { getUserDetailsByName } from "@/api/auth";
 import { decodeJwt } from "@/lib/util/jwt";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import AccountSkelton from "../skeltons/AccountSkelton";
 
 export default function AccountSelection() {
+  const router = useRouter();
   const [userName, setUserName] = useState<string | null>(null);
 
-  const { data: user } = useQuery({
+  const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserDetailsByName(userName ?? ""),
     enabled: !!userName,
@@ -24,6 +28,10 @@ export default function AccountSelection() {
         setUserName(data.sub);
       } catch (error) {
         console.error("Error decoding JWT:", error);
+        toast.error("Authentication issue detected. Please log in again.", {
+          position: "bottom-right",
+        });
+        router.push("/user-login");
       }
     };
     fetchData();
@@ -51,6 +59,14 @@ export default function AccountSelection() {
               <ManagerAccount user={user} />
               <AdminAccount user={user} />
             </>
+          )}
+
+          {userLoading && (
+            <div className="mt-8">
+              <AccountSkelton />
+              <AccountSkelton />
+              <AccountSkelton />
+            </div>
           )}
         </div>
       </div>

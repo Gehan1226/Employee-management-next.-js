@@ -22,7 +22,7 @@ export default function SuccessMessage({ message, className }: Readonly<SuccessM
         animate={{ scale: 1.2 }}
         transition={{ type: "spring", stiffness: 300, damping: 10 }}
       >
-        <CircleCheckBig size={48} color="#2f5cb6" strokeWidth={1.75} />
+        <CircleCheckBig size={48} color="#06D001" strokeWidth={1.75} />
       </motion.div>
       <motion.p
         initial={{ opacity: 0, y: 10 }}

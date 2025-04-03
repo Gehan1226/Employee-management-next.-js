@@ -61,7 +61,7 @@ export default function AlertDialogSlide({
           />
         )}
 
-        <DialogContentText id="alert-dialog-slide-description" className="mt-7">
+        <DialogContentText id="alert-dialog-slide-description" className="mt-7 px-3">
           {successDescription}
         </DialogContentText>
       </DialogContent>
