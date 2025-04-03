@@ -44,7 +44,6 @@ export default function SideBar({
     }
   }, [user]);
 
-
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
@@ -59,7 +58,7 @@ export default function SideBar({
       <div className="flex">
         <aside
           id="default-sidebar"
-          className={`fixed top-0 left-0 z-40 w-64 h-screen bg-gray-50 transition-transform duration-300 sm:translate-x-0 ${
+          className={`fixed top-0 left-0 z-40 w-64 h-screen bg-[#F3F8FF] transition-transform duration-300 sm:translate-x-0 ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
           aria-label="Sidebar"
