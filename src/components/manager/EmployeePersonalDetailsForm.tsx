@@ -133,7 +133,7 @@ export default function EmployeePersonalDetailsForm({
 
       <hr className="h-px my-8 bg-gray-200 border-0" />
 
-      <div className="flex flex-row-reverse mt-6">
+      <div className="flex flex-row-reverse mt-4">
         {activeStep === 0 && (
           <button
             type="submit"

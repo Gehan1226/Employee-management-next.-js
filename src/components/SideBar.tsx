@@ -2,7 +2,9 @@
 import { getUserDetailsByName } from "@/api/auth";
 import { User } from "@/lib/class/user";
 import { decodeJwt } from "@/lib/util/jwt";
+import { Divider } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
@@ -62,7 +64,7 @@ export default function SideBar({
           }`}
           aria-label="Sidebar"
         >
-          <div className="h-full px-3 py-4 overflow-y-auto">
+          <div className="h-full flex flex-col justify-between px-3 py-4 overflow-y-auto">
             <ul className="space-y-2 font-medium">
               {menuItems.map((item) => (
                 <li key={item.name}>
@@ -87,6 +89,25 @@ export default function SideBar({
                 </li>
               ))}
             </ul>
+
+            <div>
+              <Divider variant="middle" />
+              <button className="flex gap-2 items-center hover:bg-gray-200 px-5 py-2 mt-4 w-full rounded-lg">
+                <Image
+                  src="https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg"
+                  width={30}
+                  height={30}
+                  alt="User Avatar"
+                  className="rounded-full w-10 h-10"
+                />
+                <div className="flex flex-col text-left">
+                  <p className="font-semibold">Gehan Sithija</p>
+                  <p className="font-semibold text-xs text-slate-500">
+                    gehan@example.com
+                  </p>
+                </div>
+              </button>
+            </div>
           </div>
         </aside>
 

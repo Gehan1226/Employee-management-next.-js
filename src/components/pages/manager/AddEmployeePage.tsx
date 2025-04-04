@@ -99,87 +99,84 @@ export default function AddEmployeePage() {
   };
 
   const onCreateNewEmployee = () => {
-     setActiveStep(0);
-     setCompleted({});
-     employee.reset();
-     mutation.reset(); 
+    setActiveStep(0);
+    setCompleted({});
+    employee.reset();
+    mutation.reset();
   };
 
   return (
-   
-      <div className="px-16 py-1 overflow-hidden">
-        <Card className="py-5 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-          <p className="font-semibold text-sky-600 text-2xl text-center">
-            Employee Registration
-          </p>
+    <div className="px-10 py-1 overflow-hidden">
+      <Card className="py-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+        <p className="font-semibold text-sky-600 text-2xl text-center">
+          Employee Registration
+        </p>
 
-          <Divider variant="middle" className="mt-4" />
+        <Divider variant="middle" className="mt-4" />
 
-          <CardContent>
-            <div className="relative">
-              <div className="w-3/4 mx-auto mt-10">
-                <AddEmployeeStepper
-                  steps={steps}
-                  activeStep={activeStep}
-                  completed={completed}
-                />
-              </div>
-
-              {activeStep === 0 && (
-                <EmployeePersonalDetailsForm
-                  activeStep={activeStep}
-                  onFormSubmit={onSubmitPersonalDetails}
-                  defaultValues={employee.getEmployeeData()}
-                  departments={departments ?? []}
-                  roles={roles ?? []}
-                  onSelectDepartment={onSelectDepartment}
-                />
-              )}
-
-              {activeStep === 1 && (
-                <EmployeeAddressForm
-                  onFormSubmit={onSubmitAddress}
-                  handleBack={handleBack}
-                />
-              )}
-
-              {mutation.isPending && (
-                <div className="flex flex-col items-center mt-10">
-                  <Loading />
-                  <p className="font-mono"> Saving Employee .....</p>
-                </div>
-              )}
-
-              {mutation.isSuccess && (
-                <SuccessMessage
-                  message="Employee added successfully!"
-                  className="mt-10"
-                />
-              )}
-
-              {mutation.isError && (
-                <ErrorMessage
-                  message="Error adding employee!"
-                  error={mutation.error.message}
-                  className="mt-10"
-                />
-              )}
-
-              {activeStep === 2 && (
-                <div className="flex flex-row-reverse mt-7 ">
-                  <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={onCreateNewEmployee}
-                  >
-                    create new employee
-                  </button>
-                </div>
-              )}
-
+        <CardContent>
+          <div className="relative">
+            <div className="w-3/4 mx-auto mt-10">
+              <AddEmployeeStepper
+                steps={steps}
+                activeStep={activeStep}
+                completed={completed}
+              />
             </div>
-          </CardContent>
-        </Card>
-      </div>
-   
+
+            {activeStep === 0 && (
+              <EmployeePersonalDetailsForm
+                activeStep={activeStep}
+                onFormSubmit={onSubmitPersonalDetails}
+                defaultValues={employee.getEmployeeData()}
+                departments={departments ?? []}
+                roles={roles ?? []}
+                onSelectDepartment={onSelectDepartment}
+              />
+            )}
+
+            {activeStep === 1 && (
+              <EmployeeAddressForm
+                onFormSubmit={onSubmitAddress}
+                handleBack={handleBack}
+              />
+            )}
+
+            {mutation.isPending && (
+              <div className="flex flex-col items-center mt-10">
+                <Loading />
+                <p className="font-mono"> Saving Employee .....</p>
+              </div>
+            )}
+
+            {mutation.isSuccess && (
+              <SuccessMessage
+                message="Employee added successfully!"
+                className="mt-10"
+              />
+            )}
+
+            {mutation.isError && (
+              <ErrorMessage
+                message="Error adding employee!"
+                error={mutation.error.message}
+                className="mt-10"
+              />
+            )}
+
+            {activeStep === 2 && (
+              <div className="flex flex-row-reverse mt-7 ">
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={onCreateNewEmployee}
+                >
+                  create new employee
+                </button>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
