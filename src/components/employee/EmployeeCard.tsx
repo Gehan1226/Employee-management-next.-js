@@ -25,7 +25,7 @@ export default function EmployeeCard() {
     //     </button>
     //   </div>
     // </div>
-    <Card>
+    <Card className="shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
       <CardContent>
         <img
           className="rounded-full mx-auto w-32 h-32 mt-2"

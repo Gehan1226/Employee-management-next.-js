@@ -52,13 +52,12 @@ export default function SideBar({
     setIsSidebarOpen(false);
   };
 
-  
   return (
     <>
       <div className="flex">
         <aside
           id="default-sidebar"
-          className={`fixed top-0 left-0 z-40 w-64 h-screen bg-[#F3F8FF] transition-transform duration-300 sm:translate-x-0 ${
+          className={`fixed top-0 left-0 z-40 w-64 h-screen bg-[#F3F8FF] shadow-[4px_0_10px_rgba(0,0,0,0.1)] transition-transform duration-300 sm:translate-x-0 ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
           aria-label="Sidebar"
@@ -73,7 +72,7 @@ export default function SideBar({
                     className="flex flex-col w-full"
                   >
                     <button
-                      className={`flex p-2 text-gray-900 rounded-lg dark:text-white group flex-grow ${
+                      className={`flex p-2 text-gray-900 rounded-lg group flex-grow ${
                         pathname === item.link
                           ? "bg-blue-200"
                           : "hover:bg-gray-200"
@@ -93,7 +92,7 @@ export default function SideBar({
 
         <button
           onClick={toggleSidebar}
-          className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 sm:hidden"
+          className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 sm:hidden"
         >
           <span className="sr-only">Open sidebar</span>
           <svg

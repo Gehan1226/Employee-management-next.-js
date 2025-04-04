@@ -16,10 +16,8 @@ export default function AddEmployeeStepper({ steps, activeStep, completed }: Rea
     <Box sx={{ width: "100%" }}>
       <Stepper nonLinear activeStep={activeStep} alternativeLabel>
         {steps.map((label, index) => (
-          <Step key={label} completed={completed[index]}>
-            <StepButton color="inherit">
-              {label}
-            </StepButton>
+          <Step key={label} completed={completed[index]} >
+            <StepButton color="inherit">{label}</StepButton>
           </Step>
         ))}
       </Stepper>
