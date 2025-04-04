@@ -4,10 +4,11 @@ import { User } from "@/lib/class/user";
 import { decodeJwt } from "@/lib/util/jwt";
 import { Divider } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import UserProfileButton from "./user/UserProfileButton";
+import { Bell, CircleHelp } from "lucide-react";
 
 type SideBarProps = {
   menuItems: MenuItem[];
@@ -74,7 +75,7 @@ export default function SideBar({
                     className="flex flex-col w-full"
                   >
                     <button
-                      className={`flex p-2 text-gray-900 rounded-lg group flex-grow ${
+                      className={`flex px-5 py-2 text-sm text-gray-900 rounded-lg group flex-grow ${
                         pathname === item.link
                           ? "bg-blue-200"
                           : "hover:bg-gray-200"
@@ -91,22 +92,17 @@ export default function SideBar({
             </ul>
 
             <div>
-              <Divider variant="middle" />
-              <button className="flex gap-2 items-center hover:bg-gray-200 px-5 py-2 mt-4 w-full rounded-lg">
-                <Image
-                  src="https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg"
-                  width={30}
-                  height={30}
-                  alt="User Avatar"
-                  className="rounded-full w-10 h-10"
-                />
-                <div className="flex flex-col text-left">
-                  <p className="font-semibold">Gehan Sithija</p>
-                  <p className="font-semibold text-xs text-slate-500">
-                    gehan@example.com
-                  </p>
-                </div>
+              <Divider variant="middle" className="mb-2"/>
+              <button className="flex gap-2 text-sm font-semibold items-center hover:bg-gray-200 px-5 py-2 w-full rounded-lg mb-2 ml-2">
+                <CircleHelp />
+                Help Center
               </button>
+              <button className="flex gap-2 text-sm font-semibold items-center hover:bg-gray-200 px-5 py-2 w-full rounded-lg mb-2 ml-2">
+                <Bell />
+                Notifications
+              </button>
+              <Divider variant="middle" />
+              <UserProfileButton user={user} />
             </div>
           </div>
         </aside>
@@ -131,7 +127,6 @@ export default function SideBar({
           </svg>
         </button>
 
-        {/* Overlay */}
         {isSidebarOpen && (
           <button
             onClick={closeSidebar}
