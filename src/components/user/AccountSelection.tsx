@@ -10,27 +10,35 @@ import { decodeJwt } from "@/lib/util/jwt";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import AccountSkelton from "../skeltons/AccountSkelton";
+import { useHandleError } from "@/hooks/useHandleError";
+import { clearAuthCookie } from "@/lib/util/cookie";
 
 export default function AccountSelection() {
   const router = useRouter();
   const [userName, setUserName] = useState<string | null>(null);
 
-  const { data: user, isLoading: userLoading } = useQuery({
+  const {
+    data: user,
+    isLoading: userLoading,
+    error,
+  } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserDetailsByName(userName ?? ""),
     enabled: !!userName,
   });
 
+  useHandleError({ error });
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await decodeJwt();
         setUserName(data.sub);
       } catch (error) {
-        console.error("Error decoding JWT:", error);
         toast.error("Authentication issue detected. Please log in again.", {
-          position: "bottom-right",
+          position: "top-right",
         });
+        await clearAuthCookie();
         router.push("/user-login");
       }
     };
