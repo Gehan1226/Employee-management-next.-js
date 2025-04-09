@@ -9,7 +9,6 @@ export class User {
   private constructor() {}
 
   public static getInstance(): User {
-    console.log("User instance created", User.instance);
     if (!User.instance) {
       User.instance = new User();
     }

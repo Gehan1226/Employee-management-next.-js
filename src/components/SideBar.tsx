@@ -1,6 +1,5 @@
 "use client";
 import { getUserDetailsByName } from "@/api/auth";
-import { User } from "@/lib/class/user";
 import { decodeJwt } from "@/lib/util/jwt";
 import { Divider } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +8,7 @@ import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import UserProfileButton from "./user/UserProfileButton";
 import { Bell, CircleHelp } from "lucide-react";
+import { useUserContext } from "@/context/UserContext";
 
 type SideBarProps = {
   menuItems: MenuItem[];
@@ -22,8 +22,9 @@ export default function SideBar({
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
+  const { updateUser } = useUserContext();
 
-  const { data: user } = useQuery({
+  const { data: userData } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserDetailsByName(userName ?? ""),
     enabled: !!userName,
@@ -42,10 +43,10 @@ export default function SideBar({
   }, []);
 
   useEffect(() => {
-    if (user) {
-      User.getInstance().setUser(user);
+    if (userData) {
+      updateUser(userData);
     }
-  }, [user]);
+  }, [userData, updateUser]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -92,7 +93,7 @@ export default function SideBar({
             </ul>
 
             <div>
-              <Divider variant="middle" className="mb-2"/>
+              <Divider variant="middle" className="mb-2" />
               <button className="flex gap-2 text-sm font-semibold items-center hover:bg-gray-200 px-5 py-2 w-full rounded-lg mb-2 ml-2">
                 <CircleHelp />
                 Help Center
@@ -102,7 +103,7 @@ export default function SideBar({
                 Notifications
               </button>
               <Divider variant="middle" />
-              <UserProfileButton user={user} />
+              <UserProfileButton user={userData} />
             </div>
           </div>
         </aside>

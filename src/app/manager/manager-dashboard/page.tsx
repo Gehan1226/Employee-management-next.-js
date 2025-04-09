@@ -6,6 +6,6 @@ export default function page() {
   const user = User.getInstance().getUser();
   console.log(user?.userName);
   return (
-    <div>Dashboard !</div>
+    <div>Dashboard ! {user?.userName} </div>
   )
 }

@@ -2,9 +2,11 @@
 import EmployeeCard from "@/components/employee/EmployeeCard";
 import EmployeeFilterPopup from "@/components/employee/EmployeeFilterPopup";
 import SearchBar from "@/components/SearchBar";
+import { useUserContext } from "@/context/UserContext";
 import React, { useState } from "react";
 
 export default function EmployeesPage() {
+  const { user } = useUserContext();
   const [isActiveFilter, setIsActiveFilter] = useState<boolean>(false);
 
   const handleFliterPopup = () => {
@@ -15,7 +17,7 @@ export default function EmployeesPage() {
     <>
       <div className="rounded-md border bg-card text-card-foreground shadow">
         <p className="font-semibold text-sky-600 text-2xl text-center py-5">
-          Employee List for IT Department
+          Employee List for {user?.userName} Department
         </p>
       </div>
 

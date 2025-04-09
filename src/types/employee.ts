@@ -20,6 +20,11 @@ export type EmployeeCreateRequest = {
   address: Address;
 };
 
+type EmployeeRole = {
+  id: number;
+  name: string;
+}
+
 export type EmployeeResponse = {
   id: number;
   firstName: string;
@@ -29,7 +34,7 @@ export type EmployeeResponse = {
   phoneNumber: string;
   gender: "Male" | "Female" | "Other";
   department: string | null;
-  role: any;
+  role: EmployeeRole;
   address: Address;
   manager: boolean;
 };
