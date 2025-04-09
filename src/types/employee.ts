@@ -1,4 +1,3 @@
-
 type Address = {
   street: string;
   city: string;
@@ -20,11 +19,6 @@ export type EmployeeCreateRequest = {
   address: Address;
 };
 
-type EmployeeRole = {
-  id: number;
-  name: string;
-}
-
 export type EmployeeResponse = {
   id: number;
   firstName: string;
@@ -33,8 +27,14 @@ export type EmployeeResponse = {
   dob: string;
   phoneNumber: string;
   gender: "Male" | "Female" | "Other";
-  department: string | null;
-  role: EmployeeRole;
+  department: {
+    id: number;
+    name: string;
+  };
+  role: {
+    id: number;
+    name: string;
+  };
   address: Address;
   manager: boolean;
 };

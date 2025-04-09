@@ -1,3 +1,5 @@
+import { EmployeeResponse } from "./employee";
+
 export type UserData = {
     userName: string;
     email: string;
@@ -40,4 +42,5 @@ export type UserResponse = {
   roleList: UserRole[];
   enabled: boolean;
   createdDate: string;
+  employee?: EmployeeResponse;
 };

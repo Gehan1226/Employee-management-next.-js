@@ -35,6 +35,7 @@ export default function AccountSelection() {
         const data = await decodeJwt();
         setUserName(data.sub);
       } catch (error) {
+        console.error("Error decoding JWT:", error);
         toast.error("Authentication issue detected. Please log in again.", {
           position: "top-right",
         });
@@ -43,7 +44,7 @@ export default function AccountSelection() {
       }
     };
     fetchData();
-  }, []);
+  }, [router]);
 
   return (
     <>
