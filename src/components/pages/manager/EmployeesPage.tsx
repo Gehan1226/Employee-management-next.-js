@@ -11,9 +11,10 @@ export default function EmployeesPage() {
   const { user } = useUserContext();
   const [isActiveFilter, setIsActiveFilter] = useState<boolean>(false);
 
-  const {data: employees} = useQuery({
+  const {data: employeeResponse} = useQuery({
     queryKey: ["all-employees"],
-    queryFn: () => getEmployeesByDepartment(user?.employee?.department.id ?? 0),
+    queryFn: () => getEmployeesByDepartment(user?.employee?.department.id),
+    enabled: !!user?.employee?.department.id
   });
 
   const handleFliterPopup = () => {
@@ -83,18 +84,10 @@ export default function EmployeesPage() {
       </div>
 
       <div className="mt-3 px-2 max-h-[570px] overflow-y-auto  [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-200 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-400">
-        <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-4 mt-5">
-          <EmployeeCard />
-          <EmployeeCard />
-          <EmployeeCard />
-          <EmployeeCard />
-          <EmployeeCard />
-          <EmployeeCard />
-          <EmployeeCard />
-          <EmployeeCard />
-          <EmployeeCard />
-          <EmployeeCard />
-          <EmployeeCard />
+        <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-4 mt-5 py-3">
+          {employeeResponse?.data?.map((employee) => (
+            <EmployeeCard key={employee.id} employee={employee} />
+          ))}
         </div>
       </div>
 

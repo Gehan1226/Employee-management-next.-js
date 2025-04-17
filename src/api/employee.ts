@@ -81,8 +81,11 @@ export const getAllEmployeesWithPagination = async (
 };
 
 export const getEmployeesByDepartment = async (
-  departmentId: number
+  departmentId: number | undefined
 ): Promise<PaginatedResponse<EmployeeResponse>> => {
+  if (!departmentId) {
+    throw new Error("Department ID not provided for employee fetching.");
+  }
   try {
     const response = await axioInstance.get(
       `/api/v1/employees/department/${departmentId}`
