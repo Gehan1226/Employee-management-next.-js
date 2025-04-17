@@ -1,13 +1,20 @@
 "use client";
+import { getEmployeesByDepartment } from "@/api/employee";
 import EmployeeCard from "@/components/employee/EmployeeCard";
 import EmployeeFilterPopup from "@/components/employee/EmployeeFilterPopup";
 import SearchBar from "@/components/SearchBar";
 import { useUserContext } from "@/context/UserContext";
+import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 export default function EmployeesPage() {
   const { user } = useUserContext();
   const [isActiveFilter, setIsActiveFilter] = useState<boolean>(false);
+
+  const {data: employees} = useQuery({
+    queryKey: ["all-employees"],
+    queryFn: () => getEmployeesByDepartment(user?.employee?.department.id ?? 0),
+  });
 
   const handleFliterPopup = () => {
     setIsActiveFilter((prev) => !prev);

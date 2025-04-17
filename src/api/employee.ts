@@ -3,12 +3,13 @@ import axios from "axios";
 import axioInstance from "../lib/axios";
 import { EmployeeCreateRequest, EmployeeResponse } from "../types/employee";
 import { PaginatedEmployeeResponse } from "../types/response-types";
+import { PaginatedResponse } from "@/types/paginations";
 
 export const saveEmployee = async (
   data: EmployeeCreateRequest
 ): Promise<string> => {
   try {
-    const response = await axioInstance.post("/api/v1/employee", data);
+    const response = await axioInstance.post("/api/v1/employees", data);
     return response.data.message;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
@@ -22,11 +23,15 @@ export const saveEmployee = async (
           "No response received from the server. Please check your network connection."
         );
       } else {
-        throw new Error(error.message || "An unexpected error occurred during employee registration.");
+        throw new Error(
+          error.message ||
+            "An unexpected error occurred during employee registration."
+        );
       }
     } else {
       throw new Error(
-        (error as Error).message || "An unexpected error occurred during employee registration."
+        (error as Error).message ||
+          "An unexpected error occurred during employee registration."
       );
     }
   }
@@ -36,23 +41,16 @@ export const getAllEmployeesWithPagination = async (
   currentPage: number,
   searchTerms: string | null
 ): Promise<Partial<PaginatedEmployeeResponse>> => {
-  const url = process.env.NEXT_PUBLIC_API_PAGINATED_EMPLOYEES;
-  if (!url) {
-    console.error(
-      "Environment variable 'NEXT_PUBLIC_API_PAGINATED_EMPLOYEES' is not defined."
-    );
-    throw new Error(
-      "API URL is undefined. Please check your environment variables."
-    );
-  }
-
   try {
     const params: Record<string, number | string> = {
       page: currentPage,
       size: 5,
     };
     if (searchTerms) params.searchTerm = searchTerms;
-    const response = await axioInstance.get(url, { params });
+    const response = await axioInstance.get(
+      "/api/v1/employees/paginated-employees",
+      { params }
+    );
     return {
       data: response.data.data,
       totalPages: response.data.totalPages,
@@ -64,7 +62,7 @@ export const getAllEmployeesWithPagination = async (
       if (error.response) {
         return {
           message:
-            error.response.data?.errorMessage ||
+            error.response.data?.errorMessage ??
             "An error occurred during fetching employees.",
         };
       } else if (error.request) {
@@ -82,11 +80,40 @@ export const getAllEmployeesWithPagination = async (
   }
 };
 
+export const getEmployeesByDepartment = async (
+  departmentId: number
+): Promise<PaginatedResponse<EmployeeResponse>> => {
+  try {
+    const response = await axioInstance.get(
+      `/api/v1/employees/department/${departmentId}`
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        throw new Error(
+          error.response.data?.errorMessage ??
+            "An error occurred during fetching employees."
+        );
+      } else if (error.request) {
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
+      }
+      throw new Error(error.message || "An unexpected error occurred.");
+    } else {
+      throw new Error(
+        (error as Error)?.message || "An unexpected error occurred."
+      );
+    }
+  }
+};
+
 export const getEmployeesWithoutManagers = async (): Promise<
   EmployeeResponse[]
 > => {
   try {
-    const response = await axioInstance.get("/api/v1/employee/non-managers");
+    const response = await axioInstance.get("/api/v1/employees/non-managers");
     return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
