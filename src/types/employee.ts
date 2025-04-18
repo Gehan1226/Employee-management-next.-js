@@ -38,3 +38,9 @@ export type EmployeeResponse = {
   address: Address;
   manager: boolean;
 };
+
+export type EmployeeQueryParams = {
+  page: number;
+  size: number;
+  searchTerm: string;
+};

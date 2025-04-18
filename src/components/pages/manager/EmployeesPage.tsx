@@ -4,21 +4,37 @@ import EmployeeCard from "@/components/employee/EmployeeCard";
 import EmployeeFilterPopup from "@/components/employee/EmployeeFilterPopup";
 import SearchBar from "@/components/SearchBar";
 import { useUserContext } from "@/context/UserContext";
+import { Pagination } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function EmployeesPage() {
   const { user } = useUserContext();
   const [isActiveFilter, setIsActiveFilter] = useState<boolean>(false);
+  const [queryParams, setQueryParams] = useState({
+    page: 0,
+    size: 4,
+    searchTerm: "",
+  });
 
-  const {data: employeeResponse} = useQuery({
-    queryKey: ["all-employees"],
-    queryFn: () => getEmployeesByDepartment(user?.employee?.department.id),
-    enabled: !!user?.employee?.department.id
+  const { data: employeeResponse } = useQuery({
+    queryKey: ["all-employees", queryParams, user?.employee?.department.id],
+    queryFn: () =>
+      getEmployeesByDepartment(user?.employee?.department.id, queryParams),
+    enabled: !!user?.employee?.department.id,
   });
 
   const handleFliterPopup = () => {
     setIsActiveFilter((prev) => !prev);
+  };
+
+  const handleSearch = useDebouncedCallback((value: string) => {
+    setQueryParams((prev) => ({ ...prev, searchTerm: value }));
+  }, 500);
+
+  const handlePageChange = (page: number) => {
+    setQueryParams((prev) => ({ ...prev, page: page }));
   };
 
   return (
@@ -31,7 +47,7 @@ export default function EmployeesPage() {
 
       <div className="grid grid-cols-6 gap-4 mt-3">
         <div className="col-span-4">
-          <SearchBar placeholder="Search" onSearch={() => {}} />
+          <SearchBar placeholder="Search" onSearch={handleSearch} />
         </div>
 
         <button
@@ -89,6 +105,14 @@ export default function EmployeesPage() {
             <EmployeeCard key={employee.id} employee={employee} />
           ))}
         </div>
+      </div>
+
+      <div className="flex justify-center mt-10">
+        <Pagination
+          count={employeeResponse?.totalPages}
+          color="primary"
+          onChange={(event, value) => handlePageChange(value-1)}
+        />
       </div>
 
       {isActiveFilter && (

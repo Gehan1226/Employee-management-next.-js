@@ -1,7 +1,7 @@
 "use server";
 import axios from "axios";
 import axioInstance from "../lib/axios";
-import { EmployeeCreateRequest, EmployeeResponse } from "../types/employee";
+import { EmployeeCreateRequest, EmployeeQueryParams, EmployeeResponse } from "../types/employee";
 import { PaginatedEmployeeResponse } from "../types/response-types";
 import { PaginatedResponse } from "@/types/paginations";
 
@@ -81,14 +81,22 @@ export const getAllEmployeesWithPagination = async (
 };
 
 export const getEmployeesByDepartment = async (
-  departmentId: number | undefined
+  departmentId: number | undefined,
+  { size, page, searchTerm }: EmployeeQueryParams
 ): Promise<PaginatedResponse<EmployeeResponse>> => {
   if (!departmentId) {
     throw new Error("Department ID not provided for employee fetching.");
   }
   try {
     const response = await axioInstance.get(
-      `/api/v1/employees/department/${departmentId}`
+      `/api/v1/employees/department/${departmentId}`,
+      {
+        params: {
+          size,
+          page,
+          searchTerm,
+        },
+      }
     );
     return response.data;
   } catch (error: unknown) {
@@ -122,7 +130,7 @@ export const getEmployeesWithoutManagers = async (): Promise<
     if (axios.isAxiosError(error)) {
       if (error.response) {
         throw new Error(
-          error.response.data?.errorMessage ||
+          error.response.data?.errorMessage ??
             "An error occurred during fetching employees."
         );
       } else if (error.request) {
