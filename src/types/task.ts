@@ -1,9 +1,10 @@
-import { Dayjs } from "dayjs";
-
 export type TaskCreateRequest = {
-  description: string;
-  assignedDateTime: Dayjs;
-  dueDateTime: Dayjs;
+  taskDescription: string;
+  assignedDate: string;
+  assignedTime: string;
+  dueDate: string;
+  dueTime: string;
   status: string;
-  employeeList: number[];
+  managerId: number;
+  employeeIdList: number[];
 };
