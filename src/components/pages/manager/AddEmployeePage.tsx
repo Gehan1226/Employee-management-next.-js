@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { addressInfoSchema, personalInfoSchema } from "@/lib/schema/employee";
 import { Card, CardContent } from "@/components/card";
-import AddEmployeeStepper from "@/components/manager/AddEmployeeStepper";
 import EmployeePersonalDetailsForm from "@/components/manager/EmployeePersonalDetailsForm";
 import EmployeeAddressForm from "@/components/manager/EmployeeAddressForm";
 import { EmployeeCreateRequest } from "@/types/employee";
@@ -17,6 +16,7 @@ import SuccessMessage from "@/components/animations/SuccessMessage";
 import ErrorMessage from "@/components/animations/ErrorMessage";
 import toast from "react-hot-toast";
 import { Divider } from "@mui/material";
+import FormStepper from "@/components/FormStepper";
 
 const steps = [
   "Employee Personal Details",
@@ -117,7 +117,7 @@ export default function AddEmployeePage() {
         <CardContent>
           <div className="relative">
             <div className="w-3/4 mx-auto mt-10">
-              <AddEmployeeStepper
+              <FormStepper
                 steps={steps}
                 activeStep={activeStep}
                 completed={completed}

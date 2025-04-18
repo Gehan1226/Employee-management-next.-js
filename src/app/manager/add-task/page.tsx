@@ -1,5 +1,7 @@
-import { Card } from '@mui/material'
-import React from 'react'
+import { CardContent } from "@/components/card";
+import AddTaskPage from "@/components/pages/manager/AddTaskPage";
+import { Card, Divider } from "@mui/material";
+import React from "react";
 
 export default function Page() {
   return (
@@ -8,7 +10,13 @@ export default function Page() {
         <p className="font-semibold text-sky-600 text-2xl text-center">
           Create a new task for employees
         </p>
+
+        <Divider variant="middle" className="mt-4" />
+
+        <CardContent>
+          <AddTaskPage />
+        </CardContent>
       </Card>
     </div>
-  )
+  );
 }
