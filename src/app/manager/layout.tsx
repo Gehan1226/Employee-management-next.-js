@@ -21,7 +21,7 @@ const menuItems: MenuItem[] = [
     link: "/manager/employees",
     icon: <EmployeeViewIcon />,
   },
-  { name: "Task", link: "/manager/task", icon: <ClipboardList /> },
+  { name: "Create Task", link: "/manager/add-task", icon: <ClipboardList /> },
 ];
 
 export default function Layout({

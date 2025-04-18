@@ -25,10 +25,16 @@ export default function AccountSelection() {
     queryKey: ["user"],
     queryFn: () => getUserDetailsByName(userName ?? ""),
     enabled: !!userName,
+    retry: (failureCount, error) => {
+      if (error.message.includes("JWT")) {
+        return false;
+      }
+      return failureCount < 2;
+    },
   });
 
   useHandleError({ error });
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {

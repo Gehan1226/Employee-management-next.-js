@@ -6,9 +6,9 @@ import toast from "react-hot-toast";
 
 export function useHandleError({ error }: { error: Error | null }) {
   const router = useRouter();
-  
+
   useEffect(() => {
-    if (!error ) return;
+    if (!error) return;
 
     toast.error(error.message, {
       position: "top-right",
@@ -20,6 +20,5 @@ export function useHandleError({ error }: { error: Error | null }) {
       clearAuthCookie();
       router.push("/user-login");
     }
-   
-  }, [error]);
+  }, [router, error]);
 }
