@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent } from "../card";
-import { Divider } from "@mui/material";
+import { Divider, Tooltip } from "@mui/material";
 import { EmployeeResponse } from "@/types/employee";
 import Image from "next/image";
 
@@ -30,6 +30,16 @@ export default function EmployeeCard({ employee }: Readonly<EmployeeCardProps>) 
               {employee.firstName} {employee.lastName}
             </p>
           </div>
+          <div className="grid grid-cols-4 gap-3 w-full">
+            <p className="text-left font-semibold">Email</p>
+            <p>:</p>
+            <Tooltip title={employee.email} placement="right-start">
+              <p className="col-span-2 font-semibold text-slate-600 overflow-hidden text-ellipsis whitespace-nowrap max-w-[250px]">
+                {employee.email}
+              </p>
+            </Tooltip>
+          </div>
+
           <div className="grid grid-cols-4 gap-3 w-full">
             <p className="text-left font-semibold">Age</p>
             <p>:</p>

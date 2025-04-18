@@ -1,7 +1,5 @@
 "use client";
 
-import { getAllTasksWithPagination } from "@/app/api/task";
-import { TaskResponse } from "@/app/types/response-types";
 import { useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
@@ -30,6 +28,8 @@ import {
 } from "../table/table";
 import React from "react";
 import { ChevronDown } from "lucide-react";
+import { TaskResponse } from "@/types/response-types";
+import { getAllTasksWithPagination } from "@/api/task";
 
 export const columns: ColumnDef<TaskResponse>[] = [
   {

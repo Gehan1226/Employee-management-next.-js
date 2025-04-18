@@ -3,7 +3,6 @@
 import React from "react";
 import CreatedTasks from "./CreatedTasks";
 import { Card, CardContent, CardHeader, CardTitle } from "../card";
-import AddTaskModal from "./AddTaskModal";
 
 export default function TaskManagement() {
   return (
@@ -14,9 +13,7 @@ export default function TaskManagement() {
         </p>
       </div>
 
-      <div className="flex gap-4 flex-row-reverse w-full mb-5">
-        <AddTaskModal />
-      </div>
+      
 
       <Card className="flex flex-col col-span-2">
         <CardHeader className="items-center pb-0">
