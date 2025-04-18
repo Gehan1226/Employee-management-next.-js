@@ -8,15 +8,16 @@ import {
   Select,
 } from "@mui/material";
 import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { taskSchema } from "@/lib/util/schemas";
-import { TaskFormValues } from "@/types/schema-types";
 import EmployeeTaskSelector from "@/components/manager/EmployeeTaskSelector";
+import { taskSchema } from "@/lib/schema/task";
+import { z } from "zod";
+import { TaskCreateRequest } from "@/types/task";
 
 const steps = ["Fill Task Details", "Assign Employees", "Save Task"];
 
@@ -25,7 +26,10 @@ export default function AddTaskPage() {
   const [completed, setCompleted] = useState<{
     [k: number]: boolean;
   }>({});
-  const [taskData, setTaskData] = useState(null);
+  const [taskData, setTaskData] = useState<z.infer<typeof taskSchema> | null>(
+    null
+  );
+  const [assignedEmployees, setAssignedEmployees] = useState<number[]>([]);
 
   const {
     control,
@@ -33,7 +37,7 @@ export default function AddTaskPage() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<TaskFormValues>({
+  } = useForm({
     resolver: zodResolver(taskSchema),
     defaultValues: {
       description: "",
@@ -43,12 +47,21 @@ export default function AddTaskPage() {
     },
   });
 
-  const onSubmitTaskData = (data: TaskFormValues) => {
+  const onSubmitTaskData = (data: z.infer<typeof taskSchema>) => {
+    setTaskData((prev) => ({ ...prev, ...data }));
     setCompleted({
       ...completed,
       [activeStep]: true,
     });
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const assignEmployee = (employeeId: number) => {
+    setAssignedEmployees((prev) => [...prev, employeeId]);
+  };
+
+  const unAssignEmployee = (employeeId: number) => {
+    setAssignedEmployees((prev) => prev.filter((id) => id !== employeeId));
   };
 
   return (
@@ -203,7 +216,11 @@ export default function AddTaskPage() {
 
       {activeStep === 1 && (
         <div className="flex flex-col gap-8 px-4 mt-12">
-          <EmployeeTaskSelector />
+          <EmployeeTaskSelector
+            assignedEmployees={assignedEmployees}
+            assignEmployee={assignEmployee}
+            unAssignEmployee={unAssignEmployee}
+          />
 
           <div className="flex justify-end">
             <button

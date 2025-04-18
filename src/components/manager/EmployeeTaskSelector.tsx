@@ -6,7 +6,17 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-export default function EmployeeTaskSelector() {
+type EmployeeTaskSelectorProps = {
+  assignedEmployees: number[];
+  assignEmployee: (employeeId: number) => void;
+  unAssignEmployee: (employeeId: number) => void;
+};
+
+export default function EmployeeTaskSelector({
+  assignedEmployees,
+  assignEmployee,
+  unAssignEmployee,
+}: Readonly<EmployeeTaskSelectorProps>) {
   return (
     <>
       <div className="flex justify-between gap-5 items-center">
@@ -107,7 +117,6 @@ export default function EmployeeTaskSelector() {
               </Tooltip>
             </div>
           </div>
-
         </div>
       </div>
     </>
