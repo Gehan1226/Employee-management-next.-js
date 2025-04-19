@@ -1,3 +1,4 @@
+"use server";
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import { TaskResponse } from "../types/response-types";
@@ -35,8 +36,10 @@ export const getAllTasksWithPagination = async (): Promise<TaskResponse> => {
 };
 
 export const saveTask = async (data: TaskCreateRequest): Promise<string> => {
+  console.log("hola", data);
   try {
     const response = await axioInstance.post("/api/v1/tasks", data);
+    console.log(response);
     return response.data.message;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

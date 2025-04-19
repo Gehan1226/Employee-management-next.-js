@@ -54,29 +54,35 @@ export default function AddTaskPage() {
   };
 
   const unAssignEmployee = (employeeId: number) => {
-    setAssignedEmployees((prev) => prev.filter((employee) => employee.id !== employeeId));
+    setAssignedEmployees((prev) =>
+      prev.filter((employee) => employee.id !== employeeId)
+    );
   };
 
   const onSaveTask = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // if (taskData) {
-    //   const task = {
-    //     taskDescription: taskData?.description,
-    //     assignedDate: taskData?.assignedDateTime.format("YYYY-MM-DD"),
-    //     assignedTime: taskData?.assignedDateTime.format("HH:mm"),
-    //     dueDate: taskData?.dueDateTime.format("YYYY-MM-DD"),
-    //     dueTime: taskData?.dueDateTime.format("HH:mm"),
-    //     status: taskData?.status,
-    //     managerId: 1,
-    //     employeeIdList: assignedEmployees,
-    //   };
-    //   mutation.mutate(task);
-    // }
+    console.log(taskData);
+    if (taskData) {
+      const task = {
+        taskDescription: taskData?.description,
+        assignedDate: taskData?.assignedDateTime.format("YYYY-MM-DD"),
+        assignedTime: taskData?.assignedDateTime.format("HH:mm"),
+        dueDate: taskData?.dueDateTime.format("YYYY-MM-DD"),
+        dueTime: taskData?.dueDateTime.format("HH:mm"),
+        status: taskData?.status,
+        managerId: 1,
+        employeeIdList: assignedEmployees.map((emp) => emp.id),
+      };
+      mutation.mutate(task);
+    }
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
+
+  console.log("taskData", taskData);
 
   return (
     <>
@@ -109,7 +115,7 @@ export default function AddTaskPage() {
               back
             </button>
             <button
-              type="submit"
+              type="button"
               className="text-white bg-blue-700 w-28 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
               onClick={onSaveTask}
             >
