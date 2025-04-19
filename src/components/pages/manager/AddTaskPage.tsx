@@ -11,6 +11,13 @@ import { saveTask } from "@/api/task";
 
 const steps = ["Fill Task Details", "Assign Employees", "Save Task"];
 
+export type TaskAssignedEmployee = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  role: string;
+};
+
 export default function AddTaskPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState<{
@@ -19,7 +26,9 @@ export default function AddTaskPage() {
   const [taskData, setTaskData] = useState<z.infer<typeof taskSchema> | null>(
     null
   );
-  const [assignedEmployees, setAssignedEmployees] = useState<number[]>([]);
+  const [assignedEmployees, setAssignedEmployees] = useState<
+    TaskAssignedEmployee[]
+  >([]);
 
   const mutation = useMutation({
     mutationFn: (data: TaskCreateRequest) => saveTask(data),
@@ -40,29 +49,33 @@ export default function AddTaskPage() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const assignEmployee = (employeeId: number) => {
-    setAssignedEmployees((prev) => [...prev, employeeId]);
+  const assignEmployee = (employee: TaskAssignedEmployee) => {
+    setAssignedEmployees((prev) => [...prev, employee]);
   };
 
   const unAssignEmployee = (employeeId: number) => {
-    setAssignedEmployees((prev) => prev.filter((id) => id !== employeeId));
+    setAssignedEmployees((prev) => prev.filter((employee) => employee.id !== employeeId));
   };
 
   const onSaveTask = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    if (taskData) {
-      const task = {
-        taskDescription: taskData?.description,
-        assignedDate: taskData?.assignedDateTime.format("YYYY-MM-DD"),
-        assignedTime: taskData?.assignedDateTime.format("HH:mm"),
-        dueDate: taskData?.dueDateTime.format("YYYY-MM-DD"),
-        dueTime: taskData?.dueDateTime.format("HH:mm"),
-        status: taskData?.status,
-        managerId: 1,
-        employeeIdList: assignedEmployees,
-      };
-      mutation.mutate(task);
-    }
+    // if (taskData) {
+    //   const task = {
+    //     taskDescription: taskData?.description,
+    //     assignedDate: taskData?.assignedDateTime.format("YYYY-MM-DD"),
+    //     assignedTime: taskData?.assignedDateTime.format("HH:mm"),
+    //     dueDate: taskData?.dueDateTime.format("YYYY-MM-DD"),
+    //     dueTime: taskData?.dueDateTime.format("HH:mm"),
+    //     status: taskData?.status,
+    //     managerId: 1,
+    //     employeeIdList: assignedEmployees,
+    //   };
+    //   mutation.mutate(task);
+    // }
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   return (
@@ -75,7 +88,9 @@ export default function AddTaskPage() {
         />
       </div>
 
-      {activeStep === 0 && <TaskInfoForm onSubmitTaskData={onSubmitTaskForm} />}
+      {activeStep === 0 && (
+        <TaskInfoForm taskData={taskData} onSubmitTaskData={onSubmitTaskForm} />
+      )}
 
       {activeStep === 1 && (
         <div className="flex flex-col gap-8 px-4 mt-12">
@@ -85,7 +100,14 @@ export default function AddTaskPage() {
             unAssignEmployee={unAssignEmployee}
           />
 
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <button
+              type="button"
+              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+              onClick={handleBack}
+            >
+              back
+            </button>
             <button
               type="submit"
               className="text-white bg-blue-700 w-28 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"

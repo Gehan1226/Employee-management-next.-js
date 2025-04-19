@@ -1,5 +1,5 @@
 "use client";
-import { getEmployeesByDepartment } from "@/api/employee";
+import { getEmployeesByDepartmentWithPagination } from "@/api/employee";
 import EmployeeCard from "@/components/employee/EmployeeCard";
 import EmployeeFilterPopup from "@/components/employee/EmployeeFilterPopup";
 import SearchBar from "@/components/SearchBar";
@@ -19,9 +19,9 @@ export default function EmployeesPage() {
   });
 
   const { data: employeeResponse } = useQuery({
-    queryKey: ["all-employees", queryParams, user?.employee?.department.id],
+    queryKey: ["all-employees-paginated", queryParams, user?.employee?.department.id],
     queryFn: () =>
-      getEmployeesByDepartment(user?.employee?.department.id, queryParams),
+      getEmployeesByDepartmentWithPagination(user?.employee?.department.id, queryParams),
     enabled: !!user?.employee?.department.id,
   });
 

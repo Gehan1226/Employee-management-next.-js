@@ -1,7 +1,11 @@
 "use server";
 import axios from "axios";
 import axioInstance from "../lib/axios";
-import { EmployeeCreateRequest, EmployeeQueryParams, EmployeeResponse } from "../types/employee";
+import {
+  EmployeeCreateRequest,
+  EmployeeQueryParams,
+  EmployeeResponse,
+} from "../types/employee";
 import { PaginatedEmployeeResponse } from "../types/response-types";
 import { PaginatedResponse } from "@/types/paginations";
 
@@ -80,7 +84,7 @@ export const getAllEmployeesWithPagination = async (
   }
 };
 
-export const getEmployeesByDepartment = async (
+export const getEmployeesByDepartmentWithPagination = async (
   departmentId: number | undefined,
   { size, page, searchTerm }: EmployeeQueryParams
 ): Promise<PaginatedResponse<EmployeeResponse>> => {
@@ -89,7 +93,7 @@ export const getEmployeesByDepartment = async (
   }
   try {
     const response = await axioInstance.get(
-      `/api/v1/employees/department/${departmentId}`,
+      `/api/v1/employees/by-department/${departmentId}`,
       {
         params: {
           size,
@@ -99,6 +103,35 @@ export const getEmployeesByDepartment = async (
       }
     );
     return response.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        throw new Error(
+          error.response.data?.errorMessage ??
+            "An error occurred during fetching employees."
+        );
+      } else if (error.request) {
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
+      }
+      throw new Error(error.message || "An unexpected error occurred.");
+    } else {
+      throw new Error(
+        (error as Error)?.message || "An unexpected error occurred."
+      );
+    }
+  }
+};
+
+export const getEmployeesByDepartment = async (
+  departmentId: number
+): Promise<EmployeeResponse[]> => {
+  try {
+    const response = await axioInstance.get(
+      `/api/v1/employees/by-department/${departmentId}/all`
+    );
+    return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {

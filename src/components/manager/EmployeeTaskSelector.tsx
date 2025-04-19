@@ -1,14 +1,17 @@
 import React from "react";
-import Image from "next/image";
-import Tooltip from "@mui/material/Tooltip";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { Controller, useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
+import { getEmployeesByDepartment } from "@/api/employee";
+import { TaskAssignedEmployee } from "../pages/manager/AddTaskPage";
+import EmployeeInfoCard from "../EmployeeInfoCard";
 
 type EmployeeTaskSelectorProps = {
-  assignedEmployees: number[];
-  assignEmployee: (employeeId: number) => void;
+  assignedEmployees: TaskAssignedEmployee[];
+  assignEmployee: (employee: TaskAssignedEmployee) => void;
   unAssignEmployee: (employeeId: number) => void;
 };
 
@@ -17,106 +20,80 @@ export default function EmployeeTaskSelector({
   assignEmployee,
   unAssignEmployee,
 }: Readonly<EmployeeTaskSelectorProps>) {
+  const { data: employees } = useQuery({
+    queryKey: ["employees-by-department"],
+    queryFn: () => getEmployeesByDepartment(1),
+  });
+
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      employeeId: "",
+    },
+  });
+
+  const onSubmit = (data: { employeeId: string }) => {
+    const searchId = parseInt(data.employeeId);
+    const employee = employees?.find((emp) => emp.id === searchId);
+    if (employee)
+      assignEmployee({
+        id: employee.id,
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        role: employee.role.name,
+      });
+  };
+
+  const onDeleteEmployee = (employeeId: number) => {
+    unAssignEmployee(employeeId);
+  };
+
   return (
     <>
-      <div className="flex justify-between gap-5 items-center">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex justify-between gap-5 items-center"
+      >
         <FormControl fullWidth>
-          <InputLabel id="combo-box-label">Employees</InputLabel>
-          <Select
-            labelId="combo-box-label"
-            label="Select status"
-            id="task-status"
-            className="bg-gray-50"
-          >
-            <MenuItem key="5" value="approved">
-              Approved
-            </MenuItem>
-          </Select>
+          <InputLabel id="combo-box-label">Select Employee</InputLabel>
+          <Controller
+            name="employeeId"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                labelId="combo-box-label"
+                id="task-status"
+                label="Select status"
+                className="bg-gray-50"
+              >
+                {employees?.map((employee) => (
+                  <MenuItem key={employee.id} value={employee.id}>
+                    {employee.firstName} {employee.lastName}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
         </FormControl>
         <button
-          type="button"
+          type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
         >
           Assign
         </button>
-      </div>
+      </form>
 
       <div className="flex flex-col gap-3 bg-gray-50 border border-gray-300 rounded-md py-2">
         <p className="font-semibold px-2">Assigned Employees</p>
         <div className="flex flex-col gap-2 max-h-[300px] overflow-y-scroll px-5 py-2">
-          <div className="flex flex-col shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] bg-white rounded-md p-1">
-            <div className="flex justify-between">
-              <div className="flex px-4 py-2 gap-3">
-                <Image
-                  src="https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
-                  alt="user placeholder image"
-                  width={45}
-                  height={45}
-                />
-
-                <div>
-                  <p className="font-semibold">Gehan Sithija</p>
-                  <p className="text-gray-500">Manager</p>
-                </div>
-              </div>
-
-              <Tooltip title="Delete employee" placement="top" arrow>
-                <button type="button" className="m-5 h-fit ">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                    />
-                  </svg>
-                </button>
-              </Tooltip>
-            </div>
-          </div>
-
-          <div className="flex flex-col shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] bg-white rounded-md p-1">
-            <div className="flex justify-between">
-              <div className="flex px-4 py-2 gap-3">
-                <Image
-                  src="https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
-                  alt="user placeholder image"
-                  width={45}
-                  height={45}
-                />
-
-                <div>
-                  <p className="font-semibold">Gehan Sithija</p>
-                  <p className="text-gray-500">Manager</p>
-                </div>
-              </div>
-
-              <Tooltip title="Delete employee" placement="top" arrow>
-                <button type="button" className="m-5 h-fit ">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="size-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                    />
-                  </svg>
-                </button>
-              </Tooltip>
-            </div>
-          </div>
+          {assignedEmployees.map((employee) => (
+            <EmployeeInfoCard
+              key={employee.id}
+              employee={employee}
+              onDeleteEmployee={onDeleteEmployee}
+            />
+          ))}
         </div>
       </div>
     </>
