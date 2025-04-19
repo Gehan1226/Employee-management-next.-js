@@ -6,8 +6,8 @@ import Select from "@mui/material/Select";
 import { Controller, useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { getEmployeesByDepartment } from "@/api/employee";
-import { TaskAssignedEmployee } from "../pages/manager/AddTaskPage";
 import EmployeeInfoCard from "../EmployeeInfoCard";
+import { TaskAssignedEmployee } from "@/types/employee";
 
 type EmployeeTaskSelectorProps = {
   assignedEmployees: TaskAssignedEmployee[];

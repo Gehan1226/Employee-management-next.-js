@@ -8,15 +8,10 @@ import TaskInfoForm from "@/components/manager/TaskInfoForm";
 import { useMutation } from "@tanstack/react-query";
 import { TaskCreateRequest } from "@/types/task";
 import { saveTask } from "@/api/task";
+import toast from "react-hot-toast";
+import { TaskAssignedEmployee } from "@/types/employee";
 
 const steps = ["Fill Task Details", "Assign Employees", "Save Task"];
-
-export type TaskAssignedEmployee = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  role: string;
-};
 
 export default function AddTaskPage() {
   const [activeStep, setActiveStep] = useState(0);
@@ -32,11 +27,12 @@ export default function AddTaskPage() {
 
   const mutation = useMutation({
     mutationFn: (data: TaskCreateRequest) => saveTask(data),
-    onSuccess: () => {
+    onSuccess: (data: string) => {
       setCompleted({
         ...completed,
         [activeStep]: true,
       });
+      toast.success(data, { position: "top-right" });
     },
   });
 
@@ -60,8 +56,11 @@ export default function AddTaskPage() {
   };
 
   const onSaveTask = () => {
+    setCompleted({
+      ...completed,
+      [activeStep]: true,
+    });
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    console.log(taskData);
     if (taskData) {
       const task = {
         taskDescription: taskData?.description,
@@ -80,9 +79,6 @@ export default function AddTaskPage() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
-
-  console.log("taskData", taskData);
 
   return (
     <>

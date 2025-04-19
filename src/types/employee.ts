@@ -44,3 +44,10 @@ export type EmployeeQueryParams = {
   size: number;
   searchTerm: string;
 };
+
+export type TaskAssignedEmployee = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  role: string;
+};

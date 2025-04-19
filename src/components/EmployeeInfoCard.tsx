@@ -1,7 +1,7 @@
+import { TaskAssignedEmployee } from "@/types/employee";
 import { Tooltip } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-import { TaskAssignedEmployee } from "./pages/manager/AddTaskPage";
 
 type EmployeeInfoCardProps = {
   employee: TaskAssignedEmployee;
