@@ -1,6 +1,5 @@
 import React from "react";
-import { Card, CardContent } from "../card";
-import { Divider, Tooltip } from "@mui/material";
+import { Card, CardContent, Divider, Tooltip } from "@mui/material";
 import { EmployeeResponse } from "@/types/employee";
 import Image from "next/image";
 
@@ -8,7 +7,9 @@ type EmployeeCardProps = {
   employee: EmployeeResponse;
 };
 
-export default function EmployeeCard({ employee }: Readonly<EmployeeCardProps>) {
+export default function EmployeeCard({
+  employee,
+}: Readonly<EmployeeCardProps>) {
   return (
     <Card className="shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
       <CardContent>

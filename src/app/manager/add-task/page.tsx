@@ -1,6 +1,5 @@
-import { CardContent } from "@/components/card";
 import AddTaskPage from "@/components/pages/manager/AddTaskPage";
-import { Card, Divider } from "@mui/material";
+import { Card, CardContent, Divider } from "@mui/material";
 import React from "react";
 
 export default function Page() {

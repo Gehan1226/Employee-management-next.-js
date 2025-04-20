@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { addressInfoSchema, personalInfoSchema } from "@/lib/schema/employee";
-import { Card, CardContent } from "@/components/card";
+import { Card, CardContent, Divider } from "@mui/material";
 import EmployeePersonalDetailsForm from "@/components/manager/EmployeePersonalDetailsForm";
 import EmployeeAddressForm from "@/components/manager/EmployeeAddressForm";
 import { EmployeeCreateRequest } from "@/types/employee";
@@ -15,7 +15,6 @@ import { Employee } from "@/lib/class/employee";
 import SuccessMessage from "@/components/animations/SuccessMessage";
 import ErrorMessage from "@/components/animations/ErrorMessage";
 import toast from "react-hot-toast";
-import { Divider } from "@mui/material";
 import FormStepper from "@/components/FormStepper";
 
 const steps = [
@@ -101,7 +100,6 @@ export default function AddEmployeePage() {
   const onCreateNewEmployee = () => {
     setActiveStep(0);
     setCompleted({});
-    employee.reset();
     mutation.reset();
   };
 

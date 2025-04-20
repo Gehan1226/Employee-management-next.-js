@@ -8,8 +8,10 @@ import TaskInfoForm from "@/components/manager/TaskInfoForm";
 import { useMutation } from "@tanstack/react-query";
 import { TaskCreateRequest } from "@/types/task";
 import { saveTask } from "@/api/task";
-import toast from "react-hot-toast";
 import { TaskAssignedEmployee } from "@/types/employee";
+import Loading from "@/components/animations/Loading";
+import SuccessMessage from "@/components/animations/SuccessMessage";
+import ErrorMessage from "@/components/animations/ErrorMessage";
 
 const steps = ["Fill Task Details", "Assign Employees", "Save Task"];
 
@@ -27,12 +29,11 @@ export default function AddTaskPage() {
 
   const mutation = useMutation({
     mutationFn: (data: TaskCreateRequest) => saveTask(data),
-    onSuccess: (data: string) => {
+    onSuccess: () => {
       setCompleted({
         ...completed,
         [activeStep]: true,
       });
-      toast.success(data, { position: "top-right" });
     },
   });
 
@@ -80,6 +81,14 @@ export default function AddTaskPage() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+   const onCreateNewTask = () => {
+     setTaskData(null);
+     setAssignedEmployees([]);
+     setActiveStep(0);
+     setCompleted({});
+     mutation.reset();
+   };
+
   return (
     <>
       <div className="w-3/4 mx-auto mt-10">
@@ -118,6 +127,39 @@ export default function AddTaskPage() {
               Save Task
             </button>
           </div>
+        </div>
+      )}
+
+      {mutation.isPending && (
+        <div className="flex flex-col items-center mt-10">
+          <Loading />
+          <p className="font-mono"> Saving Task .....</p>
+        </div>
+      )}
+
+      {mutation.isSuccess && (
+        <SuccessMessage
+          message="Task created successfully!"
+          className="mt-10"
+        />
+      )}
+
+      {mutation.isError && (
+        <ErrorMessage
+          message="Error creating task!"
+          error={mutation.error.message}
+          className="mt-10"
+        />
+      )}
+
+      {activeStep === 2 && (
+        <div className="flex flex-row-reverse mt-7 ">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={onCreateNewTask}
+          >
+            create new task
+          </button>
         </div>
       )}
     </>
