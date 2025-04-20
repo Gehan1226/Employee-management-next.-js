@@ -25,7 +25,7 @@ export default function EmployeeTaskSelector({
     queryFn: () => getEmployeesByDepartment(1),
   });
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       employeeId: "",
     },
@@ -41,6 +41,8 @@ export default function EmployeeTaskSelector({
         lastName: employee.lastName,
         role: employee.role.name,
       });
+
+    reset();
   };
 
   const onDeleteEmployee = (employeeId: number) => {
@@ -67,11 +69,18 @@ export default function EmployeeTaskSelector({
                 label="Select status"
                 className="bg-gray-50"
               >
-                {employees?.map((employee) => (
-                  <MenuItem key={employee.id} value={employee.id}>
-                    {employee.firstName} {employee.lastName}
-                  </MenuItem>
-                ))}
+                {employees
+                  ?.filter(
+                    (employee) =>
+                      !assignedEmployees.some(
+                        (assigned) => assigned.id === employee.id
+                      )
+                  )
+                  .map((employee) => (
+                    <MenuItem key={employee.id} value={employee.id}>
+                      {employee.firstName} {employee.lastName}
+                    </MenuItem>
+                  ))}
               </Select>
             )}
           />

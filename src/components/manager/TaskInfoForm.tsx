@@ -32,12 +32,13 @@ export default function TaskInfoForm({
   } = useForm({
     resolver: zodResolver(taskSchema),
     defaultValues: {
-      description: "",
-      assignedDateTime: dayjs(),
-      dueDateTime: dayjs(),
-      status: "",
+      description: taskData?.description ?? "",
+      assignedDateTime: taskData?.assignedDateTime ?? dayjs(),
+      dueDateTime: taskData?.dueDateTime ?? dayjs(),
+      status: taskData?.status ?? "",
     },
   });
+
   return (
     <form
       onSubmit={handleSubmit(onSubmitTaskData)}
