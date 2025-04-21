@@ -5,17 +5,21 @@ import toast from "react-hot-toast";
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error: unknown) => {
-      if (error instanceof Error && error.message.includes("Unauthorized")) {
+      if (error instanceof Error) {
         toast.error(error.message);
-        clearAuthCookie();
+        if (error.message.includes("Unauthorized")) {
+          clearAuthCookie();
+        }
       }
     },
   }),
   mutationCache: new MutationCache({
     onError: (error: unknown) => {
-      if (error instanceof Error && error.message.includes("Unauthorized")) {
+      if (error instanceof Error) {
         toast.error(error.message);
-        clearAuthCookie();
+        if (error.message.includes("Unauthorized")) {
+          clearAuthCookie();
+        }
       }
     },
   }),

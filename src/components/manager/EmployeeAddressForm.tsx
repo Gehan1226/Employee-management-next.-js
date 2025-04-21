@@ -3,11 +3,12 @@ import CountrySelector from "../CountrySelector";
 import Input from "../Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { employeeFormSchema } from "@/lib/schema/employee";
+import { addressInfoSchema, employeeFormSchema } from "@/lib/schema/employee";
+import { z } from "zod";
 
 
 type EmployeeAddressFormProps = {
-  onFormSubmit: (data: any) => void;
+  onFormSubmit: (data: z.infer<typeof addressInfoSchema>) => void;
   handleBack: () => void;
 };
 

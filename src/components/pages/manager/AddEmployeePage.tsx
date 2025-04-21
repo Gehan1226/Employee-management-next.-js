@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { addressInfoSchema, personalInfoSchema } from "@/lib/schema/employee";
 import { Card, CardContent, Divider } from "@mui/material";
 import EmployeePersonalDetailsForm from "@/components/manager/EmployeePersonalDetailsForm";
@@ -14,7 +14,6 @@ import { saveEmployee } from "@/api/employee";
 import { Employee } from "@/lib/class/employee";
 import SuccessMessage from "@/components/animations/SuccessMessage";
 import ErrorMessage from "@/components/animations/ErrorMessage";
-import toast from "react-hot-toast";
 import FormStepper from "@/components/FormStepper";
 
 const steps = [
@@ -34,28 +33,16 @@ export default function AddEmployeePage() {
     string | null
   >();
 
-  const { data: departments, error: departmentsError } = useQuery({
+  const { data: departments } = useQuery({
     queryKey: ["all-departments"],
     queryFn: getAllDepartments,
   });
 
-  const { data: roles, error: rolesError } = useQuery({
+  const { data: roles } = useQuery({
     queryKey: ["roles-by-department", selectedDepartmentId],
     queryFn: () => getRolesByDepartment(selectedDepartmentId),
     enabled: !!selectedDepartmentId,
   });
-
-  useEffect(() => {
-    if (departmentsError) {
-      toast.error(departmentsError.message, { position: "top-right" });
-    }
-  }, [departmentsError]);
-
-  useEffect(() => {
-    if (rolesError) {
-      toast.error(rolesError.message, { position: "top-right" });
-    }
-  }, [rolesError]);
 
   const mutation = useMutation({
     mutationFn: (data: EmployeeCreateRequest) => saveEmployee(data),

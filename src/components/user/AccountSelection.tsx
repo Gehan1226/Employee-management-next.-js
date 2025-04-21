@@ -19,7 +19,6 @@ export default function AccountSelection() {
   const {
     data: user,
     isLoading: userLoading,
-    error,
   } = useQuery({
     queryKey: ["user"],
     queryFn: () => getUserDetailsByName(userName ?? ""),

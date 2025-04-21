@@ -1,4 +1,4 @@
-import { employeeFormSchema } from "@/lib/schema/employee";
+import { employeeFormSchema, personalInfoSchema } from "@/lib/schema/employee";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -11,10 +11,11 @@ import {
 } from "@/lib/util/map-object";
 import { EmployeeCreateRequest } from "@/types/employee";
 import { DepartmentResponse, RoleResponse } from "@/types/department-roles";
+import { z } from "zod";
 
 type EmployeePersonalDetailsFormProps = {
   activeStep: number;
-  onFormSubmit: (data: any) => void;
+  onFormSubmit: (data: z.infer<typeof personalInfoSchema>) => void;
   defaultValues: EmployeeCreateRequest;
   departments: DepartmentResponse[];
   roles: RoleResponse[];
