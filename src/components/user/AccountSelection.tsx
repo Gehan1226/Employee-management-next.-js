@@ -10,7 +10,6 @@ import { decodeJwt } from "@/lib/util/jwt";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import AccountSkelton from "../skeltons/AccountSkelton";
-import { useHandleError } from "@/hooks/useHandleError";
 import { clearAuthCookie } from "@/lib/util/cookie";
 
 export default function AccountSelection() {
@@ -32,8 +31,6 @@ export default function AccountSelection() {
       return failureCount < 2;
     },
   });
-
-  useHandleError({ error });
 
   useEffect(() => {
     const fetchData = async () => {
