@@ -24,7 +24,7 @@ export default function AccountSelection() {
     queryFn: () => getUserDetailsByName(userName ?? ""),
     enabled: !!userName,
     retry: (failureCount, error) => {
-      if (error.message.includes("JWT")) {
+      if (error.message.includes("Unauthorized:")) {
         return false;
       }
       return failureCount < 2;

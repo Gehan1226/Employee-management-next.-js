@@ -9,6 +9,7 @@ const queryClient = new QueryClient({
         toast.error(error.message);
         if (error.message.includes("Unauthorized")) {
           clearAuthCookie();
+          window.location.href = "/user-login";
         }
       }
     },

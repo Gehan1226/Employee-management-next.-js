@@ -3,7 +3,7 @@ import DashboardIcon from "@/components/icons/DashboardIcon";
 import EmployeeViewIcon from "@/components/icons/EmployeeViewIcon";
 import SideBar from "@/components/SideBar";
 import { UserProvider } from "@/context/UserContext";
-import { ClipboardList } from "lucide-react";
+import { ClipboardList, LayoutList } from "lucide-react";
 
 const menuItems: MenuItem[] = [
   {
@@ -22,6 +22,7 @@ const menuItems: MenuItem[] = [
     icon: <EmployeeViewIcon />,
   },
   { name: "Create Task", link: "/manager/add-task", icon: <ClipboardList /> },
+  { name: "View Tasks", link: "/manager/view-tasks", icon: <LayoutList /> },
 ];
 
 export default function Layout({

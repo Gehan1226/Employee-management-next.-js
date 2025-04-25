@@ -30,58 +30,59 @@ import React from "react";
 import { ChevronDown } from "lucide-react";
 import { TaskResponse } from "@/types/response-types";
 import { getAllTasksWithPagination } from "@/api/task";
+import { useDebouncedCallback } from "use-debounce";
 
 export const columns: ColumnDef<TaskResponse>[] = [
   {
     accessorKey: "taskDescription",
-    header: () => <div>Task Description</div>,
+    header: () => <div>📝 Task Description</div>,
     cell: ({ row }) => (
-      <div className="font-semibold text-slate-600">
+      <div className="font-semibold text-slate-600 py-2 text-xs">
         {row.getValue("taskDescription")}
       </div>
     ),
   },
   {
     accessorKey: "assignedDate",
-    header: () => <div>Assign Date</div>,
+    header: () => <div>📅 Assign Date</div>,
     cell: ({ row }) => (
-      <div className="capitalize font-semibold text-slate-800">
+      <div className="capitalize font-semibold text-slate-800 text-xs">
         {row.getValue("assignedDate")}
       </div>
     ),
   },
   {
     accessorKey: "assignedTime",
-    header: () => <div>Assign Time</div>,
+    header: () => <div>⏰ Assign Time</div>,
     cell: ({ row }) => (
-      <div className="font-semibold text-slate-600">
+      <div className="font-semibold text-slate-600 text-xs">
         {row.getValue("assignedTime")}
       </div>
     ),
   },
   {
     accessorKey: "dueDate",
-    header: () => <div>Due Date</div>,
+    header: () => <div>📅 Due Date</div>,
     cell: ({ row }) => (
-      <div className="font-semibold text-slate-600">
+      <div className="font-semibold text-slate-600 text-xs">
         {row.getValue("dueDate")}
       </div>
     ),
   },
   {
     accessorKey: "dueTime",
-    header: () => <div>Due Time</div>,
+    header: () => <div>🕒 Due Time</div>,
     cell: ({ row }) => (
-      <div className="capitalize font-semibold text-slate-600">
+      <div className="capitalize font-semibold text-slate-600 text-xs">
         {row.getValue("dueTime")}
       </div>
     ),
   },
   {
     accessorKey: "status",
-    header: () => <div>Status</div>,
+    header: () => <div>✅ Status</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-center bg-green-200 w-16 rounded-md">
+      <div className="capitalize text-center bg-green-200 w-16 rounded-md text-xs py-1">
         {row.getValue("status")}
       </div>
     ),
@@ -89,9 +90,11 @@ export const columns: ColumnDef<TaskResponse>[] = [
 ];
 
 export default function CreatedTasks() {
+  const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
+
   const { data: tasks } = useQuery({
-    queryKey: ["tasks-paginated"],
-    queryFn: getAllTasksWithPagination,
+    queryKey: ["tasks-paginated", searchTerm],
+    queryFn: () => getAllTasksWithPagination(searchTerm),
   });
 
   const table = useReactTable({
@@ -103,12 +106,17 @@ export default function CreatedTasks() {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
+  const onSearch = useDebouncedCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  }, 500);
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter names..."
-          className="max-w-sm"
+          placeholder="Search by task description..."
+          className="max-w-sm focus-visible:ring-1 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100"
+          onChange={onSearch}
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

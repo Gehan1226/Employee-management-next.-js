@@ -4,13 +4,18 @@ import axioInstance from "../lib/axios";
 import { TaskResponse } from "../types/response-types";
 import { TaskCreateRequest } from "@/types/task";
 
-export const getAllTasksWithPagination = async (): Promise<TaskResponse> => {
+export const getAllTasksWithPagination = async (
+  searchTerm: string | null
+): Promise<TaskResponse> => {
   try {
     const params: Record<string, number | string> = {
       page: 0,
       size: 5,
     };
-    const response = await axioInstance.get("/api/v1/task/get-all-paginated", {
+    if (searchTerm) {
+      params.searchTerm = searchTerm;
+    }
+    const response = await axioInstance.get("/api/v1/tasks/all-by-manager/1", {
       params,
     });
     return response.data.data;
@@ -45,18 +50,22 @@ export const saveTask = async (data: TaskCreateRequest): Promise<string> => {
     if (axios.isAxiosError(error)) {
       if (error.response) {
         throw new Error(
-          error.response.data?.errorMessage ?? "An error occurred during task creation."
+          error.response.data?.errorMessage ??
+            "An error occurred during task creation."
         );
       } else if (error.request) {
         throw new Error(
           "No response received from the server. Please check your network connection."
         );
       } else {
-        throw new Error(error.message || "An unexpected error occurred during task creation.");
+        throw new Error(
+          error.message || "An unexpected error occurred during task creation."
+        );
       }
     } else {
       throw new Error(
-        (error as Error).message || "An unexpected error occurred during task creation."
+        (error as Error).message ||
+          "An unexpected error occurred during task creation."
       );
     }
   }
