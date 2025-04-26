@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import CreatedTasks from "./CreatedTasks";
+import CreatedTasks from "./TaskTable";
 import { Card, CardContent, CardHeader, CardTitle } from "../card";
 
 export default function TaskManagement() {
@@ -12,8 +12,6 @@ export default function TaskManagement() {
           Task Management
         </p>
       </div>
-
-      
 
       <Card className="flex flex-col col-span-2">
         <CardHeader className="items-center pb-0">

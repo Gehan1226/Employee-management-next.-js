@@ -27,10 +27,11 @@ import {
   TableRow,
 } from "../table/table";
 import React from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Pencil, Trash } from "lucide-react";
 import { TaskResponse } from "@/types/response-types";
 import { getAllTasksWithPagination } from "@/api/task";
 import { useDebouncedCallback } from "use-debounce";
+import { IconButton, Tooltip } from "@mui/material";
 
 export const columns: ColumnDef<TaskResponse>[] = [
   {
@@ -87,9 +88,36 @@ export const columns: ColumnDef<TaskResponse>[] = [
       </div>
     ),
   },
+  {
+    accessorKey: "actions",
+    header: () => <div>🛠️ Actions</div>,
+    cell: ({ row }) => (
+      <div className="flex  capitalize text-center text-xs gap-5">
+        <Tooltip title="Edit">
+          <IconButton
+            size="small"
+            color="primary"
+            onClick={() => console.log("Edit", row.original)}
+          >
+            <Pencil size={18} />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip title="Delete">
+          <IconButton
+            size="small"
+            color="error"
+            onClick={() => console.log("Delete", row.original)}
+          >
+            <Trash size={18} />
+          </IconButton>
+        </Tooltip>
+      </div>
+    ),
+  },
 ];
 
-export default function CreatedTasks() {
+export default function TaskTable() {
   const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
 
   const { data: tasks } = useQuery({
@@ -106,9 +134,12 @@ export default function CreatedTasks() {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  const onSearch = useDebouncedCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  }, 500);
+  const onSearch = useDebouncedCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(event.target.value);
+    },
+    500
+  );
 
   return (
     <div className="w-full">
@@ -201,16 +232,10 @@ export default function CreatedTasks() {
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-          >
+          <Button variant="outline" size="sm">
             Previous
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-          >
+          <Button variant="outline" size="sm">
             Next
           </Button>
         </div>

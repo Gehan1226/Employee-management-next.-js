@@ -8,8 +8,8 @@ const queryClient = new QueryClient({
       if (error instanceof Error) {
         toast.error(error.message);
         if (error.message.includes("Unauthorized")) {
+          console.log("Unauthorized error:", error);
           clearAuthCookie();
-          window.location.href = "/user-login";
         }
       }
     },
