@@ -1,14 +1,15 @@
 "use client";
-import { getUserDetailsByName } from "@/api/auth";
 import { decodeJwt } from "@/lib/util/jwt";
 import { Divider } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import UserProfileButton from "./user/UserProfileButton";
 import { Bell, CircleHelp } from "lucide-react";
 import { useUserContext } from "@/context/UserContext";
+import { useUserDetails } from "@/hooks/useUserDetails ";
+import queryClient from "@/lib/util/queryClient";
+import AuthorizationErrorModal from "./AuthorizationErrorModal";
 
 type SideBarProps = {
   menuItems: MenuItem[];
@@ -23,12 +24,10 @@ export default function SideBar({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
   const { updateUser } = useUserContext();
+  const router = useRouter();
 
-  const { data: userData } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getUserDetailsByName(userName ?? ""),
-    enabled: !!userName,
-  });
+    const { user: userData, isAuthorizationError } = useUserDetails(userName);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +53,11 @@ export default function SideBar({
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
+  };
+
+  const handleModalClose = () => {
+    queryClient.removeQueries({ queryKey: ["user"] });
+    router.push("/user-login");
   };
 
   return (
@@ -138,6 +142,11 @@ export default function SideBar({
       </div>
 
       <div className="p-4 sm:ml-64 h-full">{children}</div>
+
+      <AuthorizationErrorModal
+        open={!!isAuthorizationError}
+        onClose={handleModalClose}
+      />
     </>
   );
 }

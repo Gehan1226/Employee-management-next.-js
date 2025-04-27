@@ -4,32 +4,20 @@ import NotifactionButton from "./NotifactionButton";
 import EmployeeAccount from "../account/EmployeeAccount";
 import ManagerAccount from "../account/ManagerAccount";
 import AdminAccount from "../account/AdminAccount";
-import { useQuery } from "@tanstack/react-query";
-import { getUserDetailsByName } from "@/api/auth";
 import { decodeJwt } from "@/lib/util/jwt";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import AccountSkelton from "../skeltons/AccountSkelton";
 import { clearAuthCookie } from "@/lib/util/cookie";
+import AuthorizationErrorModal from "../AuthorizationErrorModal";
+import queryClient from "@/lib/util/queryClient";
+import { useUserDetails } from "@/hooks/useUserDetails ";
 
 export default function AccountSelection() {
   const router = useRouter();
   const [userName, setUserName] = useState<string | null>(null);
 
-  const {
-    data: user,
-    isLoading: userLoading,
-  } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getUserDetailsByName(userName ?? ""),
-    enabled: !!userName,
-    retry: (failureCount, error) => {
-      if (error.message.includes("Unauthorized:")) {
-        return false;
-      }
-      return failureCount < 2;
-    },
-  });
+  const { user, isLoading, isAuthorizationError } = useUserDetails(userName);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +35,11 @@ export default function AccountSelection() {
     };
     fetchData();
   }, [router]);
+
+  const handleModalClose = () => {
+    queryClient.removeQueries({ queryKey: ["user"] });
+    router.push("/user-login");
+  };
 
   return (
     <>
@@ -72,7 +65,7 @@ export default function AccountSelection() {
             </>
           )}
 
-          {userLoading && (
+          {isLoading && (
             <div className="mt-8">
               <AccountSkelton />
               <AccountSkelton />
@@ -81,6 +74,11 @@ export default function AccountSelection() {
           )}
         </div>
       </div>
+
+      <AuthorizationErrorModal
+        open={!!isAuthorizationError}
+        onClose={handleModalClose}
+      />
     </>
   );
 }
