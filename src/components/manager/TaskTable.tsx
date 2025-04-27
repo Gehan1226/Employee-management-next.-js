@@ -28,15 +28,15 @@ import {
 } from "../table/table";
 import React from "react";
 import { ChevronDown, Pencil, Trash } from "lucide-react";
-import { TaskResponse } from "@/types/response-types";
 import { getAllTasksWithPagination } from "@/api/task";
 import { useDebouncedCallback } from "use-debounce";
 import { IconButton, Tooltip } from "@mui/material";
+import { TaskResponse } from "@/types/task";
 
 export const columns: ColumnDef<TaskResponse>[] = [
   {
     accessorKey: "taskDescription",
-    header: () => <div>📝 Task Description</div>,
+    header: () => <div className="text-black">📝 Task Description</div>,
     cell: ({ row }) => (
       <div className="font-semibold text-slate-600 py-2 text-xs">
         {row.getValue("taskDescription")}
@@ -44,44 +44,48 @@ export const columns: ColumnDef<TaskResponse>[] = [
     ),
   },
   {
-    accessorKey: "assignedDate",
-    header: () => <div>📅 Assign Date</div>,
+    accessorKey: "assignedDateTime",
+    header: () => <div className="text-black">📅 Assigned Date & Time</div>,
     cell: ({ row }) => (
       <div className="capitalize font-semibold text-slate-800 text-xs">
-        {row.getValue("assignedDate")}
+        {row.original.assignedDate} - {row.original.assignedTime}
       </div>
     ),
   },
   {
-    accessorKey: "assignedTime",
-    header: () => <div>⏰ Assign Time</div>,
+    accessorKey: "dueDateTime",
+    header: () => <div className="text-black">⏰ Due Date & Time</div>,
     cell: ({ row }) => (
-      <div className="font-semibold text-slate-600 text-xs">
-        {row.getValue("assignedTime")}
+      <div className="capitalize font-semibold text-slate-800 text-xs">
+        {row.original.dueDate} - {row.original.dueTime}
       </div>
     ),
   },
   {
-    accessorKey: "dueDate",
-    header: () => <div>📅 Due Date</div>,
+    accessorKey: "employeeList",
+    header: () => <div className="text-black">Assigned Employees</div>,
     cell: ({ row }) => (
-      <div className="font-semibold text-slate-600 text-xs">
-        {row.getValue("dueDate")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "dueTime",
-    header: () => <div>🕒 Due Time</div>,
-    cell: ({ row }) => (
-      <div className="capitalize font-semibold text-slate-600 text-xs">
-        {row.getValue("dueTime")}
+      <div className="capitalize font-semibold text-slate-800 text-xs">
+        <div className="flex gap-2">
+          <div className="bg-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+            {row.original.employeeList[0]?.firstName.charAt(0)}
+          </div>
+          <div className="bg-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+            {row.original.employeeList[0]?.firstName.charAt(0)}
+          </div>
+          <div className="bg-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+            {row.original.employeeList[0]?.firstName.charAt(0)}
+          </div>
+          <div className="flex items-center justify-center font-semibold text-xs">
+            3 +
+          </div>
+        </div>
       </div>
     ),
   },
   {
     accessorKey: "status",
-    header: () => <div>✅ Status</div>,
+    header: () => <div className="text-black">⏳ Status</div>,
     cell: ({ row }) => (
       <div className="capitalize text-center bg-green-200 w-16 rounded-md text-xs py-1">
         {row.getValue("status")}
@@ -90,9 +94,9 @@ export const columns: ColumnDef<TaskResponse>[] = [
   },
   {
     accessorKey: "actions",
-    header: () => <div>🛠️ Actions</div>,
+    header: () => <div className="text-black">🛠️ Actions</div>,
     cell: ({ row }) => (
-      <div className="flex  capitalize text-center text-xs gap-5">
+      <div className="flex capitalize text-center text-xs gap-5">
         <Tooltip title="Edit">
           <IconButton
             size="small"

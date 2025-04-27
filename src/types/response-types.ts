@@ -1,5 +1,5 @@
-import { DepartmentResponse, Role } from "./department-roles";
-import { Employee, EmployeeResponse } from "./employee";
+import { DepartmentResponse } from "./department-roles";
+import { EmployeeResponse } from "./employee";
 
 export type CountryDetails = {
   name: string;
@@ -14,7 +14,7 @@ export type CountryDetailsResponse = {
 
 export type RoleResponse = {
   success: boolean;
-  data: Role[];
+  data: any[];
   message: string;
 };
 
@@ -32,7 +32,7 @@ export type PaginatedDepartmentResponse = {
 };
 
 export type PaginatedRoleResponse = {
-  data: Role[];
+  data: any[];
   totalPages: number;
   totalElements: number;
   currentPage: number;
@@ -40,7 +40,7 @@ export type PaginatedRoleResponse = {
 };
 
 export type PaginatedEmployeeResponse = {
-  data: Employee[];
+  data: any[];
   totalPages: number;
   totalElements: number;
   currentPage: number;
