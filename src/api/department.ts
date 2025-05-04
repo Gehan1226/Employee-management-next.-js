@@ -1,4 +1,3 @@
-"use server";
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import { PaginatedDepartmentResponse } from "../types/response-types";

@@ -1,5 +1,3 @@
-"use server";
-
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import { PaginatedRoleResponse } from "../types/response-types";

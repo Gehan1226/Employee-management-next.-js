@@ -1,4 +1,3 @@
-"use server";
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import {
@@ -8,7 +7,6 @@ import {
 } from "@/types/auth-types";
 import { z } from "zod";
 import { userLoginFormSchema, userRegisterFormSchema } from "@/lib/schema/user";
-import { createAuthCookie } from "@/lib/util/cookie";
 
 export const saveUser = async (
   data: z.infer<typeof userRegisterFormSchema>
@@ -53,18 +51,12 @@ export const userLogin = async (
 ): Promise<string> => {
   try {
     const response = await axioInstance.post("/api/v1/auth/login", data);
-
-    const responseData = response.data;
-    if (responseData.data?.token) {
-      await createAuthCookie(responseData.data.token);
-    }
-
     return response.data.message;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
         throw new Error(
-          error.response.data?.errorMessage ||
+          error.response.data?.errorMessage ??
             "An error occurred during user login"
         );
       } else if (error.request) {
@@ -211,15 +203,15 @@ export const deleteUser = async (userEmail: string): Promise<string> => {
   }
 };
 
-export const getUserDetailsByName = async (name: string): Promise<UserResponse> => {
+export const getUserDetails = async (): Promise<UserResponse> => {
   try{
-    const response = await axioInstance.get(`/api/v1/auth/${name}`);
+    const response = await axioInstance.get(`/api/v1/auth/user`);
     return response.data.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
         throw new Error(
-          error.response.data?.errorMessage ||
+          error.response.data?.errorMessage ??
             "An error occurred during fetching user details."
         );
       } else if (error.request) {

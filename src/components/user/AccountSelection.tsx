@@ -1,40 +1,18 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import NotifactionButton from "./NotifactionButton";
 import EmployeeAccount from "../account/EmployeeAccount";
 import ManagerAccount from "../account/ManagerAccount";
 import AdminAccount from "../account/AdminAccount";
-import { decodeJwt } from "@/lib/util/jwt";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import AccountSkelton from "../skeltons/AccountSkelton";
-import { clearAuthCookie } from "@/lib/util/cookie";
 import AuthorizationErrorModal from "../AuthorizationErrorModal";
 import queryClient from "@/lib/util/queryClient";
 import { useUserDetails } from "@/hooks/useUserDetails ";
 
 export default function AccountSelection() {
   const router = useRouter();
-  const [userName, setUserName] = useState<string | null>(null);
-
-  const { user, isLoading, isAuthorizationError } = useUserDetails(userName);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await decodeJwt();
-        setUserName(data.sub);
-      } catch (error) {
-        console.error("Error decoding JWT:", error);
-        toast.error("Authentication issue detected. Please log in again.", {
-          position: "top-right",
-        });
-        await clearAuthCookie();
-        router.push("/user-login");
-      }
-    };
-    fetchData();
-  }, [router]);
+  const { user, isLoading, isAuthorizationError } = useUserDetails();
 
   const handleModalClose = () => {
     queryClient.removeQueries({ queryKey: ["user"] });

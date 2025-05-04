@@ -1,16 +1,15 @@
-import { getUserDetailsByName } from "@/api/auth";
+import { getUserDetails } from "@/api/auth";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-export const useUserDetails = (userName: string | null) => {
+export const useUserDetails = () => {
   const {
     data: user,
     isLoading,
     error,
   } = useQuery({
     queryKey: ["user"],
-    queryFn: () => getUserDetailsByName(userName ?? ""),
-    enabled: !!userName,
+    queryFn: () => getUserDetails(),
     retry: (failureCount, error) => {
       if (error.message.includes("Unauthorized:")) {
         return false;
