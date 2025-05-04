@@ -19,7 +19,10 @@ export const useUserDetails = () => {
   });
 
   const isAuthorizationError = useMemo(() => {
-    return error?.message.includes("Unauthorized:");
+    return (
+      error?.message.includes("Unauthorized:") &&
+      !error?.message.includes("Unauthorized: JWT has expired.")
+    );
   }, [error]);
 
   return {

@@ -12,7 +12,7 @@ export const getRolesByDepartment = async (
 
   try {
     const response = await axioInstance.get(
-      `/api/v1/role/by-department/${departmentId}`
+      `/api/v1/roles/by-department/${departmentId}`
     );
     return response.data.data;
   } catch (error: any) {

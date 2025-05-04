@@ -228,3 +228,29 @@ export const getUserDetails = async (): Promise<UserResponse> => {
     }
   }
 };
+
+export const reffreshToken = async (): Promise<string> => {
+  try {
+    const response = await axioInstance.post("/api/v1/auth/refresh");
+    return response.data.message;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        throw new Error(
+          error.response.data?.errorMessage ??
+            "An error occurred during refreshing token."
+        );
+      } else if (error.request) {
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
+      } else {
+        throw new Error(error.message || "An unexpected error occurred.");
+      }
+    } else {
+      throw new Error(
+        (error as Error).message || "An unexpected error occurred."
+      );
+    }
+  }
+}
