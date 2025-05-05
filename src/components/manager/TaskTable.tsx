@@ -35,7 +35,7 @@ export default function TaskTable() {
   const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
 
   const { data: tasks } = useQuery({
-    queryKey: ["tasks-paginated", searchTerm],
+    queryKey: ["tasks-by-manager", searchTerm],
     queryFn: () => getAllTasksWithPagination(searchTerm),
   });
 
@@ -54,6 +54,8 @@ export default function TaskTable() {
     },
     500
   );
+
+  console.log("tasks", tasks);
 
   return (
     <div className="w-full">

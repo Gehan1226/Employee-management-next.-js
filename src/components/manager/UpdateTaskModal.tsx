@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Pencil, X } from "lucide-react";
 import React, { useState } from "react";
-import { TaskResponse } from "@/types/task";
+import { TaskResponse, TaskUpdateRequest } from "@/types/task";
 import Input from "../Input";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Controller, useForm } from "react-hook-form";
@@ -20,6 +20,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import dayjs from "dayjs";
 import { taskSchema } from "@/lib/schema/task";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { updateTask } from "@/api/task";
+import queryClient from "@/lib/util/queryClient";
 
 type UpdateTaskModalProps = {
   taskData: TaskResponse;
@@ -34,6 +38,7 @@ export default function UpdateTaskModal({
     control,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(taskSchema),
@@ -48,6 +53,29 @@ export default function UpdateTaskModal({
       status: taskData?.status ?? "",
     },
   });
+
+  const mutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: TaskUpdateRequest }) =>
+      updateTask(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks-by-manager"] });
+      reset();
+      setOpen(false);
+    }
+  });
+
+  const onSubmit = async (data: z.infer<typeof taskSchema>) => {
+    const taskUpdateData: TaskUpdateRequest = {
+      taskDescription: data.description,
+      assignedDate: data.assignedDateTime.format("YYYY-MM-DD"),
+      assignedTime: data.assignedDateTime.format("HH:mm:ss"),
+      dueDate: data.dueDateTime.format("YYYY-MM-DD"),
+      dueTime: data.dueDateTime.format("HH:mm:ss"),
+      status: data.status,
+      employeeIdList: taskData.employeeList.map((emp) => emp.id),
+    };
+    mutation.mutate({ id: taskData.id, data: taskUpdateData });
+  };
 
   return (
     <div>
@@ -77,7 +105,7 @@ export default function UpdateTaskModal({
 
           <form
             className="flex flex-col gap-8 px-4 mt-8"
-            onSubmit={handleSubmit(() => {})}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <Input
               type="text"

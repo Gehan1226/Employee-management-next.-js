@@ -9,6 +9,16 @@ export type TaskCreateRequest = {
   employeeIdList: number[];
 };
 
+export type TaskUpdateRequest = {
+  taskDescription: string;
+  assignedDate: string;
+  assignedTime: string;
+  dueDate: string;
+  dueTime: string;
+  status: string;
+  employeeIdList: number[];
+};
+
 export type TaskEmployeeResponse = {
   id: number;
   firstName: string;

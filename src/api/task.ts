@@ -1,7 +1,7 @@
 import axios from "axios";
 import axioInstance from "../lib/axios";
 import { TaskResponse } from "../types/response-types";
-import { TaskCreateRequest } from "@/types/task";
+import { TaskCreateRequest, TaskUpdateRequest } from "@/types/task";
 
 export const getAllTasksWithPagination = async (
   searchTerm: string | null
@@ -64,6 +64,38 @@ export const saveTask = async (data: TaskCreateRequest): Promise<string> => {
       throw new Error(
         (error as Error).message ||
           "An unexpected error occurred during task creation."
+      );
+    }
+  }
+};
+
+export const updateTask = async (
+  id: number,
+  data: TaskUpdateRequest
+): Promise<string> => {
+  try {
+    const response = await axioInstance.patch(`/api/v1/tasks/${id}`, data);
+    return response.data.message;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        throw new Error(
+          error.response.data?.errorMessage ??
+            "An error occurred during task update."
+        );
+      } else if (error.request) {
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
+      } else {
+        throw new Error(
+          error.message || "An unexpected error occurred during task update."
+        );
+      }
+    } else {
+      throw new Error(
+        (error as Error).message ||
+          "An unexpected error occurred during task update."
       );
     }
   }
