@@ -4,23 +4,22 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Controller, useForm } from "react-hook-form";
+import EmployeeInfoCard from "../EmployeeInfoCard";
+import { useUserContext } from "@/context/UserContext";
 import { useQuery } from "@tanstack/react-query";
 import { getEmployeesByDepartment } from "@/api/employee";
-import EmployeeInfoCard from "../EmployeeInfoCard";
-import { TaskAssignedEmployee } from "@/types/employee";
-import { useUserContext } from "@/context/UserContext";
 
-type EmployeeTaskSelectorProps = {
-  assignedEmployees: TaskAssignedEmployee[];
-  assignEmployee: (employee: TaskAssignedEmployee) => void;
-  unAssignEmployee: (employeeId: number) => void;
+type EmployeeTaskUpdateProps = {
+  employeeIdList: number[];
+  onDeleteEmployee: (employeeId: number) => void;
+  onAssignEmployee: (employeeId: number) => void;
 };
 
-export default function EmployeeTaskSelector({
-  assignedEmployees,
-  assignEmployee,
-  unAssignEmployee,
-}: Readonly<EmployeeTaskSelectorProps>) {
+export default function EmployeeTaskUpdate({
+  employeeIdList,
+  onDeleteEmployee,
+  onAssignEmployee,
+}: Readonly<EmployeeTaskUpdateProps>) {
   const { user } = useUserContext();
 
   const { data: employees } = useQuery({
@@ -29,35 +28,18 @@ export default function EmployeeTaskSelector({
     enabled: !!user?.employee?.department?.id,
   });
 
-  console.log("employees", employees);
-  console.log("user", user);
-
-  const { control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       employeeId: "",
     },
   });
 
   const onSubmit = (data: { employeeId: string }) => {
-    const searchId = parseInt(data.employeeId);
-    const employee = employees?.find((emp) => emp.id === searchId);
-    if (employee)
-      assignEmployee({
-        id: employee.id,
-        firstName: employee.firstName,
-        lastName: employee.lastName,
-        role: employee.role.name,
-      });
-
-    reset();
-  };
-
-  const onDeleteEmployee = (employeeId: number) => {
-    unAssignEmployee(employeeId);
+    onAssignEmployee(parseInt(data.employeeId));
   };
 
   return (
-    <>
+    <div className="px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex justify-between gap-5 items-center"
@@ -79,9 +61,7 @@ export default function EmployeeTaskSelector({
                 {employees
                   ?.filter(
                     (employee) =>
-                      !assignedEmployees.some(
-                        (assigned) => assigned.id === employee.id
-                      )
+                      !employeeIdList.some((id) => id === employee.id)
                   )
                   .map((employee) => (
                     <MenuItem key={employee.id} value={employee.id}>
@@ -100,18 +80,27 @@ export default function EmployeeTaskSelector({
         </button>
       </form>
 
-      <div className="flex flex-col gap-3 bg-gray-50 border border-gray-300 rounded-md py-2">
+      <div className="flex flex-col gap-3 bg-gray-50 border border-gray-300 rounded-md py-2 mt-7 mb-16">
         <p className="font-semibold px-2">Assigned Employees</p>
         <div className="flex flex-col gap-2 max-h-[300px] overflow-y-scroll px-5 py-2">
-          {assignedEmployees.map((employee) => (
-            <EmployeeInfoCard
-              key={employee.id}
-              employee={employee}
-              onDeleteEmployee={onDeleteEmployee}
-            />
-          ))}
+          {employees
+            ?.filter((employee) => employeeIdList.includes(employee.id))
+            .map((employee) => (
+              <EmployeeInfoCard
+                key={employee.id}
+                employee={{
+                  id: employee.id,
+                  firstName: employee.firstName,
+                  lastName: employee.lastName,
+                  role: employee.role.name,
+                }}
+                onDeleteEmployee={() => {
+                  onDeleteEmployee(employee.id);
+                }}
+              />
+            ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

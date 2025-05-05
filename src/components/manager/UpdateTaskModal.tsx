@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   FormControl,
   FormHelperText,
   IconButton,
@@ -24,6 +25,7 @@ import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { updateTask } from "@/api/task";
 import queryClient from "@/lib/util/queryClient";
+import EmployeeTaskUpdate from "./EmployeeTaskUpdate";
 
 type UpdateTaskModalProps = {
   taskData: TaskResponse;
@@ -33,6 +35,10 @@ export default function UpdateTaskModal({
   taskData,
 }: Readonly<UpdateTaskModalProps>) {
   const [open, setOpen] = useState(false);
+  const [slide, setSlide] = useState<0 | 1>(0);
+  const [employeeIdList, setEmployeeIdList] = useState<number[]>(
+    taskData.employeeList.map((emp) => emp.id)
+  );
 
   const {
     control,
@@ -61,8 +67,16 @@ export default function UpdateTaskModal({
       queryClient.invalidateQueries({ queryKey: ["tasks-by-manager"] });
       reset();
       setOpen(false);
-    }
+    },
   });
+
+  const onDeleteEmployee = (employeeId: number) => {
+    setEmployeeIdList((prev) => prev.filter((id) => id !== employeeId));
+  };
+
+  const onAddEmployee = (employeeId: number) => {
+    setEmployeeIdList((prev) => [...prev, employeeId]);
+  };
 
   const onSubmit = async (data: z.infer<typeof taskSchema>) => {
     const taskUpdateData: TaskUpdateRequest = {
@@ -72,7 +86,7 @@ export default function UpdateTaskModal({
       dueDate: data.dueDateTime.format("YYYY-MM-DD"),
       dueTime: data.dueDateTime.format("HH:mm:ss"),
       status: data.status,
-      employeeIdList: taskData.employeeList.map((emp) => emp.id),
+      employeeIdList: employeeIdList,
     };
     mutation.mutate({ id: taskData.id, data: taskUpdateData });
   };
@@ -103,122 +117,149 @@ export default function UpdateTaskModal({
             all the required fields.
           </p>
 
+          <div className="flex gap-10 justify-between mt-7 mb-3 px-10">
+            <button
+              className={`text-gray-500 px-4 py-2 rounded-md font-semibold ${
+                slide === 0 ? "bg-green-200" : "bg-gray-100"
+              }`}
+              onClick={() => setSlide(0)}
+            >
+              Task Information
+            </button>
+            <button
+              className={`text-gray-500 px-4 py-2 rounded-md font-semibold ${
+                slide === 1 ? "bg-green-200" : "bg-gray-100"
+              }`}
+              onClick={() => setSlide(1)}
+            >
+              Assigned Employees
+            </button>
+          </div>
+
+          <Divider className="mt-5" />
+
           <form
-            className="flex flex-col gap-8 px-4 mt-8"
+            className={`flex flex-col gap-8 px-4 mt-8 ${
+              slide === 0 ? "mb-16" : ""
+            }`}
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Input
-              type="text"
-              label="Task Description"
-              id="description"
-              error={errors.description?.message}
-              {...register("description")}
-            />
-            <div className="flex gap-4 justify-between">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Controller
-                  name="assignedDateTime"
-                  control={control}
-                  render={({ field }) => (
-                    <DateTimePicker
-                      label="Assigned date and time"
-                      value={field.value}
-                      onChange={(newValue) => field.onChange(newValue)}
-                      slotProps={{
-                        textField: {
-                          error: !!errors.assignedDateTime,
-                          helperText: errors.assignedDateTime?.message,
-                        },
-                      }}
-                      className="bg-gray-50 w-full"
-                    />
-                  )}
+            {slide === 0 && (
+              <>
+                <Input
+                  type="text"
+                  label="Task Description"
+                  id="description"
+                  error={errors.description?.message}
+                  {...register("description")}
                 />
-              </LocalizationProvider>
-
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Controller
-                  name="dueDateTime"
-                  control={control}
-                  render={({ field }) => (
-                    <DateTimePicker
-                      label="Due date and time"
-                      value={field.value}
-                      onChange={(newValue) => field.onChange(newValue)}
-                      slotProps={{
-                        textField: {
-                          error: !!errors.dueDateTime,
-                          helperText: errors.dueDateTime?.message,
-                        },
-                      }}
-                      className="bg-gray-50 w-full"
+                <div className="flex gap-4 justify-between">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Controller
+                      name="assignedDateTime"
+                      control={control}
+                      render={({ field }) => (
+                        <DateTimePicker
+                          label="Assigned date and time"
+                          value={field.value}
+                          onChange={(newValue) => field.onChange(newValue)}
+                          slotProps={{
+                            textField: {
+                              error: !!errors.assignedDateTime,
+                              helperText: errors.assignedDateTime?.message,
+                            },
+                          }}
+                          className="bg-gray-50 w-full"
+                        />
+                      )}
                     />
+                  </LocalizationProvider>
+
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Controller
+                      name="dueDateTime"
+                      control={control}
+                      render={({ field }) => (
+                        <DateTimePicker
+                          label="Due date and time"
+                          value={field.value}
+                          onChange={(newValue) => field.onChange(newValue)}
+                          slotProps={{
+                            textField: {
+                              error: !!errors.dueDateTime,
+                              helperText: errors.dueDateTime?.message,
+                            },
+                          }}
+                          className="bg-gray-50 w-full"
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </div>
+
+                <FormControl fullWidth error={!!errors.status}>
+                  <InputLabel id="combo-box-label">Select Status</InputLabel>
+                  <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        labelId="combo-box-label"
+                        label="Select status"
+                        id="task-status"
+                        {...field}
+                        className="bg-gray-50"
+                      >
+                        <MenuItem key="1" value="pending">
+                          Pending / Assigned
+                        </MenuItem>
+                        <MenuItem key="2" value="in-progress">
+                          In Progress
+                        </MenuItem>
+                        <MenuItem key="3" value="on-hold">
+                          On Hold
+                        </MenuItem>
+                        <MenuItem key="4" value="completed">
+                          Completed
+                        </MenuItem>
+                        <MenuItem key="5" value="approved">
+                          Approved
+                        </MenuItem>
+                        <MenuItem key="6" value="rejected">
+                          Rejected / Rework Required
+                        </MenuItem>
+                        <MenuItem key="7" value="canceled">
+                          Canceled
+                        </MenuItem>
+                        <MenuItem key="8" value="not-started">
+                          Not Started
+                        </MenuItem>
+                        <MenuItem key="9" value="under-review">
+                          Under Review
+                        </MenuItem>
+                        <MenuItem key="10" value="escalated">
+                          Escalated
+                        </MenuItem>
+                        <MenuItem key="11" value="blocked">
+                          Blocked
+                        </MenuItem>
+                        <MenuItem key="12" value="deferred">
+                          Deferred
+                        </MenuItem>
+                        <MenuItem key="13" value="auto-closed">
+                          Auto-Closed
+                        </MenuItem>
+                      </Select>
+                    )}
+                  />
+                  {errors.status && (
+                    <FormHelperText>{errors.status.message}</FormHelperText>
                   )}
-                />
-              </LocalizationProvider>
-            </div>
+                </FormControl>
+              </>
+            )}
 
-            <FormControl fullWidth error={!!errors.status}>
-              <InputLabel id="combo-box-label">Select Status</InputLabel>
-              <Controller
-                name="status"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    labelId="combo-box-label"
-                    label="Select status"
-                    id="task-status"
-                    {...field}
-                    className="bg-gray-50"
-                  >
-                    <MenuItem key="1" value="pending">
-                      Pending / Assigned
-                    </MenuItem>
-                    <MenuItem key="2" value="in-progress">
-                      In Progress
-                    </MenuItem>
-                    <MenuItem key="3" value="on-hold">
-                      On Hold
-                    </MenuItem>
-                    <MenuItem key="4" value="completed">
-                      Completed
-                    </MenuItem>
-                    <MenuItem key="5" value="approved">
-                      Approved
-                    </MenuItem>
-                    <MenuItem key="6" value="rejected">
-                      Rejected / Rework Required
-                    </MenuItem>
-                    <MenuItem key="7" value="canceled">
-                      Canceled
-                    </MenuItem>
-                    <MenuItem key="8" value="not-started">
-                      Not Started
-                    </MenuItem>
-                    <MenuItem key="9" value="under-review">
-                      Under Review
-                    </MenuItem>
-                    <MenuItem key="10" value="escalated">
-                      Escalated
-                    </MenuItem>
-                    <MenuItem key="11" value="blocked">
-                      Blocked
-                    </MenuItem>
-                    <MenuItem key="12" value="deferred">
-                      Deferred
-                    </MenuItem>
-                    <MenuItem key="13" value="auto-closed">
-                      Auto-Closed
-                    </MenuItem>
-                  </Select>
-                )}
-              />
-              {errors.status && (
-                <FormHelperText>{errors.status.message}</FormHelperText>
-              )}
-            </FormControl>
-
-            <div className="flex justify-end gap-4">
+            <div className="absolute bottom-3 right-5 flex gap-4 ">
               <button
                 type="button"
                 className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-4 rounded"
@@ -234,6 +275,14 @@ export default function UpdateTaskModal({
               </button>
             </div>
           </form>
+
+          {slide === 1 && (
+            <EmployeeTaskUpdate
+              employeeIdList={employeeIdList}
+              onDeleteEmployee={onDeleteEmployee}
+              onAssignEmployee={onAddEmployee}
+            />
+          )}
         </Box>
       </Modal>
     </div>
