@@ -1,3 +1,4 @@
+import { deleteTask } from "@/api/task";
 import UpdateTaskModal from "@/components/manager/UpdateTaskModal";
 import { TaskResponse } from "@/types/task";
 import { IconButton, Tooltip } from "@mui/material";
@@ -98,7 +99,7 @@ export const columns: ColumnDef<TaskResponse>[] = [
           <IconButton
             size="small"
             color="error"
-            onClick={() => console.log("Delete", row.original)}
+            onClick={() => deleteTask(row.original.id)}
           >
             <Trash size={18} />
           </IconButton>

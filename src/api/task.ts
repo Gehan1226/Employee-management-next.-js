@@ -100,3 +100,32 @@ export const updateTask = async (
     }
   }
 };
+
+export const deleteTask = async (id: number): Promise<string> => {
+  try {
+    const response = await axioInstance.delete(`/api/v1/tasks/${id}`);
+    return response.data.message;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        throw new Error(
+          error.response.data?.errorMessage ??
+            "An error occurred during task deletion."
+        );
+      } else if (error.request) {
+        throw new Error(
+          "No response received from the server. Please check your network connection."
+        );
+      } else {
+        throw new Error(
+          error.message || "An unexpected error occurred during task deletion."
+        );
+      }
+    } else {
+      throw new Error(
+        (error as Error).message ||
+          "An unexpected error occurred during task deletion."
+      );
+    }
+  }
+};

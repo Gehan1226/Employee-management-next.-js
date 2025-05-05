@@ -55,8 +55,6 @@ export default function TaskTable() {
     500
   );
 
-  console.log("tasks", tasks);
-
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
