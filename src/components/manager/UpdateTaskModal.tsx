@@ -1,17 +1,6 @@
-import {
-  Box,
-  Divider,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Modal,
-  Select,
-  Tooltip,
-} from "@mui/material";
+import { Box, Divider, IconButton, Modal, Tooltip } from "@mui/material";
 import { Pencil, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TaskResponse, TaskUpdateRequest } from "@/types/task";
 import Input from "../Input";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -26,6 +15,9 @@ import { useMutation } from "@tanstack/react-query";
 import { updateTask } from "@/api/task";
 import queryClient from "@/lib/util/queryClient";
 import EmployeeTaskUpdate from "./EmployeeTaskUpdate";
+import { taskStatus } from "@/lib/schema/task-status";
+import TabNavigation from "./TabNavigation";
+import DropDownMenu from "../DropDownMenu";
 
 type UpdateTaskModalProps = {
   taskData: TaskResponse;
@@ -48,16 +40,6 @@ export default function UpdateTaskModal({
     formState: { errors },
   } = useForm({
     resolver: zodResolver(taskSchema),
-    defaultValues: {
-      description: taskData?.taskDescription ?? "",
-      assignedDateTime: taskData?.assignedDate
-        ? dayjs(`${taskData.assignedDate} ${taskData.assignedTime}`)
-        : dayjs(),
-      dueDateTime: taskData?.dueDate
-        ? dayjs(`${taskData.dueDate} ${taskData.dueTime}`)
-        : dayjs(),
-      status: taskData?.status ?? "",
-    },
   });
 
   const mutation = useMutation({
@@ -69,6 +51,23 @@ export default function UpdateTaskModal({
       setOpen(false);
     },
   });
+
+  useEffect(() => {
+    if (open) {
+      reset({
+        description: taskData?.taskDescription ?? "",
+        assignedDateTime: taskData?.assignedDate
+          ? dayjs(`${taskData.assignedDate} ${taskData.assignedTime}`)
+          : dayjs(),
+        dueDateTime: taskData?.dueDate
+          ? dayjs(`${taskData.dueDate} ${taskData.dueTime}`)
+          : dayjs(),
+        status: taskData?.status ?? "",
+      });
+      setEmployeeIdList(taskData.employeeList.map((emp) => emp.id));
+      setSlide(0);
+    }
+  }, [open, taskData, reset]);
 
   const onDeleteEmployee = (employeeId: number) => {
     setEmployeeIdList((prev) => prev.filter((id) => id !== employeeId));
@@ -100,7 +99,10 @@ export default function UpdateTaskModal({
       </Tooltip>
       <Modal
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          reset();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -117,24 +119,10 @@ export default function UpdateTaskModal({
             all the required fields.
           </p>
 
-          <div className="flex gap-10 justify-between mt-7 mb-3 px-10">
-            <button
-              className={`text-gray-500 px-4 py-2 rounded-md font-semibold ${
-                slide === 0 ? "bg-green-200" : "bg-gray-100"
-              }`}
-              onClick={() => setSlide(0)}
-            >
-              Task Information
-            </button>
-            <button
-              className={`text-gray-500 px-4 py-2 rounded-md font-semibold ${
-                slide === 1 ? "bg-green-200" : "bg-gray-100"
-              }`}
-              onClick={() => setSlide(1)}
-            >
-              Assigned Employees
-            </button>
-          </div>
+          <TabNavigation
+            activeTab={slide}
+            onTabChange={(tabIndex) => setSlide(tabIndex)}
+          />
 
           <Divider className="mt-5" />
 
@@ -197,65 +185,13 @@ export default function UpdateTaskModal({
                   </LocalizationProvider>
                 </div>
 
-                <FormControl fullWidth error={!!errors.status}>
-                  <InputLabel id="combo-box-label">Select Status</InputLabel>
-                  <Controller
-                    name="status"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        labelId="combo-box-label"
-                        label="Select status"
-                        id="task-status"
-                        {...field}
-                        className="bg-gray-50"
-                      >
-                        <MenuItem key="1" value="pending">
-                          Pending / Assigned
-                        </MenuItem>
-                        <MenuItem key="2" value="in-progress">
-                          In Progress
-                        </MenuItem>
-                        <MenuItem key="3" value="on-hold">
-                          On Hold
-                        </MenuItem>
-                        <MenuItem key="4" value="completed">
-                          Completed
-                        </MenuItem>
-                        <MenuItem key="5" value="approved">
-                          Approved
-                        </MenuItem>
-                        <MenuItem key="6" value="rejected">
-                          Rejected / Rework Required
-                        </MenuItem>
-                        <MenuItem key="7" value="canceled">
-                          Canceled
-                        </MenuItem>
-                        <MenuItem key="8" value="not-started">
-                          Not Started
-                        </MenuItem>
-                        <MenuItem key="9" value="under-review">
-                          Under Review
-                        </MenuItem>
-                        <MenuItem key="10" value="escalated">
-                          Escalated
-                        </MenuItem>
-                        <MenuItem key="11" value="blocked">
-                          Blocked
-                        </MenuItem>
-                        <MenuItem key="12" value="deferred">
-                          Deferred
-                        </MenuItem>
-                        <MenuItem key="13" value="auto-closed">
-                          Auto-Closed
-                        </MenuItem>
-                      </Select>
-                    )}
-                  />
-                  {errors.status && (
-                    <FormHelperText>{errors.status.message}</FormHelperText>
-                  )}
-                </FormControl>
+                <DropDownMenu
+                  label="Select Status"
+                  name="status"
+                  control={control}
+                  menuItems={taskStatus}
+                  error={errors.status?.message}
+                />
               </>
             )}
 
