@@ -124,8 +124,12 @@ export const getEmployeesByDepartmentWithPagination = async (
 };
 
 export const getEmployeesByDepartment = async (
-  departmentId: number
+  departmentId: number | undefined
 ): Promise<EmployeeResponse[]> => {
+  if (!departmentId) {
+    throw new Error("Department ID not provided for employee fetching.");
+  }
+
   try {
     const response = await axioInstance.get(
       `/api/v1/employees/by-department/${departmentId}/all`

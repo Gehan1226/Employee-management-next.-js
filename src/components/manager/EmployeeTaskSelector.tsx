@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getEmployeesByDepartment } from "@/api/employee";
 import EmployeeInfoCard from "../EmployeeInfoCard";
 import { TaskAssignedEmployee } from "@/types/employee";
+import { useUserContext } from "@/context/UserContext";
 
 type EmployeeTaskSelectorProps = {
   assignedEmployees: TaskAssignedEmployee[];
@@ -20,9 +21,12 @@ export default function EmployeeTaskSelector({
   assignEmployee,
   unAssignEmployee,
 }: Readonly<EmployeeTaskSelectorProps>) {
+  const { user } = useUserContext();
+
   const { data: employees } = useQuery({
     queryKey: ["employees-by-department"],
-    queryFn: () => getEmployeesByDepartment(1),
+    queryFn: () => getEmployeesByDepartment(user?.employee?.department?.id),
+    enabled: !!user?.employee?.department?.id,
   });
 
   const { control, handleSubmit, reset } = useForm({

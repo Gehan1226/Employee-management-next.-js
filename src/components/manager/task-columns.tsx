@@ -92,7 +92,7 @@ export const columns: ColumnDef<TaskResponse>[] = [
     header: () => <div className="text-black">🛠️ Actions</div>,
     cell: ({ row }) => (
       <div className="flex capitalize text-center text-xs gap-5">
-        <UpdateTaskModal taskdata={row.original} />
+        <UpdateTaskModal taskData={row.original} />
 
         <Tooltip title="Delete">
           <IconButton
