@@ -1,5 +1,4 @@
 "use client";
-import { decodeJwt } from "@/lib/util/jwt";
 import { Divider } from "@mui/material";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -22,24 +21,10 @@ export default function SideBar({
 }: Readonly<SideBarProps>) {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [userName, setUserName] = useState<string | null>(null);
   const { updateUser } = useUserContext();
   const router = useRouter();
 
-    const { user: userData, isAuthorizationError } = useUserDetails(userName);
-  
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await decodeJwt();
-        setUserName(data.sub);
-      } catch (error) {
-        console.error("Error decoding JWT:", error);
-      }
-    };
-    fetchData();
-  }, []);
+  const { user: userData, isAuthorizationError } = useUserDetails();
 
   useEffect(() => {
     if (userData) {

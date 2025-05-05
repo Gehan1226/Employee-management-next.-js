@@ -40,7 +40,6 @@ export const getAllTasksWithPagination = async (
 };
 
 export const saveTask = async (data: TaskCreateRequest): Promise<string> => {
-  console.log("hola", data);
   try {
     const response = await axioInstance.post("/api/v1/tasks", data);
     console.log(response);

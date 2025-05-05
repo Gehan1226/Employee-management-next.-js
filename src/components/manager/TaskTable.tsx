@@ -2,7 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -27,99 +26,10 @@ import {
   TableRow,
 } from "../table/table";
 import React from "react";
-import { ChevronDown, Pencil, Trash } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { getAllTasksWithPagination } from "@/api/task";
 import { useDebouncedCallback } from "use-debounce";
-import { IconButton, Tooltip } from "@mui/material";
-import { TaskResponse } from "@/types/task";
-
-export const columns: ColumnDef<TaskResponse>[] = [
-  {
-    accessorKey: "taskDescription",
-    header: () => <div className="text-black">📝 Task Description</div>,
-    cell: ({ row }) => (
-      <div className="font-semibold text-slate-600 py-2 text-xs">
-        {row.getValue("taskDescription")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "assignedDateTime",
-    header: () => <div className="text-black">📅 Assigned Date & Time</div>,
-    cell: ({ row }) => (
-      <div className="capitalize font-semibold text-slate-800 text-xs">
-        {row.original.assignedDate} - {row.original.assignedTime}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "dueDateTime",
-    header: () => <div className="text-black">⏰ Due Date & Time</div>,
-    cell: ({ row }) => (
-      <div className="capitalize font-semibold text-slate-800 text-xs">
-        {row.original.dueDate} - {row.original.dueTime}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "employeeList",
-    header: () => <div className="text-black">Assigned Employees</div>,
-    cell: ({ row }) => (
-      <div className="capitalize font-semibold text-slate-800 text-xs">
-        <div className="flex gap-2">
-          <div className="bg-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-white font-semibold text-xs">
-            {row.original.employeeList[0]?.firstName.charAt(0)}
-          </div>
-          <div className="bg-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-white font-semibold text-xs">
-            {row.original.employeeList[0]?.firstName.charAt(0)}
-          </div>
-          <div className="bg-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-white font-semibold text-xs">
-            {row.original.employeeList[0]?.firstName.charAt(0)}
-          </div>
-          <div className="flex items-center justify-center font-semibold text-xs">
-            3 +
-          </div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: () => <div className="text-black">⏳ Status</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-center bg-green-200 w-16 rounded-md text-xs py-1">
-        {row.getValue("status")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "actions",
-    header: () => <div className="text-black">🛠️ Actions</div>,
-    cell: ({ row }) => (
-      <div className="flex capitalize text-center text-xs gap-5">
-        <Tooltip title="Edit">
-          <IconButton
-            size="small"
-            color="primary"
-            onClick={() => console.log("Edit", row.original)}
-          >
-            <Pencil size={18} />
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip title="Delete">
-          <IconButton
-            size="small"
-            color="error"
-            onClick={() => console.log("Delete", row.original)}
-          >
-            <Trash size={18} />
-          </IconButton>
-        </Tooltip>
-      </div>
-    ),
-  },
-];
+import { columns } from "./task-columns";
 
 export default function TaskTable() {
   const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
