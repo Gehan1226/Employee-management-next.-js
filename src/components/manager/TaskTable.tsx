@@ -25,22 +25,27 @@ import {
   TableHeader,
   TableRow,
 } from "../table/table";
-import React from "react";
+import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { getAllTasksWithPagination } from "@/api/task";
 import { useDebouncedCallback } from "use-debounce";
 import { columns } from "./task-columns";
+import { useUserContext } from "@/context/UserContext";
 
 export default function TaskTable() {
+  const { manager } = useUserContext();
   const [searchTerm, setSearchTerm] = React.useState<string | null>(null);
+  const [page, setPage] = useState(0);
 
   const { data: tasks } = useQuery({
-    queryKey: ["tasks-by-manager", searchTerm],
-    queryFn: () => getAllTasksWithPagination(searchTerm),
+    queryKey: ["tasks-by-manager", manager?.id, searchTerm, page],
+    queryFn: () =>
+      getAllTasksWithPagination(manager?.id ?? 0, searchTerm, page),
+    enabled: !!manager,
   });
 
   const table = useReactTable({
-    data: Array.isArray(tasks) ? tasks : [],
+    data: Array.isArray(tasks?.data) ? tasks.data : [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -146,12 +151,26 @@ export default function TaskTable() {
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
         <div className="space-x-2">
-          <Button variant="outline" size="sm">
-            Previous
-          </Button>
-          <Button variant="outline" size="sm">
-            Next
-          </Button>
+          {tasks?.totalPages && (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage(page - 1)}
+                disabled={page === 0}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage(page + 1)}
+                disabled={page === tasks?.totalPages - 1}
+              >
+                Next
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </div>

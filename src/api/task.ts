@@ -1,23 +1,28 @@
 import axios from "axios";
 import axioInstance from "../lib/axios";
-import { TaskResponse } from "../types/response-types";
+import { PaginatedTaskResponse } from "../types/response-types";
 import { TaskCreateRequest, TaskUpdateRequest } from "@/types/task";
 
 export const getAllTasksWithPagination = async (
-  searchTerm: string | null
-): Promise<TaskResponse> => {
+  managerId: number,
+  searchTerm: string | null,
+  page: number
+): Promise<PaginatedTaskResponse> => {
   try {
     const params: Record<string, number | string> = {
-      page: 0,
+      page,
       size: 5,
     };
     if (searchTerm) {
       params.searchTerm = searchTerm;
     }
-    const response = await axioInstance.get("/api/v1/tasks/all-by-manager/1", {
-      params,
-    });
-    return response.data.data;
+    const response = await axioInstance.get(
+      `/api/v1/tasks/all-by-manager/${managerId}`,
+      {
+        params,
+      }
+    );
+    return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
