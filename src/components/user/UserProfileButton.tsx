@@ -9,7 +9,7 @@ import { clearAuthCookie } from "@/lib/util/cookie";
 import ConfirmDialog from "../ConfirmDialog";
 
 type UserProfileButtonProps = {
-  user: UserResponse | undefined;
+  user: UserResponse | null;
 };
 
 export default function UserProfileButton({

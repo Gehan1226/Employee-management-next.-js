@@ -1,5 +1,6 @@
 "use client";
 import { UserResponse } from "@/types/auth-types";
+import { ManagerResponse } from "@/types/manager";
 import React, {
   createContext,
   useContext,
@@ -11,18 +12,28 @@ import React, {
 type UserContextType = {
   user: UserResponse | null;
   updateUser: (user: UserResponse) => void;
+  manager: ManagerResponse | null;
+  updateManager: (manager: ManagerResponse) => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserResponse | null>(null);
+  const [manager, setManager] = useState<ManagerResponse | null>(null);
 
   const updateUser = (user: UserResponse) => {
     setUser(user);
   };
 
-  const value = useMemo(() => ({ user, updateUser }), [user]);
+  const updateManager = (manager: ManagerResponse) => {
+    setManager(manager);
+  };
+
+  const value = useMemo(
+    () => ({ user, updateUser, manager, updateManager }),
+    [user, manager]
+  );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
