@@ -1,7 +1,6 @@
 import axios from "axios";
 import axioInstance from "../lib/axios";
-import { PaginatedTaskResponse } from "../types/response-types";
-import { TaskCreateRequest, TaskUpdateRequest } from "@/types/task";
+import { PaginatedTaskResponse, TaskCreateRequest, TaskUpdateRequest } from "@/types/task";
 
 export const getAllTasksWithPagination = async (
   managerId: number,

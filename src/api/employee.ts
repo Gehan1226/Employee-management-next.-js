@@ -4,8 +4,8 @@ import {
   EmployeeCreateRequest,
   EmployeeQueryParams,
   EmployeeResponse,
+  PaginatedEmployeeResponse,
 } from "../types/employee";
-import { PaginatedEmployeeResponse } from "../types/response-types";
 import { PaginatedResponse } from "@/types/paginations";
 
 export const saveEmployee = async (
@@ -18,7 +18,7 @@ export const saveEmployee = async (
     if (axios.isAxiosError(error)) {
       if (error.response) {
         throw new Error(
-          error.response.data?.errorMessage ||
+          error.response.data?.errorMessage ??
             "An error occurred during employee registration"
         );
       } else if (error.request) {

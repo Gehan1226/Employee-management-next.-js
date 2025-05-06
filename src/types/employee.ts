@@ -51,3 +51,11 @@ export type TaskAssignedEmployee = {
   lastName: string;
   role: string;
 };
+
+export type PaginatedEmployeeResponse = {
+  data: EmployeeResponse[];
+  totalPages: number;
+  totalElements: number;
+  currentPage: number;
+  message?: string;
+};

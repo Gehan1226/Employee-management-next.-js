@@ -1,5 +1,4 @@
 import { DepartmentResponse } from "./department-roles";
-import { EmployeeResponse } from "./employee";
 
 export type CountryDetails = {
   name: string;
@@ -37,32 +36,4 @@ export type PaginatedRoleResponse = {
   totalElements: number;
   currentPage: number;
   message?: string;
-};
-
-export type PaginatedEmployeeResponse = {
-  data: any[];
-  totalPages: number;
-  totalElements: number;
-  currentPage: number;
-  message?: string;
-};
-
-export type TaskResponse = {
-  id: number;
-  taskDescription: string;
-  assignedDate: string;
-  assignedTime: string;
-  dueDate: string;
-  dueTime: string;
-  status: string;
-  employeeList: EmployeeResponse[];
-};
-
-export type PaginatedTaskResponse = {
-  data: TaskResponse[];
-  totalPages: number;
-  totalElements: number;
-  currentPage: number;
-  message: string;
-  status: string;
 };

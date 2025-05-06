@@ -39,3 +39,11 @@ export type TaskResponse = {
   employeeList: TaskEmployeeResponse[];
 };
 
+export type PaginatedTaskResponse = {
+  data: TaskResponse[];
+  totalPages: number;
+  totalElements: number;
+  currentPage: number;
+  message: string;
+  status: string;
+};
