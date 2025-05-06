@@ -1,5 +1,4 @@
-import TaskTable from "@/components/manager/TaskTable";
-import { Card, CardContent } from "@mui/material";
+import TaskViewPage from "@/components/pages/manager/TaskViewPage";
 import React from "react";
 
 export default function Page() {
@@ -11,11 +10,7 @@ export default function Page() {
         </p>
       </div>
 
-      <Card className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] mt-5">
-        <CardContent>
-          <TaskTable />
-        </CardContent>
-      </Card>
+      <TaskViewPage />
     </>
   );
 }

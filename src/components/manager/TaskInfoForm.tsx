@@ -1,11 +1,4 @@
 import React from "react";
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -14,6 +7,8 @@ import dayjs from "dayjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskSchema } from "@/lib/schema/task";
 import { z } from "zod";
+import { taskStatus } from "@/lib/schema/task-status";
+import DropDownMenu from "../DropDownMenu";
 
 type TaskInfoFormProps = {
   taskData: z.infer<typeof taskSchema> | null;
@@ -109,65 +104,13 @@ export default function TaskInfoForm({
         />
       </LocalizationProvider>
 
-      <FormControl fullWidth error={!!errors.status}>
-        <InputLabel id="combo-box-label">Select Status</InputLabel>
-        <Controller
-          name="status"
-          control={control}
-          render={({ field }) => (
-            <Select
-              labelId="combo-box-label"
-              label="Select status"
-              id="task-status"
-              {...field}
-              className="bg-gray-50"
-            >
-              <MenuItem key="1" value="pending">
-                Pending / Assigned
-              </MenuItem>
-              <MenuItem key="2" value="in-progress">
-                In Progress
-              </MenuItem>
-              <MenuItem key="3" value="on-hold">
-                On Hold
-              </MenuItem>
-              <MenuItem key="4" value="completed">
-                Completed
-              </MenuItem>
-              <MenuItem key="5" value="approved">
-                Approved
-              </MenuItem>
-              <MenuItem key="6" value="rejected">
-                Rejected / Rework Required
-              </MenuItem>
-              <MenuItem key="7" value="canceled">
-                Canceled
-              </MenuItem>
-              <MenuItem key="8" value="not-started">
-                Not Started
-              </MenuItem>
-              <MenuItem key="9" value="under-review">
-                Under Review
-              </MenuItem>
-              <MenuItem key="10" value="escalated">
-                Escalated
-              </MenuItem>
-              <MenuItem key="11" value="blocked">
-                Blocked
-              </MenuItem>
-              <MenuItem key="12" value="deferred">
-                Deferred
-              </MenuItem>
-              <MenuItem key="13" value="auto-closed">
-                Auto-Closed
-              </MenuItem>
-            </Select>
-          )}
-        />
-        {errors.status && (
-          <FormHelperText>{errors.status.message}</FormHelperText>
-        )}
-      </FormControl>
+      <DropDownMenu
+        label="Select Status"
+        name="status"
+        control={control}
+        menuItems={taskStatus}
+        error={errors.status?.message}
+      />
 
       <div className="flex justify-end">
         <button

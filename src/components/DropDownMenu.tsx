@@ -50,7 +50,7 @@ export default function DropDownMenu({
             {...field}
             labelId={`${name}-label`}
             id={name}
-            value={field.value || ""}
+            value={field.value ?? ""}
             label={label}
             onChange={(e) => {
               field.onChange(e);

@@ -4,6 +4,7 @@ import { TaskResponse } from "@/types/task";
 import { IconButton, Tooltip } from "@mui/material";
 import { ColumnDef } from "@tanstack/react-table";
 import { Trash } from "lucide-react";
+import DeleteTaskModal from "./DeleteTaskModal";
 
 export const columns: ColumnDef<TaskResponse>[] = [
   {
@@ -95,15 +96,7 @@ export const columns: ColumnDef<TaskResponse>[] = [
       <div className="flex capitalize text-center text-xs gap-5">
         <UpdateTaskModal taskData={row.original} />
 
-        <Tooltip title="Delete">
-          <IconButton
-            size="small"
-            color="error"
-            onClick={() => deleteTask(row.original.id)}
-          >
-            <Trash size={18} />
-          </IconButton>
-        </Tooltip>
+        <DeleteTaskModal taskId={row.original.id} />
       </div>
     ),
   },

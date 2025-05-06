@@ -18,6 +18,7 @@ import EmployeeTaskUpdate from "./EmployeeTaskUpdate";
 import { taskStatus } from "@/lib/schema/task-status";
 import TabNavigation from "./TabNavigation";
 import DropDownMenu from "../DropDownMenu";
+import toast from "react-hot-toast";
 
 type UpdateTaskModalProps = {
   taskData: TaskResponse;
@@ -45,10 +46,11 @@ export default function UpdateTaskModal({
   const mutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: TaskUpdateRequest }) =>
       updateTask(id, data),
-    onSuccess: () => {
+    onSuccess: (response: string) => {
       queryClient.invalidateQueries({ queryKey: ["tasks-by-manager"] });
       reset();
       setOpen(false);
+      toast.success(response);
     },
   });
 
