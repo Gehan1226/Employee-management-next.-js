@@ -39,6 +39,15 @@ export const columns: ColumnDef<LeaveResponse>[] = [
     ),
   },
   {
+    accessorKey: "leaveType",
+    header: () => <div className="text-black">🎯 Leave Type</div>,
+    cell: ({ row }) => (
+      <div className="capitalize text-center w-16 rounded-md text-xs py-1">
+        {row.original.leaveType.name}
+      </div>
+    ),
+  },
+  {
     accessorKey: "status",
     header: () => <div className="text-black">⏳ Status</div>,
     cell: ({ row }) => (
@@ -46,14 +55,5 @@ export const columns: ColumnDef<LeaveResponse>[] = [
         {row.getValue("status")}
       </div>
     ),
-  },
-  {
-    accessorKey: "leaveType",
-    header: () => <div className="text-black">🎯 Leave Type</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-center bg-green-200 w-16 rounded-md text-xs py-1">
-        {row.getValue("leaveType")}
-      </div>
-    ),
-  },
+  }
 ];

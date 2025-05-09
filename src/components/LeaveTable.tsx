@@ -25,6 +25,8 @@ export default function LeaveTable({ leaves }: Readonly<LeaveTableProps>) {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
+  console.log("bruda",leaves);
+
   return (
     <div className="rounded-md border">
       <Table className="table-fixed">
