@@ -10,6 +10,7 @@ import { Gauge } from "@mui/x-charts/Gauge";
 import Image from "next/image";
 import React from "react";
 import BasicScatter from "@/components/manager/Graph";
+import { NotificationSwitcher } from "@/components/manager/NotificationSwitcher";
 
 export default function page() {
   return (
@@ -32,7 +33,7 @@ export default function page() {
         </div>
       </Card>
 
-      <div className="flex gap-5 mt-5">
+      <div className="grid grid-cols-8 gap-5 mt-5">
         <Card className="flex items-center bg-gradient-to-r from-violet-600 via-violet-500 to-violet-400 gap-5 shadow-[0_3px_10px_rgb(0,0,0,0.2)] px-5 py-2">
           <UsersRound color="#ffffff" />
           <div>
@@ -63,6 +64,12 @@ export default function page() {
             <p className="font-semibold text-lg text-white">10</p>
             <p className="font-semibold text-xs text-white">Total Leaves</p>
           </div>
+        </Card>
+
+        <Card className="col-span-4 flex items-center shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-gradient-to-r from-slate-200 via-slate-100 to-slate-50">
+          <CardContent className="w-full">
+            <NotificationSwitcher />
+          </CardContent>
         </Card>
       </div>
 
@@ -117,9 +124,7 @@ export default function page() {
           <p className="text-sm text-gray-500">
             📌 Created a new task for employees
           </p>
-          <p className="text-sm text-gray-500">
-            📌 Approved a leave request
-          </p>
+          <p className="text-sm text-gray-500">📌 Approved a leave request</p>
         </CardContent>
       </Card>
     </>
