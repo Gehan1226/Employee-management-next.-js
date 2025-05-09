@@ -11,7 +11,7 @@ import SideBar from "../SideBar";
 import AddEmployeeIcon from "@/components/icons/AddEmployeeIcon";
 import DashboardIcon from "@/components/icons/DashboardIcon";
 import EmployeeViewIcon from "@/components/icons/EmployeeViewIcon";
-import { ClipboardList, LayoutList } from "lucide-react";
+import { ClipboardList, DoorOpen, LayoutList } from "lucide-react";
 
 const menuItems: MenuItem[] = [
   {
@@ -31,6 +31,7 @@ const menuItems: MenuItem[] = [
   },
   { name: "Create Task", link: "/manager/add-task", icon: <ClipboardList /> },
   { name: "View Tasks", link: "/manager/view-tasks", icon: <LayoutList /> },
+  { name: "Manage Leaves", link: "/manager/leaves", icon: <DoorOpen /> },
 ];
 
 export default function ManagerSidebar({

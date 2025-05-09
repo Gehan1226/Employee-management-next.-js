@@ -9,9 +9,7 @@ axioInstance.interceptors.request.use(async (config) => {
   return config;
 });
 
-axioInstance.interceptors.response.use((response) => {
-  
-  console.log("Response:", response);
+axioInstance.interceptors.response.use((response) => {  
   return response;
 });
 
