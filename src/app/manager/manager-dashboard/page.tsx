@@ -1,5 +1,5 @@
 "use client";
-import { Card } from "@mui/material";
+import { Card, CardContent } from "@mui/material";
 import {
   ArrowRightFromLine,
   CalendarCheck,
@@ -9,6 +9,7 @@ import {
 import { Gauge } from "@mui/x-charts/Gauge";
 import Image from "next/image";
 import React from "react";
+import BasicScatter from "@/components/manager/Graph";
 
 export default function page() {
   return (
@@ -65,19 +66,62 @@ export default function page() {
         </Card>
       </div>
 
-      <div className="flex">
-        <Card className="flex flex-col gap-5 items-center shadow-[0_3px_10px_rgb(0,0,0,0.2)] px-10 py-2 mt-5">
-          <Gauge
-            value={75}
-            startAngle={-110}
-            endAngle={110}
-            text={({ value, valueMax }) => `${value} / ${valueMax}`}
-          />
+      <div className="grid grid-cols-3 gap-5">
+        <Card className="shadow-[0_3px_10px_rgb(0,0,0,0.2)] px-10 py-2 mt-5">
+          <p className="font-semibold text-lg text-gray-500 text-center">
+            Employee Status
+          </p>
+          <CardContent>
+            <div className="flex flex-col items-center">
+              <Gauge
+                value={75}
+                startAngle={-110}
+                endAngle={110}
+                text={({ value, valueMax }) => `${value} / ${valueMax}`}
+              />
 
-          <p className="font-semibold text-sm text-gray-500">Working Employees</p>
+              <p className="font-semibold text-sm text-gray-500">
+                Working Employees
+              </p>
+            </div>
 
+            <div className="flex gap-10 items-center justify-center mt-7">
+              <p className="font-semibold text-sm text-gray-900">
+                <span>🟩</span> On Leave: 10
+              </p>
+              <p className="font-semibold text-sm text-gray-900">
+                <span>🟧</span> Not Started: 5
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="col-span-2  w-full shadow-[0_3px_10px_rgb(0,0,0,0.2)] px-10 py-2 mt-5">
+          <p className="font-semibold text-lg text-gray-500 text-center">
+            Task Status
+          </p>
+          <CardContent>
+            <BasicScatter />
+          </CardContent>
         </Card>
       </div>
+
+      <Card className="mt-5 shadow-[0_3px_10px_rgb(0,0,0,0.2)] px-10 py-2">
+        <p className="font-semibold text-lg text-gray-500">
+          Your Recent Activities
+        </p>
+        <CardContent className="flex flex-col gap-3 max-h-[100px] overflow-y-scroll">
+          <p className="text-sm text-gray-500">
+            📌 Registered a new employee to your team here
+          </p>
+          <p className="text-sm text-gray-500">
+            📌 Created a new task for employees
+          </p>
+          <p className="text-sm text-gray-500">
+            📌 Approved a leave request
+          </p>
+        </CardContent>
+      </Card>
     </>
   );
 }
