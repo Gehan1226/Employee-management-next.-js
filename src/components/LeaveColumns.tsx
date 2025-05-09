@@ -1,15 +1,12 @@
 import { LeaveResponse } from "@/types/leaves";
 import { ColumnDef } from "@tanstack/react-table";
+import ReasonCell from "./ReasonCell";
 
 export const columns: ColumnDef<LeaveResponse>[] = [
   {
     accessorKey: "reason",
     header: () => <div className="text-black">📝 Leave Reason</div>,
-    cell: ({ row }) => (
-      <div className="font-semibold text-slate-600 py-2 text-xs">
-        {row.getValue("reason")}
-      </div>
-    ),
+    cell: ({ row }) => <ReasonCell text={row.getValue("reason")} />,
   },
   {
     accessorKey: "startDate",
@@ -55,5 +52,5 @@ export const columns: ColumnDef<LeaveResponse>[] = [
         {row.getValue("status")}
       </div>
     ),
-  }
+  },
 ];
