@@ -1,6 +1,7 @@
 import { LeaveResponse } from "@/types/leaves";
 import { ColumnDef } from "@tanstack/react-table";
 import ReasonCell from "./ReasonCell";
+import UpdateLeaveModal from "./UpdateLeaveModal";
 
 export const columns: ColumnDef<LeaveResponse>[] = [
   {
@@ -48,8 +49,11 @@ export const columns: ColumnDef<LeaveResponse>[] = [
     accessorKey: "status",
     header: () => <div className="text-black">⏳ Status</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-center bg-green-200 w-16 rounded-md text-xs py-1">
-        {row.getValue("status")}
+      <div className="flex items-center gap-3">
+        <p className="capitalize bg-green-200 w-16 text-center rounded-md text-xs py-1">
+          {row.getValue("status")}
+        </p>
+        <UpdateLeaveModal />
       </div>
     ),
   },

@@ -8,26 +8,30 @@ import React, { useEffect } from "react";
 import AuthorizationErrorModal from "../AuthorizationErrorModal";
 import queryClient from "@/lib/util/queryClient";
 import SideBar from "../SideBar";
-import AddEmployeeIcon from "@/components/icons/AddEmployeeIcon";
-import DashboardIcon from "@/components/icons/DashboardIcon";
-import EmployeeViewIcon from "@/components/icons/EmployeeViewIcon";
-import { ClipboardList, DoorOpen, LayoutList } from "lucide-react";
+import {
+  ClipboardList,
+  Contact,
+  DoorOpen,
+  LayoutDashboard,
+  LayoutList,
+  UserPlus,
+} from "lucide-react";
 
 const menuItems: MenuItem[] = [
   {
     name: "Dashboard",
     link: "/manager/manager-dashboard",
-    icon: <DashboardIcon />,
+    icon: <LayoutDashboard />,
   },
   {
     name: "Employee Registration",
     link: "/manager/add-employee",
-    icon: <AddEmployeeIcon />,
+    icon: <UserPlus />,
   },
   {
     name: "Employee View",
     link: "/manager/employees",
-    icon: <EmployeeViewIcon />,
+    icon: <Contact />,
   },
   { name: "Create Task", link: "/manager/add-task", icon: <ClipboardList /> },
   { name: "View Tasks", link: "/manager/view-tasks", icon: <LayoutList /> },
