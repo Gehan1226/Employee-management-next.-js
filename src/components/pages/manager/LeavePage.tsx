@@ -1,6 +1,6 @@
 "use client";
 import { getLeavesByDepartmentId } from "@/api/leaves";
-import LeaveTable from "@/components/LeaveTable";
+import LeaveTable from "@/components/leaves/LeaveTable";
 import { useUserContext } from "@/context/UserContext";
 import { Card, CardContent } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";

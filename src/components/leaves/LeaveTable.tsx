@@ -1,6 +1,6 @@
 import { LeaveResponse } from "@/types/leaves";
 import {
-    flexRender,
+  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -9,7 +9,14 @@ import {
 } from "@tanstack/react-table";
 import React from "react";
 import { columns } from "./LeaveColumns";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../table/table";
 
 type LeaveTableProps = {
   leaves: LeaveResponse[];
@@ -25,7 +32,7 @@ export default function LeaveTable({ leaves }: Readonly<LeaveTableProps>) {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  console.log("bruda",leaves);
+  console.log("bruda", leaves);
 
   return (
     <div className="rounded-md border">
