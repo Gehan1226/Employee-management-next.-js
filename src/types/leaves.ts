@@ -22,3 +22,11 @@ export type LeaveResponse = {
   leaveType: LeaveType;
   employee: EmployeeResponse;
 };
+
+export type LeaveApprovedRequest = {
+  approvedOn: string; 
+  comments: string;
+  status: LeaveStatus;
+  leaveRequestId: number;
+  approvedBYEmployeeId: number;
+};

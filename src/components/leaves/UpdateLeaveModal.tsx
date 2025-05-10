@@ -1,4 +1,4 @@
-import { LeaveResponse } from "@/types/leaves";
+import { LeaveApprovedRequest, LeaveResponse, LeaveStatus } from "@/types/leaves";
 import { Box, IconButton, Modal, Tooltip } from "@mui/material";
 import { Pencil, X } from "lucide-react";
 import React, { useState } from "react";
@@ -7,6 +7,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { leaveApprovalSchema } from "@/lib/schema/leave";
+import { approveLeave } from "@/api/leaves";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import queryClient from "@/lib/util/queryClient";
+import { useUserContext } from "@/context/UserContext";
 
 type UpdateLeaveModalProps = {
   leave: LeaveResponse;
@@ -15,6 +20,7 @@ type UpdateLeaveModalProps = {
 export default function UpdateLeaveModal({
   leave,
 }: Readonly<UpdateLeaveModalProps>) {
+  const { user } = useUserContext();
   const [open, setOpen] = useState(false);
 
   const {
@@ -30,6 +36,27 @@ export default function UpdateLeaveModal({
       comment: "",
     },
   });
+
+  const mutation = useMutation({
+    mutationFn: (data: LeaveApprovedRequest) => approveLeave(data),
+    onSuccess: (response: string) => {
+      queryClient.invalidateQueries({ queryKey: ["leaves-by-department-id"] });
+      reset();
+      setOpen(false);
+      toast.success(response);
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof leaveApprovalSchema>) => {
+    const approvedData: LeaveApprovedRequest = {
+      approvedOn: new Date().toISOString(),
+      comments: data.comment,
+      status: data.status as LeaveStatus,
+      leaveRequestId: leave.id,
+      approvedBYEmployeeId: user?.employee?.id ?? 0,
+    }
+    mutation.mutate(approvedData);
+  };
 
   return (
     <div>
@@ -93,7 +120,7 @@ export default function UpdateLeaveModal({
           </div>
 
           <form
-            onSubmit={handleSubmit((data) => console.log(data))}
+            onSubmit={handleSubmit(onSubmit)} 
             className="flex flex-col gap-5 mt-10"
           >
             <DropDownMenu
