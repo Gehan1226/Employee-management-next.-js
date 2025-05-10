@@ -53,7 +53,7 @@ export const columns: ColumnDef<LeaveResponse>[] = [
         <p className="capitalize bg-green-200 w-16 text-center rounded-md text-xs py-1">
           {row.getValue("status")}
         </p>
-        <UpdateLeaveModal />
+        <UpdateLeaveModal leave={row.original}/>
       </div>
     ),
   },
