@@ -19,7 +19,7 @@ export const saveUser = async (
   };
 
   try {
-    const response = await axioInstance.post("/api/v1/auth", requestData);
+    const response = await axioInstance.post("/api/v1/auth/signup", requestData);
     return response.data.message;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

@@ -10,12 +10,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Input } from "../table/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../table/dropdown-menu";
 import { Button } from "../table/button";
 import {
   Table,
@@ -26,7 +20,6 @@ import {
   TableRow,
 } from "../table/table";
 import React, { useState } from "react";
-import { ChevronDown } from "lucide-react";
 import { getAllTasksWithPagination } from "@/api/task";
 import { useDebouncedCallback } from "use-debounce";
 import { columns } from "./task-columns";
@@ -68,32 +61,7 @@ export default function TaskTable() {
           className="max-w-sm focus-visible:ring-1 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-100"
           onChange={onSearch}
         />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+       
       </div>
       <div className="rounded-md border">
         <Table className="table-fixed">
