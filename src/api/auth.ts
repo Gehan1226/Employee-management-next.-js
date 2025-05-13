@@ -25,7 +25,7 @@ export const saveUser = async (
     if (axios.isAxiosError(error)) {
       if (error.response) {
         throw new Error(
-          error.response.data?.errorMessage ||
+          error.response.data?.errorMessage ??
             "An error occurred during user signup"
         );
       } else if (error.request) {
