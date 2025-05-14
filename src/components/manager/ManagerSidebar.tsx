@@ -9,6 +9,7 @@ import AuthorizationErrorModal from "../AuthorizationErrorModal";
 import queryClient from "@/lib/util/queryClient";
 import SideBar from "../SideBar";
 import {
+  CheckCircle,
   ClipboardList,
   Contact,
   DoorOpen,
@@ -22,6 +23,11 @@ const menuItems: MenuItem[] = [
     name: "Dashboard",
     link: "/manager/manager-dashboard",
     icon: <LayoutDashboard />,
+  },
+  {
+    name: "Mark Attendance",
+    link: "/manager/mark-attendance",
+    icon: <CheckCircle />,
   },
   {
     name: "Employee Registration",
